@@ -1,0 +1,29 @@
+#s-a218aeef-964a-44b6-9f2f-994eb5aadbd5 #s-Image_1 {
+  -ms-transform: rotate(0.0deg);
+}
+#s-a218aeef-964a-44b6-9f2f-994eb5aadbd5 #s-Rectangle_1 {
+  border-top-width: 0px;
+  border-top-style: solid;
+  border-top-color: #404040;
+  border-right-width: 0px;
+  border-right-style: solid;
+  border-right-color: #404040;
+  border-bottom-width: 0px;
+  border-bottom-style: solid;
+  border-bottom-color: #404040;
+  border-left-width: 0px;
+  border-left-style: solid;
+  border-left-color: #404040;
+  -ms-transform: rotate(0.0deg);
+}
+#jim-container .ui-page {
+  overflow-x: hidden;
+}
+.non_jim_mobile #simulation {
+  overflow-x: hidden;
+}
+#s-a218aeef-964a-44b6-9f2f-994eb5aadbd5 > #loadMark {
+  width: 1px;
+  visibility: hidden;
+  display: none;
+}
