@@ -1,0 +1,5 @@
+Tema: Estado del arte de software para la medición de parámetros físico-químicos en tiempo real
+
+* En temas ambientales la visualización en tiempo real es importancia.
+* Control de procesos industriales. Ejmpleo: un pico de derrame en una planta.
+* Control de alertas de emergencia.
