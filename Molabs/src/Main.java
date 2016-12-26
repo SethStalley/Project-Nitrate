@@ -7,6 +7,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 public class Main {
 	public static void main(String[] args) {
-       new GUI.MainWindow().setVisible(true);
+       new view.MainWindow().setVisible(true);
     }
 }
