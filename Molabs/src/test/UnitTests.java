@@ -43,5 +43,37 @@ public class UnitTests {
 
 		assertTrue(calibration.getSlope() == 0.038000000000000006);
 	}
+	
+	/*
+	 * Test storing a text data file in the Hashtable
+	 */
+	@Test
+	public void storeTextFile() {
+		MainTable mTable = new MainTable();
+		
+		boolean result = mTable.addFile(textDataPath);
+		
+		assertTrue(result);
+	}
+	
+	/*
+	 * Test storing a calibration formula in the Hashtable
+	 */
+	@Test
+	public void storeCalibration() {
+		CalibrationTable cTable = new CalibrationTable();
+		ArrayList<Double> absorbances = new ArrayList<Double>();
+		ArrayList<Double> concentrations = new ArrayList<Double>();
+		
+		absorbances.add(0.049);
+		absorbances.add(0.068);
+		concentrations.add(1.0);
+		concentrations.add(1.5);
+		
+		cTable.addCalibration(absorbances, concentrations, "223.7");
+		
+		assertTrue(cTable.getCalibration(0).getWavelength().equals("223.7"));
+	}
+	
 
 }
