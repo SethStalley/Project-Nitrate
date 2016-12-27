@@ -9,6 +9,8 @@ import javax.swing.JMenu;
 import java.awt.Color;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
+import java.awt.Button;
+
 import javax.swing.JToolBar;
 import javax.swing.UIManager;
 
@@ -19,6 +21,19 @@ import javax.swing.JMenuItem;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JButton;
+import javax.swing.SwingConstants;
+import java.awt.FlowLayout;
+import javax.swing.JSplitPane;
+import javax.swing.JInternalFrame;
+import javax.swing.BoxLayout;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
 
 public class MainWindow extends JFrame {
 	
@@ -34,12 +49,16 @@ public class MainWindow extends JFrame {
 					  mntmAlertValues, mntmExportExcel; //Tools
 	
 	private JMenuItem mntmAddUser, mntmDeleteUser; //Users
+	private JPanel pnFirstRow;
+	private JButton btnOpenFile, btnAddRow, btnDeleteRow, btnSaveProject, btnConcentration, btnAbsorbance; // first row buttons
+	private JTextField txtAbsorbance;
 	
 	
 	private void initComponents(){
 		setMenuBar();
 		setMenu();
 		setMenuItems();
+		setFirstPanel();
 		
 	}
 	private void setMenuBar(){
@@ -150,16 +169,116 @@ public class MainWindow extends JFrame {
 		
 	}
 	public MainWindow() {
-		setMinimumSize(new Dimension(800, 600));
+		setMinimumSize(new Dimension(1024, 720));
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MainWindow.class.getResource("/Resources/Icon.png")));
 		setTitle("MOLABS");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setBackground(new Color(204, 204, 204));
-		
 		initComponents();
 		
 		
 		
+	}
+	private void setFirstPanel(){
+		pnFirstRow = new JPanel();
+		pnFirstRow.setBackground(new Color(204, 204, 204));
+		pnFirstRow.setPreferredSize(new Dimension(10, 50));
+		pnFirstRow.setMinimumSize(new Dimension(10, 100));
+		getContentPane().add(pnFirstRow, BorderLayout.NORTH);
+		
+		// btn Open files
+		
+		btnOpenFile = new GenericRoundedButton("Open File(s)");
+		setButtonProperties(btnOpenFile, pnFirstRow);
+		btnOpenFile.addMouseListener(setButtonsListeners(btnOpenFile));
+		
+		//btn Add Row
+		
+		btnAddRow = new GenericRoundedButton("Add Row");
+		setButtonProperties(btnAddRow, pnFirstRow);
+		btnAddRow.addMouseListener(setButtonsListeners(btnAddRow));
+		
+		//btn Delete Row
+		
+		btnDeleteRow = new GenericRoundedButton("Delete Row");
+		setButtonProperties(btnDeleteRow, pnFirstRow);
+		btnDeleteRow.addMouseListener(setButtonsListeners(btnDeleteRow));
+
+		//btn Save Project
+		
+		btnSaveProject = new GenericRoundedButton("Save Project");
+		setButtonProperties(btnSaveProject, pnFirstRow);
+		btnSaveProject.addMouseListener(setButtonsListeners(btnSaveProject));
+		
+		//btn Concentration
+
+		btnConcentration = new GenericRoundedButton("Concentration");
+		setButtonProperties(btnConcentration, pnFirstRow);
+		btnConcentration.addMouseListener(setButtonsListeners(btnConcentration));
+		
+		//btn Absorbance
+		
+		btnAbsorbance = new GenericRoundedButton("Absorbance");
+		setButtonProperties(btnAbsorbance, pnFirstRow);
+		btnAbsorbance.addMouseListener(setButtonsListeners(btnAbsorbance));
+		
+		//txt Absorbance
+		
+		txtAbsorbance = new JTextField();
+		txtAbsorbance.setColumns(10);
+		
+		JLabel lblWavelengthnm = new JLabel("Wavelength (nm): ");
+		lblWavelengthnm.setFont(new Font("Roboto Light", Font.PLAIN, 11));
+		
+		
+		//Layout Four butons to the left and 2 and a textfield to the right
+		
+		GroupLayout gl_pnFirstRow = new GroupLayout(pnFirstRow);
+		gl_pnFirstRow.setHorizontalGroup(
+			gl_pnFirstRow.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_pnFirstRow.createSequentialGroup()
+					.addComponent(btnOpenFile, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnAddRow, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnDeleteRow, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnSaveProject, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, 229, Short.MAX_VALUE)
+					.addComponent(lblWavelengthnm)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(txtAbsorbance, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(btnAbsorbance, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnConcentration, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+		);
+		gl_pnFirstRow.setVerticalGroup(
+			gl_pnFirstRow.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_pnFirstRow.createSequentialGroup()
+					.addGap(12)
+					.addComponent(btnOpenFile, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+				.addGroup(gl_pnFirstRow.createSequentialGroup()
+					.addGap(13)
+					.addGroup(gl_pnFirstRow.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnAddRow, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnDeleteRow, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnSaveProject, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+				.addGroup(gl_pnFirstRow.createSequentialGroup()
+					.addGap(13)
+					.addGroup(gl_pnFirstRow.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnConcentration, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnAbsorbance, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtAbsorbance, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblWavelengthnm)))
+		);
+		pnFirstRow.setLayout(gl_pnFirstRow);
+		
+	}
+	private void setButtonProperties(JButton button, JPanel panel){
+		button.setFont(new Font("Roboto Medium", Font.BOLD, 11));
+		button.setBackground(new Color(15,101,131));
 	}
 	
 	
@@ -176,6 +295,19 @@ public class MainWindow extends JFrame {
 		};
 		
 	}
+	private MouseAdapter setButtonsListeners(JButton button){
+		return new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				button.setBackground(new Color(21,81,104));
+			}
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				button.setBackground(new Color(15,101,131));
+			}
+		};
+		
+	}
 	private void setMenuItemProperties(JMenuItem menuItem, JMenu father){
 		menuItem.setForeground(Color.WHITE);
 		menuItem.setFont(new Font("Roboto Medium", Font.BOLD, 12));
@@ -183,7 +315,6 @@ public class MainWindow extends JFrame {
 		father.add(menuItem);
 	}
 	private void setMenuProperties(JMenu menu){
-		System.out.println("here");
 		menu.setOpaque(true);
 		menu.addMouseListener(setMenuListeners(menu));
 		menu.setBackground(new Color(51,51,51));
@@ -191,5 +322,4 @@ public class MainWindow extends JFrame {
 		menu.setFont(new Font("Roboto Medium", Font.BOLD, 12));
 		menuBar.add(menu);
 	}
-	
 }
