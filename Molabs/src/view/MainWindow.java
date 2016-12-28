@@ -8,6 +8,8 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import java.awt.Color;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
 import java.awt.BorderLayout;
 import java.awt.Button;
 
@@ -34,6 +36,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import java.awt.Component;
+import java.awt.GridLayout;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class MainWindow extends JFrame {
 	
@@ -49,9 +55,12 @@ public class MainWindow extends JFrame {
 					  mntmAlertValues, mntmExportExcel; //Tools
 	
 	private JMenuItem mntmAddUser, mntmDeleteUser; //Users
-	private JPanel pnFirstRow;
+	private JPanel pnMain;
 	private JButton btnOpenFile, btnAddRow, btnDeleteRow, btnSaveProject, btnConcentration, btnAbsorbance; // first row buttons
 	private JTextField txtAbsorbance;
+	private JPanel pnFirstRow;
+	private JTable table_1;
+	private JScrollPane mainTablePane;
 	
 	
 	private void initComponents(){
@@ -59,6 +68,8 @@ public class MainWindow extends JFrame {
 		setMenu();
 		setMenuItems();
 		setFirstPanel();
+		setMainTable();
+		setMainPanelLayout();
 		
 	}
 	private void setMenuBar(){
@@ -179,105 +190,148 @@ public class MainWindow extends JFrame {
 		
 		
 	}
-	private void setFirstPanel(){
+	private void setMainTable(){
+		mainTablePane = new JScrollPane();
+		
+		table_1 = new CustomTable(new DefaultTableModel(
+				new String[] {
+						"Sample", "Date", "Time", "Type", "Concentration", "Absorbance"
+				},3)); // number of rows, should be 0 but for testing uses its 3
+		
+		table_1.getTableHeader().setFont(new Font("Roboto Medium", Font.BOLD, 12));
+		
+		
+		mainTablePane.setViewportView(table_1);
+		
+	}
+	private void setMainPanelLayout(){
+		getContentPane().setLayout(new GridLayout(0, 1, 0, 0));
+		pnMain = new JPanel();
+		pnMain.setBackground(new Color(204, 204, 204));
+		pnMain.setPreferredSize(new Dimension(10, 50));
+		pnMain.setMinimumSize(new Dimension(10, 100));
+		getContentPane().add(pnMain);
+		
+		GroupLayout gl_pnMain = new GroupLayout(pnMain);
+		gl_pnMain.setHorizontalGroup(
+			gl_pnMain.createParallelGroup(Alignment.LEADING)
+				.addComponent(pnFirstRow, GroupLayout.DEFAULT_SIZE, 1008, Short.MAX_VALUE)
+				.addGroup(gl_pnMain.createSequentialGroup()
+					.addGap(21)
+					.addComponent(mainTablePane, GroupLayout.PREFERRED_SIZE, 962, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(25, Short.MAX_VALUE))
+		);
+		gl_pnMain.setVerticalGroup(
+			gl_pnMain.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_pnMain.createSequentialGroup()
+					.addComponent(pnFirstRow, GroupLayout.PREFERRED_SIZE, 63, GroupLayout.PREFERRED_SIZE)
+					.addGap(28)
+					.addComponent(mainTablePane, GroupLayout.PREFERRED_SIZE, 193, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(367, Short.MAX_VALUE))
+		);
+		
+		pnMain.setLayout(gl_pnMain);
+	}
+	private void setFirstPanel(){		
 		pnFirstRow = new JPanel();
-		pnFirstRow.setBackground(new Color(204, 204, 204));
-		pnFirstRow.setPreferredSize(new Dimension(10, 50));
-		pnFirstRow.setMinimumSize(new Dimension(10, 100));
-		getContentPane().add(pnFirstRow, BorderLayout.NORTH);
+		pnFirstRow.setMinimumSize(new Dimension(10, 20));
+		pnFirstRow.setPreferredSize(new Dimension(10, 20));
+		pnFirstRow.setBackground(new Color(204, 204, 204));		
 		
 		// btn Open files
 		
 		btnOpenFile = new GenericRoundedButton("Open File(s)");
-		setButtonProperties(btnOpenFile, pnFirstRow);
+		setButtonProperties(btnOpenFile, pnMain);
 		btnOpenFile.addMouseListener(setButtonsListeners(btnOpenFile));
 		
 		//btn Add Row
 		
 		btnAddRow = new GenericRoundedButton("Add Row");
-		setButtonProperties(btnAddRow, pnFirstRow);
+		setButtonProperties(btnAddRow, pnMain);
 		btnAddRow.addMouseListener(setButtonsListeners(btnAddRow));
 		
 		//btn Delete Row
 		
 		btnDeleteRow = new GenericRoundedButton("Delete Row");
-		setButtonProperties(btnDeleteRow, pnFirstRow);
+		setButtonProperties(btnDeleteRow, pnMain);
 		btnDeleteRow.addMouseListener(setButtonsListeners(btnDeleteRow));
-
+		
 		//btn Save Project
-		
+				
 		btnSaveProject = new GenericRoundedButton("Save Project");
-		setButtonProperties(btnSaveProject, pnFirstRow);
+		setButtonProperties(btnSaveProject, pnMain);
 		btnSaveProject.addMouseListener(setButtonsListeners(btnSaveProject));
-		
+				
+		JLabel lblWavelengthnm = new JLabel("Wavelength (nm): ");
+		lblWavelengthnm.setFont(new Font("Roboto Light", Font.PLAIN, 12));
+				
+		//txt Absorbance
+				
+		txtAbsorbance = new JTextField();
+		txtAbsorbance.setColumns(10);
+				
+		//btn Absorbance
+				
+		btnAbsorbance = new GenericRoundedButton("Absorbance");
+		setButtonProperties(btnAbsorbance, pnMain);
+		btnAbsorbance.addMouseListener(setButtonsListeners(btnAbsorbance));
+				
 		//btn Concentration
 
 		btnConcentration = new GenericRoundedButton("Concentration");
-		setButtonProperties(btnConcentration, pnFirstRow);
-		btnConcentration.addMouseListener(setButtonsListeners(btnConcentration));
-		
-		//btn Absorbance
-		
-		btnAbsorbance = new GenericRoundedButton("Absorbance");
-		setButtonProperties(btnAbsorbance, pnFirstRow);
-		btnAbsorbance.addMouseListener(setButtonsListeners(btnAbsorbance));
-		
-		//txt Absorbance
-		
-		txtAbsorbance = new JTextField();
-		txtAbsorbance.setColumns(10);
-		
-		JLabel lblWavelengthnm = new JLabel("Wavelength (nm): ");
-		lblWavelengthnm.setFont(new Font("Roboto Light", Font.PLAIN, 11));
-		
+		setButtonProperties(btnConcentration, pnMain);
+		btnConcentration.addMouseListener(setButtonsListeners(btnConcentration));		
 		
 		//Layout Four butons to the left and 2 and a textfield to the right
 		
 		GroupLayout gl_pnFirstRow = new GroupLayout(pnFirstRow);
 		gl_pnFirstRow.setHorizontalGroup(
-			gl_pnFirstRow.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_pnFirstRow.createSequentialGroup()
-					.addComponent(btnOpenFile, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnAddRow, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnDeleteRow, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnSaveProject, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 229, Short.MAX_VALUE)
-					.addComponent(lblWavelengthnm)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(txtAbsorbance, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(btnAbsorbance, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnConcentration, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
+		gl_pnFirstRow.createParallelGroup(Alignment.LEADING)
+			.addGroup(gl_pnFirstRow.createSequentialGroup()
+			.addContainerGap()
+			.addComponent(btnOpenFile, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+			.addPreferredGap(ComponentPlacement.UNRELATED)
+			.addComponent(btnAddRow, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+			.addPreferredGap(ComponentPlacement.UNRELATED)
+			.addComponent(btnDeleteRow, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+			.addPreferredGap(ComponentPlacement.UNRELATED)
+			.addComponent(btnSaveProject, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+			.addPreferredGap(ComponentPlacement.RELATED, 196, Short.MAX_VALUE)
+			.addComponent(lblWavelengthnm)
+			.addPreferredGap(ComponentPlacement.RELATED)
+			.addComponent(txtAbsorbance, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+			.addPreferredGap(ComponentPlacement.UNRELATED)
+			.addComponent(btnAbsorbance, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+			.addPreferredGap(ComponentPlacement.UNRELATED)
+			.addComponent(btnConcentration, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+			.addContainerGap())
 		);
 		gl_pnFirstRow.setVerticalGroup(
-			gl_pnFirstRow.createParallelGroup(Alignment.LEADING)
+			gl_pnFirstRow.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_pnFirstRow.createSequentialGroup()
-					.addGap(12)
-					.addComponent(btnOpenFile, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-				.addGroup(gl_pnFirstRow.createSequentialGroup()
-					.addGap(13)
-					.addGroup(gl_pnFirstRow.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnAddRow, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnDeleteRow, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnSaveProject, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-				.addGroup(gl_pnFirstRow.createSequentialGroup()
-					.addGap(13)
-					.addGroup(gl_pnFirstRow.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnConcentration, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnAbsorbance, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(txtAbsorbance, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblWavelengthnm)))
+				.addContainerGap(13, Short.MAX_VALUE)
+				.addGroup(gl_pnFirstRow.createParallelGroup(Alignment.BASELINE)
+					.addComponent(txtAbsorbance, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addComponent(btnAbsorbance, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addComponent(btnConcentration, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addComponent(lblWavelengthnm))
+				.addContainerGap())
+			.addGroup(gl_pnFirstRow.createSequentialGroup()
+				.addContainerGap(16, Short.MAX_VALUE)
+				.addGroup(gl_pnFirstRow.createParallelGroup(Alignment.BASELINE)
+					.addComponent(btnOpenFile, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addComponent(btnAddRow, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addComponent(btnDeleteRow, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addComponent(btnSaveProject, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+				.addContainerGap())
 		);
+		
 		pnFirstRow.setLayout(gl_pnFirstRow);
+		
 		
 	}
 	private void setButtonProperties(JButton button, JPanel panel){
-		button.setFont(new Font("Roboto Medium", Font.BOLD, 11));
+		button.setFont(new Font("Roboto Medium", Font.BOLD, 12));
 		button.setBackground(new Color(15,101,131));
 	}
 	
