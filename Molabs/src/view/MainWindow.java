@@ -180,7 +180,7 @@ public class MainWindow extends JFrame {
 		
 	}
 	public MainWindow() {
-		setMinimumSize(new Dimension(1024, 720));
+		setMinimumSize(new Dimension(1280, 720));
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MainWindow.class.getResource("/Resources/Icon.png")));
 		setTitle("MOLABS");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -197,6 +197,7 @@ public class MainWindow extends JFrame {
 				new String[] {
 						"Sample", "Date", "Time", "Type", "Concentration", "Absorbance"
 				},3)); // number of rows, should be 0 but for testing uses its 3
+		table_1.setRowHeight(24);
 		
 		table_1.getTableHeader().setFont(new Font("Roboto Medium", Font.BOLD, 12));
 		
@@ -215,19 +216,19 @@ public class MainWindow extends JFrame {
 		GroupLayout gl_pnMain = new GroupLayout(pnMain);
 		gl_pnMain.setHorizontalGroup(
 			gl_pnMain.createParallelGroup(Alignment.LEADING)
-				.addComponent(pnFirstRow, GroupLayout.DEFAULT_SIZE, 1008, Short.MAX_VALUE)
+				.addComponent(pnFirstRow, GroupLayout.DEFAULT_SIZE, 1264, Short.MAX_VALUE)
 				.addGroup(gl_pnMain.createSequentialGroup()
 					.addGap(21)
-					.addComponent(mainTablePane, GroupLayout.PREFERRED_SIZE, 962, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(25, Short.MAX_VALUE))
+					.addComponent(mainTablePane, GroupLayout.PREFERRED_SIZE, 1219, GroupLayout.PREFERRED_SIZE)
+					.addGap(24))
 		);
 		gl_pnMain.setVerticalGroup(
 			gl_pnMain.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_pnMain.createSequentialGroup()
 					.addComponent(pnFirstRow, GroupLayout.PREFERRED_SIZE, 63, GroupLayout.PREFERRED_SIZE)
 					.addGap(28)
-					.addComponent(mainTablePane, GroupLayout.PREFERRED_SIZE, 193, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(367, Short.MAX_VALUE))
+					.addComponent(mainTablePane, GroupLayout.PREFERRED_SIZE, 230, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(330, Short.MAX_VALUE))
 		);
 		
 		pnMain.setLayout(gl_pnMain);
