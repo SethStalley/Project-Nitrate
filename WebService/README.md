@@ -1,8 +1,8 @@
 # Webservice
 
 ## Server
-* User: ubuntu
-* DNS: ec2-54-144-112-150.compute-1.amazonaws.com
+* User: `ubuntu`
+* DNS: `ec2-54-144-112-150.compute-1.amazonaws.com`
 * Use the private key ".pem" file contained within this folder for ssh access.
 
 ### SSH Example
