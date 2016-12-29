@@ -13,7 +13,7 @@ BEGIN
 		SET MESSAGE_TEXT = 'Validación de usuario incorrecta.';
 	END IF;
     
-    SELECT userName, type, date
+    SELECT idUser, userName, type, date
 		FROM molabsdb.users
 			WHERE type = 'admin';
 		

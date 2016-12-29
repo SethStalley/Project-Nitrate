@@ -3,7 +3,7 @@ DROP PROCEDURE IF EXISTS molabsdb.selectAllUsers;$$
 CREATE PROCEDURE molabsdb.selectAllUsers(pUserName VARCHAR(45), pPassword VARBINARY(512))
 BEGIN
 
-	-- retruns all public information of a given user
+	-- retruns all public information of ALL users.
     SET @type = (SELECT type
 					FROM molabsdb.users
 						WHERE userName = pUserName AND password = pPassword);
@@ -13,7 +13,7 @@ BEGIN
 		SET MESSAGE_TEXT = 'Validación de usuario incorrecta.';
 	END IF;
     
-    SELECT userName, type, date
+    SELECT idUser, userName, type, date, createdBy
 		FROM molabsdb.users;
 		
     

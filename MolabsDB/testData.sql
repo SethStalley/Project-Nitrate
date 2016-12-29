@@ -3,7 +3,9 @@ INSERT INTO molabsdb.users(username, password, type, date)
 
 CALL molabsdb.insertUser('seth', CAST(SHA2('omg', 512) AS BINARY), 'user','root' , CAST(SHA2('root', 512) AS BINARY));
 CALL molabsdb.insertUser('adrian', CAST(SHA2('lopez', 512) AS BINARY), 'admin','root' , CAST(SHA2('root', 512) AS BINARY));
-CALL molabsdb.insertUser('josue', CAST(SHA2('caca', 512) AS BINARY), 'owner','root' , CAST(SHA2('root', 512) AS BINARY));
+CALL molabsdb.insertUser('admin', CAST(SHA2('admin', 512) AS BINARY), 'admin','root' , CAST(SHA2('root', 512) AS BINARY));
+CALL molabsdb.insertUser('josue', CAST(SHA2('caca', 512) AS BINARY), 'user','root' , CAST(SHA2('root', 512) AS BINARY));
+CALL molabsdb.insertUser('user', CAST(SHA2('user', 512) AS BINARY), 'user','adrian' , CAST(SHA2('lopez', 512) AS BINARY));
 
 SELECT * FROM molabsdb.users;
 SELECT * FROM molabsdb.graphs;
