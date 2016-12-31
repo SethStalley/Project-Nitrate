@@ -191,6 +191,12 @@ public class MainWindow extends JFrame {
 		
 		mntmOpenObserver = new JMenuItem("Open Observer");
 		setMenuItemProperties(mntmOpenObserver, mnTools);
+		mntmOpenObserver.addActionListener(new java.awt.event.ActionListener() {
+	        @Override
+	        public void actionPerformed(java.awt.event.ActionEvent evt) {
+	            new Observer().setVisible(true);
+	        }
+	    });
 		
 		mntmCloseObserver = new JMenuItem("Close Observer");
 		setMenuItemProperties(mntmCloseObserver, mnTools);
