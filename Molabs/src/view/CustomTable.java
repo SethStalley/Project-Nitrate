@@ -35,9 +35,8 @@ public abstract class CustomTable extends JTable {
     	TableColumn typeColumn = getColumnModel().getColumn(values.Strings.TYPE_COLUMN_INDEX);
     
     	JComboBox<String> comboBox = new JComboBox<String>();
-    	comboBox.addItem(" ");
-    	comboBox.addItem(values.Strings.STD);
     	comboBox.addItem(values.Strings.SAMPLE);
+    	comboBox.addItem(values.Strings.STD);
     	comboBox.setEditable(true);
     	comboBox.setFocusable(false);
     	
