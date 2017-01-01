@@ -3,6 +3,7 @@ package view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.io.File;
+import java.util.Date;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
@@ -11,16 +12,22 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 
+import controller.Controller;
+
 public abstract class CustomTable extends JTable {
 	
+	protected final int DATE_INDEX = 1;
+	protected final int TIME_INDEX = 2;	
 	private static final int headerHeigth = 28;
+	protected Controller controller;
 	
-	public CustomTable(DefaultTableModel model) {
+	public CustomTable(SortableJTableModel model, Controller controller) {
 		this.setRowSelectionAllowed(true);
 		createTableHeaders(model);
+		this.controller = controller;
 	}
 	
-	private void createTableHeaders(DefaultTableModel model) {
+	private void createTableHeaders(SortableJTableModel model) {
 		JTableHeader header = getTableHeader();
         header.setBackground(new Color(236,134,50)); //orange
         header.setForeground(Color.white); // white foreground
@@ -31,7 +38,7 @@ public abstract class CustomTable extends JTable {
 	
 	public abstract void addRow(File file);
 	
-	public void addDropdowns() {
+	protected void addDropdowns() {
     	TableColumn typeColumn = getColumnModel().getColumn(values.Strings.TYPE_COLUMN_INDEX);
     
     	JComboBox<String> comboBox = new JComboBox<String>();
@@ -42,4 +49,21 @@ public abstract class CustomTable extends JTable {
     	
     	typeColumn.setCellEditor(new DefaultCellEditor(comboBox));
     }
+
+	public void deleteSelectedFiles() {
+		int[] rows = this.getSelectedRows();
+		
+		for (int index : rows) {
+			deleteFile(index);
+		}
+	}
+	
+	private void deleteFile(int index) {
+		Date key = (Date) this.getValueAt(index, DATE_INDEX);
+		this.controller.removeFile(key);
+		((DefaultTableModel) this.getModel()).removeRow(index);
+	}
+
+	public abstract void addBlankRow();
+	
 }

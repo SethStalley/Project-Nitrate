@@ -20,15 +20,24 @@ public class MainTable extends JSON_Exportable{
 	/*
 	 * Parses and stores the data from a valid textFile containing spectrometer data.
 	 */
-	public boolean addFile(String path) {
+	public Date addFile(String path) {
 		TextFile txtData = new TextFile(path);
 		
 		if(txtData.getDate() != null) {
 			this.files.put(txtData.getDate(), txtData);
-			return true;
 		}
 		
-		return false;
+		//this may be null, that's ok it just needs to be checked
+		return txtData.getDate();
+	}
+	
+	public boolean removeFile(Date key) {
+		return this.files.remove(key) != null;
+	}
+	
+	public boolean addRow(String name, Date date) {
+		TextFile file = new TextFile(name, date);
+		return this.files.put(date, file) == null;
 	}
 	
 	public boolean addWorkingWavelength(String wavelength) {

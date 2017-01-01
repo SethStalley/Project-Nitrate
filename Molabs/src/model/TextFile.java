@@ -10,7 +10,7 @@ import java.util.Hashtable;
 
 import values.Strings;
 
-public class TextFile {
+public class TextFile extends JSON_Exportable{
 
 	private String name;
 	private Date date;
@@ -22,6 +22,12 @@ public class TextFile {
 	public TextFile(String path) {
 		this.absorbances = new Hashtable<String, String>();
 		this.parseTextFile(path);
+	}
+	
+	public TextFile(String name, Date date) {
+		this.name = name;
+		this.date = date;
+		this.type = Strings.SAMPLE;
 	}
 	
 	/*

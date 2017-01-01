@@ -1,57 +1,70 @@
 package view;
 
+import java.awt.Component;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+
+import controller.Controller;
+import values.Strings;
 
 public class MainTable extends CustomTable {
 	
-	public MainTable(DefaultTableModel model){
-		super(model);
+	private int lastBlankRow = 1;
+	private SortableJTableModel model;
+	
+	public MainTable(SortableJTableModel model, Controller controller){
+		super(model, controller);
+		this.model = model;
 	}
 
 	@Override
 	public void addRow(File file) {
-        DefaultTableModel model = (DefaultTableModel)this.getModel();
-        String[] nombreArchivo = null;
-  
-        try {
-            String cadena;
-            String dia = null;
-            String mes = null;
-            String anno = null;
-            String horas = null;
-            String minutos = null;
-            String segundos = null;
-            FileReader archivo = new FileReader(file.getAbsolutePath());
-            
-            System.out.println(file.getAbsolutePath());
-            LineNumberReader numeroLinea = new LineNumberReader(archivo);
-            while ((cadena = numeroLinea.readLine()) != null) {
-                if (numeroLinea.getLineNumber() != 3) continue;
-                mes = cadena.substring(10, 13);
-                dia = cadena.substring(14, 16);
-                horas = cadena.substring(17, 19);
-                minutos = cadena.substring(20, 22);
-                segundos = cadena.substring(23, 25);
-                anno = cadena.substring(30, 34);
-            }
-            nombreArchivo = file.getName().split("\\.");
-            model.addRow(new Object[]{nombreArchivo[0], dia + '/' + mes + '/' + anno, horas + ':' + minutos + ':' + segundos});
-            numeroLinea.close();
-            
-            addDropdowns();
-            
-            //find absorbance for new row
-        }
-        catch (IOException ex) {
-        	System.out.println(ex.toString());
-        }
-		
+		Date key = controller.addFile(file.getAbsolutePath());
+		renderNewFile(key);
 	}
 	
+	private void addRow(Object[] object) {
+		model.addRow(object);
+		
+		//render date's using a custom format
+		this.getColumnModel().getColumn(DATE_INDEX).setCellRenderer(new CellRenderDateAsYYMMDD());
+		this.getColumnModel().getColumn(TIME_INDEX).setCellRenderer(new CellRenderDateAsTimeOfDay());
+		
+		//add our dropdown options
+		addDropdowns();
+		
+		//sort table by date
+		this.model.sortAddedRowByDate(DATE_INDEX);
+	}
+
+	
+	/*
+	 * Renders just added file within model
+	 */
+	private void renderNewFile(Date key) {
+		String name = controller.getFileName(key);
+		String type = controller.getFileType(key);
+		Date date = key;
+		ArrayList<String> waveLengths = controller.getMainTableWavelengths();
+		
+		this.addRow(new Object[]{name,date, date, type});
+	}
+
+	@Override
+	public void addBlankRow() {
+		Date date = new Date();
+		this.addRow(new Object[]{"Custom Row " + this.lastBlankRow++ ,date, date, Strings.SAMPLE});;
+	}
+
 
 }

@@ -166,9 +166,19 @@ public class MainWindow extends JFrame {
 		
 		mntmOpenData = new JMenuItem("Open Data File");
 		setMenuItemProperties(mntmOpenData, mnFile);
+		mntmOpenData.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				OpenFile(arg0);
+			}
+		});
 		
 		mntmDeleteDataFile = new JMenuItem("Delete Data File");
 		setMenuItemProperties(mntmDeleteDataFile, mnFile);
+		mntmDeleteDataFile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				mainTable.deleteSelectedFiles();
+			}
+		});
 		
 		mntmPrint = new JMenuItem("Print");
 		setMenuItemProperties(mntmPrint, mnFile);
@@ -179,6 +189,11 @@ public class MainWindow extends JFrame {
 		//Edit
 		mntmAddRow = new JMenuItem("Add Row");
 		setMenuItemProperties(mntmAddRow, mnEdit);
+		mntmAddRow.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				mainTable.addBlankRow();
+			}
+		});
 		
 		mntmCopyRow = new JMenuItem("Copy Row");
 		setMenuItemProperties(mntmCopyRow, mnEdit);
@@ -188,6 +203,11 @@ public class MainWindow extends JFrame {
 		
 		mntmDeleteRow = new JMenuItem("Delete Row");
 		setMenuItemProperties(mntmDeleteRow, mnEdit);
+		mntmDeleteRow.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				mainTable.deleteSelectedFiles();
+			}
+		});
 		
 		
 		//Tools
@@ -277,12 +297,22 @@ public class MainWindow extends JFrame {
 		btnAddRow = new GenericRoundedButton("Add Row");
 		setButtonProperties(btnAddRow, pnMain);
 		btnAddRow.addMouseListener(setButtonsListeners(btnAddRow));
+		btnAddRow.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				mainTable.addBlankRow();
+			}
+		});
 		
 		//btn Delete Row
 		
 		btnDeleteRow = new GenericRoundedButton("Delete Row");
 		setButtonProperties(btnDeleteRow, pnMain);
 		btnDeleteRow.addMouseListener(setButtonsListeners(btnDeleteRow));
+		btnDeleteRow.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				mainTable.deleteSelectedFiles();
+			}
+		});
 		
 		//btn Save Project
 				
@@ -363,10 +393,10 @@ public class MainWindow extends JFrame {
 	private void setMainTable(){
 		mainTablePane = new JScrollPane();
 		
-		mainTable = new MainTable(new DefaultTableModel(
+		mainTable = new MainTable(new SortableJTableModel(
 				new String[] {
 						"Sample", "Date", "Time", "Type", "Concentration", "Absorbance"
-				},0)); 
+				},0), controller); 
 		mainTable.setRowHeight(24);
 		
 		mainTable.getTableHeader().setFont(new Font("Roboto Medium", Font.BOLD, 12));
@@ -381,10 +411,10 @@ public class MainWindow extends JFrame {
 	
 		scrollPaneCalibration = new JScrollPane(); //Pane for headers
 		
-		tableCalibration = new MainTable(new DefaultTableModel( //has to be changed to calibrateTable
+		tableCalibration = new MainTable(new SortableJTableModel( //has to be changed to calibrateTable
 				new String[] {
 						"Status", "Date", "Wavelength"
-				},3)); // number of rows, should be 0 but for testing uses its 3
+				},3), controller); // number of rows, should be 0 but for testing uses its 3
 		tableCalibration.setRowHeight(24);
 		
 		tableCalibration.getTableHeader().setFont(new Font("Roboto Medium", Font.BOLD, 12));
@@ -628,10 +658,9 @@ public class MainWindow extends JFrame {
 	
 	        for(int i=0; i< arrfile.length; i++) {
 	            File file = arrfile[i];
-	            //addFile(file);
-	            this.controller.addFile(file.getPath());
 	            this.mainTable.addRow(file);
 	        } 
+	       
 	    }
 	
 }

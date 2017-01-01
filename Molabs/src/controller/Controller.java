@@ -1,7 +1,11 @@
 package controller;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 import model.CalibrationTable;
 import model.MainTable;
+import model.TextFile;
 import view.MainWindow;
 
 public class Controller {
@@ -23,8 +27,44 @@ public class Controller {
 		this.calibrationTable = new CalibrationTable();
 	}
 	
-	public void addFile(String path) {
-		this.mainTable.addFile(path);
+	
+	/**
+	 * Get working wavelengths from mainTable property
+	 * @return ArrayList<String> with all active wavelengths
+	 */
+	public ArrayList<String> getMainTableWavelengths() {
+		return this.mainTable.getWorkingWaveLengths();
 	}
 	
+	/**
+	 * Add new file to the mainTable model.
+	 * @param String absolute path to the file 
+	 * @return Date which is the files key.
+	 */
+	public Date addFile(String path) {
+		return this.mainTable.addFile(path);
+	}
+	
+	/**
+	 * @param Date key of file.
+	 * @return String name of data File.
+	 */
+	public String getFileName(Date key) {
+		TextFile file = this.mainTable.getFile(key);
+		return file.getName();
+	}
+	
+	
+	/**
+	 * @param Date key of file.
+	 * @return String type of data File.
+	 */
+	public String getFileType(Date key) {
+		TextFile file = this.mainTable.getFile(key);
+		return file.getType();
+	}
+	
+	public boolean removeFile(Date key) {
+		return this.mainTable.removeFile(key);
+	}
 }

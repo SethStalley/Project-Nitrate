@@ -29,7 +29,7 @@ public class IntegrationTests {
 		MainTable mTable = new MainTable();
 		MainTable mTable2;
 		
-		boolean result = mTable.addFile(textDataPath);
+		Date key = mTable.addFile(textDataPath);
 		
 		Gson gson = new GsonBuilder()
 				.registerTypeAdapter(Date.class, new DateTimeDeserializer())
@@ -39,7 +39,7 @@ public class IntegrationTests {
 		String json = mTable.getAsJSON();
 		mTable2 = gson.fromJson(json, MainTable.class);
 		
-		assertTrue(result && mTable.getAllFiles().size() == mTable2.getAllFiles().size());
+		assertTrue(key != null && mTable.getAllFiles().size() == mTable2.getAllFiles().size());
 	}
 	
 	/*

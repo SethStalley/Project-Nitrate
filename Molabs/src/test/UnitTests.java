@@ -4,9 +4,15 @@ import model.*;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
+
+import javax.swing.table.DefaultTableModel;
 
 import org.junit.Test;
+
+import controller.Controller;
 
 public class UnitTests {
 	
@@ -51,9 +57,9 @@ public class UnitTests {
 	public void storeTextFile() {
 		MainTable mTable = new MainTable();
 		
-		boolean result = mTable.addFile(textDataPath);
+		Date result = mTable.addFile(textDataPath);
 		
-		assertTrue(result);
+		assertTrue(result != null);
 	}
 	
 	/*
@@ -74,6 +80,5 @@ public class UnitTests {
 		
 		assertTrue(cTable.getCalibration(0).getWavelength().equals("223.7"));
 	}
-	
 
 }
