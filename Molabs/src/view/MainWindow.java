@@ -24,6 +24,7 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.SwingConstants;
 import java.awt.FlowLayout;
 import javax.swing.JSplitPane;
@@ -42,10 +43,21 @@ import java.awt.Insets;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import controller.Controller;
+
 import javax.swing.JTabbedPane;
 
 public class MainWindow extends JFrame {
 	
+	private Controller controller;
+	
+	//Storage components
+	
+	private File[] files; //possibly in the future
+	
+	
+	// GUI componentes;
 	private static final int HEIGTH_TABS = 30;
 	
 	private JMenuBar menuBar;
@@ -65,12 +77,14 @@ public class MainWindow extends JFrame {
 	private JButton btnRemoveCalibration, btnCalibrate; //buttons second row panel
 	private JTextField txtAbsorbance; //single textfield
 	private JPanel pnFirstRow, pnSecondRow; // Container panels
-	private JTable mainTable, tableCalibration; // Tables
+	private CustomTable mainTable, tableCalibration; // Tables
 	private JScrollPane mainTablePane, scrollPaneCalibration; //scrollpane for tables
 	private JPanel calibrationGraph, concentrationGraph, concentrationGraphR; //panel tabs
 	private JLabel lblPearsonValue, lblInterceptValue, lblSlopeValue, lblPearson, lblIntercept, lblSlope; //labels tab 1
 	
 	public MainWindow() {
+		controller = new Controller(this);
+		
 		setMinimumSize(new Dimension(1280, 720));
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MainWindow.class.getResource("/Resources/Icon.png")));
 		setTitle("MOLABS");
@@ -250,6 +264,11 @@ public class MainWindow extends JFrame {
 		// btn Open files
 		
 		btnOpenFile = new GenericRoundedButton("Open File(s)");
+		btnOpenFile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				OpenFile(arg0);
+			}
+		});
 		setButtonProperties(btnOpenFile, pnMain);
 		btnOpenFile.addMouseListener(setButtonsListeners(btnOpenFile));
 		
@@ -344,10 +363,10 @@ public class MainWindow extends JFrame {
 	private void setMainTable(){
 		mainTablePane = new JScrollPane();
 		
-		mainTable = new CustomTable(new DefaultTableModel(
+		mainTable = new MainTable(new DefaultTableModel(
 				new String[] {
 						"Sample", "Date", "Time", "Type", "Concentration", "Absorbance"
-				},3)); // number of rows, should be 0 but for testing uses its 3
+				},0)); 
 		mainTable.setRowHeight(24);
 		
 		mainTable.getTableHeader().setFont(new Font("Roboto Medium", Font.BOLD, 12));
@@ -362,7 +381,7 @@ public class MainWindow extends JFrame {
 	
 		scrollPaneCalibration = new JScrollPane(); //Pane for headers
 		
-		tableCalibration = new CustomTable(new DefaultTableModel(
+		tableCalibration = new MainTable(new DefaultTableModel( //has to be changed to calibrateTable
 				new String[] {
 						"Status", "Date", "Wavelength"
 				},3)); // number of rows, should be 0 but for testing uses its 3
@@ -590,4 +609,29 @@ public class MainWindow extends JFrame {
 		menu.setFont(new Font("Roboto Medium", Font.BOLD, 12));
 		menuBar.add(menu);
 	}
+	
+// ----------------------------------------- Actions ------------------------------------------
+	private void OpenFile(ActionEvent evt) {
+		
+			JFileChooser fileChooser = new JFileChooser();
+			fileChooser.setFileFilter(new NitratoFileType());
+			fileChooser.setMultiSelectionEnabled(true);
+	        
+			int returnVal = fileChooser.showOpenDialog(this);
+	        
+	        if (returnVal != 0) {
+	            System.out.println("File access cancelled by user.");
+	            return;
+	        }
+	        
+	        File[] arrfile = this.files = fileChooser.getSelectedFiles();  
+	
+	        for(int i=0; i< arrfile.length; i++) {
+	            File file = arrfile[i];
+	            //addFile(file);
+	            this.controller.addFile(file.getPath());
+	            this.mainTable.addRow(file);
+	        } 
+	    }
+	
 }

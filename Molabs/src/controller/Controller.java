@@ -2,14 +2,17 @@ package controller;
 
 import model.CalibrationTable;
 import model.MainTable;
+import view.MainWindow;
 
 public class Controller {
 	
 	private MainTable mainTable;
 	private CalibrationTable calibrationTable;
+	private MainWindow graphicInterface;
 	
-	public Controller() {
+	public Controller(MainWindow GUI) {
 		instanceComponents();
+		graphicInterface = GUI;
 	}
 	
 	/*
