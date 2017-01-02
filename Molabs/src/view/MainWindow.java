@@ -2,6 +2,7 @@ package view;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 
 import javax.swing.JFrame;
@@ -335,10 +336,13 @@ public class MainWindow extends JFrame {
 				
 		btnAbsorbance = new GenericRoundedButton("Absorbance");
 		btnAbsorbance.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
 			public void actionPerformed(ActionEvent arg0) {
 				String message = Validation.validWavelength(txtAbsorbance.getText());
 				if(message == null){
-					JOptionPane.showMessageDialog(null, "es un numero");
+					ArrayList<String> absorbances =
+							controller.getAbsorbances(txtAbsorbance.getText(), (ArrayList<Date>) mainTable.getColumnValues(1)); //get dates
+					mainTable.addColumn("Absorbance", absorbances.toArray());
 				}
 				else{
 					JOptionPane.showMessageDialog(null, message);

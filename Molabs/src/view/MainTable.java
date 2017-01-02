@@ -66,5 +66,19 @@ public class MainTable extends CustomTable {
 		this.addRow(new Object[]{"Custom Row " + this.lastBlankRow++ ,date, date, Strings.SAMPLE});;
 	}
 
+	@Override
+	public Object getColumnValues(Integer column) {
+		ArrayList<Object> result = new ArrayList<Object>();
+		for(int row = 0; row < this.model.getRowCount(); row++){
+			result.add(this.model.getValueAt(row, column));
+		}
+		return result;
+	}
+
+	@Override
+	public void addColumn(Object header, Object[] columns) {
+		model.addColumn(header, columns);
+	}
+
 
 }

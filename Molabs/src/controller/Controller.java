@@ -2,6 +2,9 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Hashtable;
+
+import javax.swing.JOptionPane;
 
 import model.CalibrationTable;
 import model.MainTable;
@@ -66,5 +69,13 @@ public class Controller {
 	
 	public boolean removeFile(Date key) {
 		return this.mainTable.removeFile(key);
+	}
+	
+	public ArrayList<String> getAbsorbances(String wavelength, ArrayList<Date> dates){
+		ArrayList<String> absorbances = new ArrayList<String>();
+		for(Date d: dates){
+			absorbances.add(this.mainTable.getFile(d).getAbsorbance(wavelength));
+		}
+		return absorbances;
 	}
 }

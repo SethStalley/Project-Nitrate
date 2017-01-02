@@ -23,7 +23,6 @@ public class Validation {
 			int integerPlaces = text.indexOf('.');
 			int decimalPlaces = text.length() - integerPlaces - 1;
 			
-			System.out.println(text);
 			
 			if (integerPlaces != 3){
 				return "El número ingresado debe ser de 3 dígitos. Ejemplo: -123.1";

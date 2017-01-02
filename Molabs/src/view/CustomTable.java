@@ -3,6 +3,7 @@ package view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.DefaultCellEditor;
@@ -37,6 +38,9 @@ public abstract class CustomTable extends JTable {
     }
 	
 	public abstract void addRow(File file);
+	public abstract void addColumn(Object header, Object[] columns);
+	
+	public abstract Object getColumnValues(Integer colum);
 	
 	protected void addDropdowns() {
     	TableColumn typeColumn = getColumnModel().getColumn(values.Strings.TYPE_COLUMN_INDEX);
