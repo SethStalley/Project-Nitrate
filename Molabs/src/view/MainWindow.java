@@ -406,8 +406,7 @@ public class MainWindow extends JFrame {
 		
 		mainTable = new MainTable(new SortableJTableModel(
 				new String[] {
-						"Sample", "Date", "Time", "Type", "Concentration", "Absorbance"
-				},0), controller); 
+						"Sample", "Date", "Time", "Type","Concentration"},0), controller); 
 		mainTable.setRowHeight(24);
 		
 		mainTable.getTableHeader().setFont(new Font("Roboto Medium", Font.BOLD, 12));
