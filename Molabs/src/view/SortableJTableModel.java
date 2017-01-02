@@ -3,12 +3,13 @@ package view;
 import java.util.Date;
 
 import javax.swing.table.DefaultTableModel;
+import values.Strings;
 
 public class SortableJTableModel extends DefaultTableModel{
 	
 	
 	public SortableJTableModel(String[] strings, int i) {
-		super(strings, i);
+		super(strings, i);		
 	}
 	
 	/**
@@ -31,4 +32,25 @@ public class SortableJTableModel extends DefaultTableModel{
 			}
 		}
 	}
+	
+	
+	/**
+	 * Override of method to make the jtable cells non-editable unless its the
+	 * concentration row with STD type. True means editable
+	 * 
+	 * @param int index of columns of selected cell
+	 * @param int index of rows of selected cell
+	 */
+	@Override
+	public boolean isCellEditable(int row, int column) {
+        if(column == 3){ //for dropdown
+        	return true;
+        }else if(column == 4){
+        	Object value = this.getValueAt(row, Strings.TYPE_COLUMN_INDEX);
+        	if(value.toString().equals(Strings.STD))
+        		return true;
+        	return false;
+        }
+        else return false;
+    }
 }
