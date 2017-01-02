@@ -71,10 +71,24 @@ public class Controller {
 		return this.mainTable.removeFile(key);
 	}
 	
+	/**
+	 * 	
+	 * @param wavelength to find the absorbance
+	 * @param dates array of all key values of text files
+	 * @return an array with all the absorbances
+	 */
 	public ArrayList<String> getAbsorbances(String wavelength, ArrayList<Date> dates){
 		ArrayList<String> absorbances = new ArrayList<String>();
+		String currentAbsorbance = null;
+		if(dates.isEmpty()){
+			return null;
+		}
 		for(Date d: dates){
-			absorbances.add(this.mainTable.getFile(d).getAbsorbance(wavelength));
+			currentAbsorbance = this.mainTable.getFile(d).getAbsorbance(wavelength);
+			if(currentAbsorbance == null){
+				return null;
+			}
+			absorbances.add(currentAbsorbance);
 		}
 		return absorbances;
 	}

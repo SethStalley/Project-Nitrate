@@ -342,7 +342,13 @@ public class MainWindow extends JFrame {
 				if(message == null){
 					ArrayList<String> absorbances =
 							controller.getAbsorbances(txtAbsorbance.getText(), (ArrayList<Date>) mainTable.getColumnValues(1)); //get dates
-					mainTable.addColumn("Absorbance", absorbances.toArray());
+					
+					if(absorbances == null){
+						JOptionPane.showMessageDialog(null, "Absorbance wasn´t found for that given Wavelength.");
+					}
+					else{
+						mainTable.addColumn("Absorbance W = " + txtAbsorbance.getText(), absorbances.toArray());
+					}
 				}
 				else{
 					JOptionPane.showMessageDialog(null, message);

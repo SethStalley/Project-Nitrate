@@ -16,7 +16,7 @@ public class Validation {
 			Double number = Double.parseDouble(wavelength);
 			
 			if (number % 1 == 0){
-				return "El número debe tener al menos un décimal. Ejemplo: 123.1";
+				return "Wavelength must have at least one decimal space. Ex: 123.1";
 			}
 			
 			String text = Double.toString(Math.abs(number));
@@ -25,15 +25,15 @@ public class Validation {
 			
 			
 			if (integerPlaces != 3){
-				return "El número ingresado debe ser de 3 dígitos. Ejemplo: -123.1";
+				return "Wavelength must be a three digit number. Ex: -123.1";
 			}
 			if (decimalPlaces != 1){
-				return "El número ingresado debe contener solamente un decimal. Ejemplo: 123.1";
+				return "Wavelength must only contain one decimal space. Ex: 123.1";
 			}
 			return null;
 		}
 		catch(Exception e){
-			return "El dato ingresado debe ser un número";
+			return "Wavelength must be a number.";
 		}
 	}
 }
