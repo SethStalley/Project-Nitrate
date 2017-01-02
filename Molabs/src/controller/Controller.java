@@ -35,8 +35,12 @@ public class Controller {
 	 * Get working wavelengths from mainTable property
 	 * @return ArrayList<String> with all active wavelengths
 	 */
-	public ArrayList<String> getMainTableWavelengths() {
+	public Hashtable<Integer, String> getMainTableWavelengths() {
 		return this.mainTable.getWorkingWaveLengths();
+	}
+	
+	public void addWorkingWavelength(int index, String wavelength) {
+		this.mainTable.addWorkingWavelength(index, wavelength);
 	}
 	
 	/**
@@ -71,11 +75,13 @@ public class Controller {
 		return this.mainTable.removeFile(key);
 	}
 	
-	public ArrayList<String> getAbsorbances(String wavelength, ArrayList<Date> dates){
-		ArrayList<String> absorbances = new ArrayList<String>();
-		for(Date d: dates){
-			absorbances.add(this.mainTable.getFile(d).getAbsorbance(wavelength));
+	public String getAbsorbance(String wavelength, Date key) {
+		TextFile file = this.mainTable.getFile(key);
+		
+		if (file != null) {
+			return file.getAbsorbance(wavelength);
 		}
-		return absorbances;
+		return null;
 	}
+
 }

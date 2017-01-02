@@ -79,9 +79,9 @@ public class MainWindow extends JFrame {
 	private JPanel pnMain;
 	private JButton btnOpenFile, btnAddRow, btnDeleteRow, btnSaveProject, btnConcentration, btnAbsorbance; // first row buttons
 	private JButton btnRemoveCalibration, btnCalibrate; //buttons second row panel
-	private JTextField txtAbsorbance; //single textfield
+	public JTextField txtWavelength; //single textfield
 	private JPanel pnFirstRow, pnSecondRow; // Container panels
-	private CustomTable mainTable, tableCalibration; // Tables
+	public CustomTable mainTable, tableCalibration; // Tables
 	private JScrollPane mainTablePane, scrollPaneCalibration; //scrollpane for tables
 	private JPanel calibrationGraph, concentrationGraph, concentrationGraphR; //panel tabs
 	private JLabel lblPearsonValue, lblInterceptValue, lblSlopeValue, lblPearson, lblIntercept, lblSlope; //labels tab 1
@@ -106,6 +106,7 @@ public class MainWindow extends JFrame {
 		setSecondPanel();
 		setMainPanelLayout();
 		
+		txtWavelength.addKeyListener(new EnterKey(this));
 	}
 	
 //----------------------initial setup of components section-------------------------------------------------------
@@ -329,8 +330,8 @@ public class MainWindow extends JFrame {
 				
 		//txt Absorbance
 				
-		txtAbsorbance = new JTextField();
-		txtAbsorbance.setColumns(10);
+		txtWavelength = new JTextField();
+		txtWavelength.setColumns(10);
 				
 		//btn Absorbance
 				
@@ -338,16 +339,7 @@ public class MainWindow extends JFrame {
 		btnAbsorbance.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")
 			public void actionPerformed(ActionEvent arg0) {
-				String message = Validation.validWavelength(txtAbsorbance.getText());
-				if(message == null){
-					ArrayList<String> absorbances =
-							controller.getAbsorbances(txtAbsorbance.getText(), (ArrayList<Date>) mainTable.getColumnValues(1)); //get dates
-					mainTable.addColumn("Absorbance", absorbances.toArray());
-				}
-				else{
-					JOptionPane.showMessageDialog(null, message);
-				}
-				
+				((MainTable) mainTable).addAbsorbanceColumnFromWavelength(txtWavelength.getText());
 			}
 		});
 		setButtonProperties(btnAbsorbance, pnMain);
@@ -376,7 +368,7 @@ public class MainWindow extends JFrame {
 			.addPreferredGap(ComponentPlacement.RELATED, 196, Short.MAX_VALUE)
 			.addComponent(lblWavelengthnm)
 			.addPreferredGap(ComponentPlacement.RELATED)
-			.addComponent(txtAbsorbance, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+			.addComponent(txtWavelength, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 			.addPreferredGap(ComponentPlacement.UNRELATED)
 			.addComponent(btnAbsorbance, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 			.addPreferredGap(ComponentPlacement.UNRELATED)
@@ -388,7 +380,7 @@ public class MainWindow extends JFrame {
 				.addGroup(gl_pnFirstRow.createSequentialGroup()
 				.addContainerGap(13, Short.MAX_VALUE)
 				.addGroup(gl_pnFirstRow.createParallelGroup(Alignment.BASELINE)
-					.addComponent(txtAbsorbance, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addComponent(txtWavelength, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addComponent(btnAbsorbance, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addComponent(btnConcentration, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addComponent(lblWavelengthnm))

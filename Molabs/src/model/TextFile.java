@@ -17,10 +17,9 @@ public class TextFile extends JSON_Exportable{
 	private String concentration;
 	private String type;
 	
-	private Hashtable<String, String> absorbances;
+	private Hashtable<String, String> absorbances = new Hashtable<String, String>();
 	
 	public TextFile(String path) {
-		this.absorbances = new Hashtable<String, String>();
 		this.parseTextFile(path);
 	}
 	

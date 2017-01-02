@@ -10,11 +10,11 @@ import com.google.gson.GsonBuilder;
 public class MainTable extends JSON_Exportable{
 	
 	private Hashtable<Date,TextFile> files;
-	private ArrayList<String> workingWavelengths;
+	private Hashtable<Integer, String> workingWavelengths;
 	
 	public MainTable() {
 		this.files = new Hashtable<Date,TextFile>();
-		this.workingWavelengths = new ArrayList<String>();
+		this.workingWavelengths = new Hashtable<Integer, String>();
 	}
 	
 	/*
@@ -40,9 +40,9 @@ public class MainTable extends JSON_Exportable{
 		return this.files.put(date, file) == null;
 	}
 	
-	public boolean addWorkingWavelength(String wavelength) {
+	public boolean addWorkingWavelength(int index, String wavelength) {
 		if (!this.workingWavelengths.contains(wavelength)) {
-			this.workingWavelengths.add(wavelength);
+			this.workingWavelengths.put(index, wavelength);
 			return true;
 		}
 		return false;
@@ -65,7 +65,7 @@ public class MainTable extends JSON_Exportable{
 		return this.files.get(dateKey);
 	}
 	
-	public ArrayList<String> getWorkingWaveLengths() {
+	public Hashtable<Integer, String> getWorkingWaveLengths() {
 		return this.workingWavelengths;
 	}
 
