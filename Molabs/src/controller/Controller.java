@@ -80,6 +80,7 @@ public class Controller {
 		
 		if (file != null) {
 			return file.getAbsorbance(wavelength);
+
 		}
 		return null;
 	}

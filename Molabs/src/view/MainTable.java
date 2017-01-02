@@ -95,6 +95,11 @@ public class MainTable extends CustomTable {
 	@Override
 	public void addColumn(Object header, Object[] columns) {
 		model.addColumn(header, columns);
+		//add our dropdown options
+		addDropdowns();
+				
+		//sort table by date
+		this.model.sortAddedRowByDate(DATE_INDEX);
 	}
 	
 	public void addAbsorbanceColumnFromWavelength(String wavelength) {
