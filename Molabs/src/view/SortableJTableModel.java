@@ -25,7 +25,7 @@ public class SortableJTableModel extends DefaultTableModel{
 		for (int i=0; i<rowCount; i++) {
 			Date date = (Date) this.getValueAt(i, columnIndex);
 
-			if (newDate.before(date)) {
+			if (date.before(newDate)) {
 				this.moveRow(rowCount-1, rowCount-1, i);
 				break;
 			}
