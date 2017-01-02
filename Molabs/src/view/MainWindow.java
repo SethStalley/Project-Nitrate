@@ -20,6 +20,8 @@ import java.awt.Toolkit;
 import java.awt.Dimension;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -45,6 +47,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import controller.Controller;
+import validation.Validation;
 
 import javax.swing.JTabbedPane;
 
@@ -331,6 +334,18 @@ public class MainWindow extends JFrame {
 		//btn Absorbance
 				
 		btnAbsorbance = new GenericRoundedButton("Absorbance");
+		btnAbsorbance.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String message = Validation.validWavelength(txtAbsorbance.getText());
+				if(message == null){
+					JOptionPane.showMessageDialog(null, "es un numero");
+				}
+				else{
+					JOptionPane.showMessageDialog(null, message);
+				}
+				
+			}
+		});
 		setButtonProperties(btnAbsorbance, pnMain);
 		btnAbsorbance.addMouseListener(setButtonsListeners(btnAbsorbance));
 				
