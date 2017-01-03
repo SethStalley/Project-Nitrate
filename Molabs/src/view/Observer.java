@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -16,22 +18,27 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
+import controller.Controller;
+
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 
 public class Observer extends JFrame {
 	private JTextField txtActualFolder;
 	private JButton btnBrowse, btnStart, btnStop;
+	private Controller controller;
 	
-	
-	public Observer() {
+	public Observer(Controller controller) {
+		this.controller = controller;
 		setMinimumSize(new Dimension(500, 180));
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MainWindow.class.getResource("/Resources/Icon.png")));
-		setTitle("MOLABS");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("MOLABS Observer");
+		setLocationRelativeTo(null);
 		getContentPane().setBackground(new Color(204, 204, 204));
-		
 		initComponents();
 	}
+	
 	private void initComponents(){
 		JLabel lblActualFolder = new JLabel("Actual Folder");
 		
@@ -42,6 +49,13 @@ public class Observer extends JFrame {
 		btnBrowse = new GenericRoundedButton("Browse");
 		setButtonProperties(btnBrowse);
 		setButtonsListeners(btnBrowse);
+		btnBrowse.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				setLiveFolderPath();
+				
+			}
+		});
 		
 		btnStart = new GenericRoundedButton("Start");
 		setButtonProperties(btnStart);
@@ -91,7 +105,31 @@ public class Observer extends JFrame {
 		getContentPane().setLayout(groupLayout);
 	}
 	
+	private void setLiveFolderPath() {
+		String path = getLiveFolderPath();
+		this.txtActualFolder.setText(path);
+	}
 	
+	
+	//Prompt user for directory to observe for new files.
+	private String getLiveFolderPath() {
+		String path = "";
+		JFileChooser chooser;
+		
+		
+		chooser = new JFileChooser(); 
+	    chooser.setDialogTitle("Choose a folder to watch for new data files.");
+	    chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+	   
+	    chooser.setAcceptAllFileFilterUsed(false);
+
+	    if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) { 
+	    	path = chooser.getSelectedFile().getAbsolutePath();
+	    }
+	    
+		
+		return path;
+	}
 	
 	private void setButtonProperties(JButton button){
 		button.setFont(new Font("Roboto Medium", Font.BOLD, 12));

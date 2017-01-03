@@ -103,6 +103,7 @@ public class MainWindow extends JFrame {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MainWindow.class.getResource("/Resources/Icon.png")));
 		setTitle("MOLABS");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
 		getContentPane().setBackground(new Color(204, 204, 204));
 		initComponents();
 	}
@@ -243,7 +244,7 @@ public class MainWindow extends JFrame {
 		mntmOpenObserver.addActionListener(new java.awt.event.ActionListener() {
 	        @Override
 	        public void actionPerformed(java.awt.event.ActionEvent evt) {
-	            new Observer().setVisible(true);
+	            new Observer(controller).setVisible(true);
 	        }
 	    });
 		
@@ -719,6 +720,8 @@ public class MainWindow extends JFrame {
 	        } 
 	       
 	    }
+	
+	
 	private void tableHeaderClicked(MouseEvent evt){
 		int selectedColumn = mainTable.columnAtPoint(evt.getPoint());
 		DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();

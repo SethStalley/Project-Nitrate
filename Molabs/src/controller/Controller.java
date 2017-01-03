@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 
 import model.Calibration;
 import model.CalibrationTable;
+import model.FileObserver;
 import model.MainTable;
 import model.TextFile;
 import view.MainWindow;
@@ -17,6 +18,7 @@ public class Controller {
 	private MainTable mainTable;
 	private CalibrationTable calibrationTable;
 	private MainWindow graphicInterface;
+	private FileObserver fileObserver;
 	
 	public Controller(MainWindow GUI) {
 		instanceComponents();
@@ -29,6 +31,7 @@ public class Controller {
 	private void instanceComponents() {
 		this.mainTable = new MainTable();
 		this.calibrationTable = new CalibrationTable();
+		this.fileObserver = FileObserver.getInstance(this);
 	}
 	
 	

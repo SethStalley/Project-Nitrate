@@ -17,8 +17,8 @@ import static java.nio.file.StandardWatchEventKinds.*;;
 
 public class FileObserver extends Thread{
 
+	private Controller controller;
 	private static FileObserver instance = null;
-	Controller controller;
 	private WatchService watcher;
 	private WatchKey key = null;
 	private boolean run = true;
@@ -26,19 +26,22 @@ public class FileObserver extends Thread{
 	
 	public FileObserver(Controller controller) {
 		this.controller = controller;
-		this.start();
 	}
 	
 	public static FileObserver getInstance(Controller controller) {
 		if (instance == null) {
 			return new FileObserver(controller);
 		} else {
-			instance.restart();
 			return instance;
 		}
 	}
 	
-	public void restart() {
+	public void stopObserver() {
+		this.run = false;
+	}
+	
+	public void startObserver(String path) {
+		this.run = true;
 		this.interrupt();
 		this.start();
 	}
