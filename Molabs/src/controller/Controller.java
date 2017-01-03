@@ -103,6 +103,20 @@ public class Controller {
 	}
 	
 	/**
+	 * calculates all concentration on maintable, according to a absorbance and calibration
+	 * @param key
+	 */
+	
+	public void calculateConcentrations(int key){
+		graphicInterface.calculateConcentrations(key);
+	}
+	
+	public void removeWorkingCalibration(int key, int column){
+		Integer[] array = {key,column};
+		mainTable.addWorkingCalibration(array, this.getCalibrationData(key));
+	}
+	
+	/**
 	 * 
 	 * @param index 
 	 * @param absorbance of the concentration to be calculated

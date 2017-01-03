@@ -6,6 +6,7 @@ import java.util.Date;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -50,8 +51,20 @@ public class CalibrationTable extends CustomTable {
 
 	@Override
 	public void actionButton() {
-		// Metodo para Calculate
-		
+	    DefaultTableModel model = (DefaultTableModel) getModel();
+	    Boolean control = true;
+	    for(int row = 0; row < this.model.getRowCount(); row++){
+	    	@SuppressWarnings("unchecked")
+			String status = (String) this.model.getValueAt(row, Strings.STATUS_COLUMN_INDEX);
+	    	if(status.equals("Active")){
+	    		controller.calculateConcentrations(row);
+	    		control = false;
+	    		break;
+	    	}
+	    }
+	    if(control){
+	    	JOptionPane.showMessageDialog(null, Strings.ERROR_NO_ACTIVE_CALIBRATION);
+	    }
 	}
 
 	@Override
@@ -63,8 +76,15 @@ public class CalibrationTable extends CustomTable {
     	comboBox.addItem(Strings.ACTIVE);
     	comboBox.setEditable(true);
     	comboBox.setFocusable(false);
+    	comboBox.getSelectedItem().toString();
     	
     	typeColumn.setCellEditor(new DefaultCellEditor(comboBox));
+	}
+
+	@Override
+	public void calculateConcentrations(int key) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

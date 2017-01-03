@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,6 +22,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import controller.Controller;
+import model.Calibration;
 import validation.Validation;
 import values.Strings;
 
@@ -104,6 +106,24 @@ public class MainTable extends CustomTable {
 		this.model.sortAddedRowByDate(DATE_INDEX);
 	}
 	
+	public void calculateConcentrations(int key) {
+		// could receive a calibration instead, or a key to that calibration
+		if(this.selectedColumn < 0){
+			JOptionPane.showMessageDialog(null, Strings.ERROR_SELECT_ABSORBANCE_COLUMN);
+			return;
+		}
+		@SuppressWarnings("unchecked")
+		ArrayList<String> listAbsorbance = (ArrayList<String>) getColumnValues(this.selectedColumn);
+		ArrayList<Double> concentrations = new ArrayList<Double>();
+		for(String absorbance : listAbsorbance){
+			concentrations.add(controller.getConcentration(key, Double.parseDouble(absorbance)));
+		}
+		addColumn("Concentration("+controller.getCalibrationData(key).getWavelength()+")",
+				concentrations.toArray());
+		controller.removeWorkingCalibration(key, this.model.getColumnCount()-1);
+	}
+	
+	
 	public void addAbsorbanceColumnFromWavelength(String wavelength) {
 		String message = Validation.validWavelength(wavelength);
 		
@@ -174,6 +194,7 @@ public class MainTable extends CustomTable {
 		String headerValue = this.columnModel.getColumn(column).getHeaderValue().toString();	
 		return (String) headerValue.subSequence(headerValue.indexOf('(')+1, headerValue.lastIndexOf(')'));
 	}
+	
 
 	@Override
 	public void addDropdowns() {

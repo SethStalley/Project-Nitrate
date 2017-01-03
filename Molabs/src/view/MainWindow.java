@@ -358,6 +358,11 @@ public class MainWindow extends JFrame {
 		//btn Concentration
 
 		btnConcentration = new GenericRoundedButton("Concentration");
+		btnConcentration.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				calibrationTable.actionButton();
+			}
+		});
 		setButtonProperties(btnConcentration, pnMain);
 		btnConcentration.addMouseListener(setButtonsListeners(btnConcentration));		
 		
@@ -734,7 +739,13 @@ public class MainWindow extends JFrame {
 		
 		if (selectedColumn > Strings.CONCENTRATION_COLUMN_INDEX) {
 			mainTable.selectedColumn = selectedColumn;
-    		mainTable.getColumnModel().getColumn(mainTable.selectedColumn).setHeaderRenderer(headerRenderer);
+			String headerValue = (String)mainTable.getColumnModel().getColumn(mainTable.selectedColumn).getHeaderValue();
+			if(headerValue.substring(0, 1).equals("A")){
+				mainTable.getColumnModel().getColumn(mainTable.selectedColumn).setHeaderRenderer(headerRenderer);
+			}
+			else{
+				mainTable.selectedColumn = -1;
+			}
 		} else {
 			mainTable.selectedColumn = -1;
 		}
@@ -753,5 +764,9 @@ public class MainWindow extends JFrame {
 	}
 	public void errorOnCalibration(){
 		JOptionPane.showMessageDialog(null, Strings.ERROR_CALIBRATE);
+	}
+
+	public void calculateConcentrations(int key) {
+		mainTable.calculateConcentrations(key);
 	}
 }

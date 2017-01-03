@@ -11,12 +11,12 @@ public class MainTable extends JSON_Exportable{
 	
 	private Hashtable<Date,TextFile> files;
 	private Hashtable<Integer, String> workingWavelengths;
-	private ArrayList<Calibration> workingCalibrations;
+	private Hashtable<Integer[],Calibration> workingCalibrations; // key must be column index in main table
 	
 	public MainTable() {
 		this.files = new Hashtable<Date,TextFile>();
 		this.workingWavelengths = new Hashtable<Integer, String>();
-		this.workingCalibrations = new ArrayList<Calibration>();
+		this.workingCalibrations = new Hashtable<Integer[],Calibration>();
 	}
 	
 	/*
@@ -58,8 +58,20 @@ public class MainTable extends JSON_Exportable{
 		return false;
 	}
 	
-	public void addWorkingCalibration(Calibration calibration){
-		workingCalibrations.add(calibration);
+	public boolean addWorkingCalibration(Integer[] key, Calibration calibration){
+		if (!this.workingCalibrations.contains(calibration)) {
+			this.workingCalibrations.put(key, calibration);
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean removeWorkingCalibration(int index[]){
+		if(this.workingCalibrations.containsKey(index)) {
+			this.workingCalibrations.remove(index);
+			return true;
+		}
+		return false;
 	}
 	
 	

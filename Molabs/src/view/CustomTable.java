@@ -15,6 +15,7 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 
 import controller.Controller;
+import model.Calibration;
 
 public abstract class CustomTable extends JTable {
 	
@@ -45,7 +46,9 @@ public abstract class CustomTable extends JTable {
 	public abstract void addRow(Object obj);
 	public abstract void addColumn(Object header, Object[] columns);
 	
+	
 	public abstract Object getColumnValues(Integer colum);
+
 	
 	public abstract void addDropdowns(); 
 
@@ -81,5 +84,7 @@ public abstract class CustomTable extends JTable {
 	public abstract void addBlankRow();
 	
 	public abstract void actionButton(); //calibrate or calculate calibration
+
+	public abstract void calculateConcentrations(int key);
 	
 }
