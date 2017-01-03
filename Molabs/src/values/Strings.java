@@ -8,6 +8,9 @@ public class Strings {
 	public static final String ERROR_WAVELENGTH_INPUT = "Wavelength must be a 3 digit number and one decimal";
 	public static final String ERROR_SELECT_COLUMN = "No column selected";
 	public static final String ERROR_SELECT_ABSORBANCE_COLUMN = "Select an Absorbance Column";
+	public static final String ERROR_NEW_CALIBRATION = "Select more than one concentrations for the new calibration";
+	public static final String ERROR_CALIBRATE = "Error on the new calibration"; //unkown
+	
 	
 	/*
 	 * GUI Labels
@@ -26,6 +29,7 @@ public class Strings {
 	
 	public static final int TYPE_COLUMN_INDEX = 3;	
 	public static final int CONCENTRATION_COLUMN_INDEX = 4;
+	public static final int STATUS_COLUMN_INDEX = 0;
 	public static final Object NO_ROW_SELECTED = "No row selected";
 	public static final String ACTIVE = "Active";	
 }

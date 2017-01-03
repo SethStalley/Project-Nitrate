@@ -36,6 +36,9 @@ import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
@@ -45,10 +48,14 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 import controller.Controller;
+import model.Calibration;
 import validation.Validation;
+import values.Strings;
 
 import javax.swing.JTabbedPane;
 
@@ -81,10 +88,13 @@ public class MainWindow extends JFrame {
 	private JButton btnRemoveCalibration, btnCalibrate; //buttons second row panel
 	public JTextField txtWavelength; //single textfield
 	private JPanel pnFirstRow, pnSecondRow; // Container panels
-	public CustomTable mainTable, tableCalibration; // Tables
+	public CustomTable mainTable, calibrationTable; // Tables
 	private JScrollPane mainTablePane, scrollPaneCalibration; //scrollpane for tables
 	private JPanel calibrationGraph, concentrationGraph, concentrationGraphR; //panel tabs
-	private JLabel lblPearsonValue, lblInterceptValue, lblSlopeValue, lblPearson, lblIntercept, lblSlope; //labels tab 1
+	private JLabel lblPearson, lblIntercept, lblSlope; //labels tab 1
+	private JLabel lblPearsonValue;
+	private JLabel lblInterceptValue;
+	private JLabel lblSlopeValue;
 	
 	public MainWindow() {
 		controller = new Controller(this);
@@ -410,6 +420,14 @@ public class MainWindow extends JFrame {
 		mainTable.setRowHeight(24);
 		
 		mainTable.getTableHeader().setFont(new Font("Roboto Medium", Font.BOLD, 12));
+		mainTable.setColumnSelectionAllowed(true);
+		
+		mainTable.getTableHeader().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				tableHeaderClicked(arg0);
+			}
+		});
 		
 		
 		mainTablePane.setViewportView(mainTable);
@@ -422,15 +440,21 @@ public class MainWindow extends JFrame {
 	
 		scrollPaneCalibration = new JScrollPane(); //Pane for headers
 		
-		tableCalibration = new MainTable(new SortableJTableModel( //has to be changed to calibrateTable
+		calibrationTable = new CalibrationTable(new SortableCalibrateModel( //has to be changed to calibrateTable
 				new String[] {
 						"Status", "Date", "Wavelength"
-				},3), controller); // number of rows, should be 0 but for testing uses its 3
-		tableCalibration.setRowHeight(24);
+				},0), controller); // number of rows, should be 0 but for testing uses its 3
+		calibrationTable.setRowHeight(24);
 		
-		tableCalibration.getTableHeader().setFont(new Font("Roboto Medium", Font.BOLD, 12));
+		calibrationTable.getTableHeader().setFont(new Font("Roboto Medium", Font.BOLD, 12));
 		
-		scrollPaneCalibration.setViewportView(tableCalibration);
+		calibrationTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+        	public void valueChanged(ListSelectionEvent event) {
+        		setlblValues();
+        	}
+        });
+		
+		scrollPaneCalibration.setViewportView(calibrationTable);
 		
 		//Remove Calibration Button
 		
@@ -443,6 +467,12 @@ public class MainWindow extends JFrame {
 		btnCalibrate = new GenericRoundedButton("Calibrate");
 		setButtonProperties(btnCalibrate, pnSecondRow);
 		btnCalibrate.addMouseListener(setButtonsListeners(btnCalibrate));
+		btnCalibrate.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				mainTable.actionButton(); //creates new calibration
+			}
+		});
 		
 		// TabbedPane for tabs
 		
@@ -482,44 +512,46 @@ public class MainWindow extends JFrame {
 		gl_calibrationGraph.setHorizontalGroup(
 			gl_calibrationGraph.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_calibrationGraph.createSequentialGroup()
-					.addContainerGap()
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addGroup(gl_calibrationGraph.createParallelGroup(Alignment.LEADING)
 						.addComponent(lblPearson)
-						.addComponent(lblIntercept, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblSlope, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE))
-					.addGroup(gl_calibrationGraph.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_calibrationGraph.createSequentialGroup()
-							.addGap(18)
-							.addGroup(gl_calibrationGraph.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_calibrationGraph.createSequentialGroup()
-									.addComponent(lblSlopeValue, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE)
-									.addContainerGap(399, Short.MAX_VALUE))
-								.addComponent(lblInterceptValue, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE)
-								.addGroup(gl_calibrationGraph.createSequentialGroup()
-									.addComponent(lblPearsonValue)
-									.addContainerGap(425, Short.MAX_VALUE))))
-						.addGroup(Alignment.TRAILING, gl_calibrationGraph.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblNewLabel_2)
-							.addGap(59))))
+							.addComponent(lblIntercept, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
+							.addGap(185)
+							.addComponent(lblNewLabel_2))
+						.addComponent(lblSlope, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE))
+					.addGap(178))
+				.addGroup(gl_calibrationGraph.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblPearsonValue)
+					.addContainerGap(475, Short.MAX_VALUE))
+				.addGroup(gl_calibrationGraph.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblInterceptValue)
+					.addContainerGap(475, Short.MAX_VALUE))
+				.addGroup(gl_calibrationGraph.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblSlopeValue)
+					.addContainerGap(475, Short.MAX_VALUE))
 		);
 		gl_calibrationGraph.setVerticalGroup(
 			gl_calibrationGraph.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_calibrationGraph.createSequentialGroup()
 					.addGap(50)
-					.addGroup(gl_calibrationGraph.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblPearson)
-						.addComponent(lblPearsonValue))
-					.addGap(39)
+					.addComponent(lblPearson)
+					.addGap(7)
+					.addComponent(lblPearsonValue)
+					.addGap(18)
 					.addGroup(gl_calibrationGraph.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblIntercept)
-						.addComponent(lblInterceptValue)
 						.addComponent(lblNewLabel_2))
-					.addGap(38)
-					.addGroup(gl_calibrationGraph.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblSlope)
-						.addComponent(lblSlopeValue))
-					.addContainerGap(92, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lblInterceptValue)
+					.addGap(18)
+					.addComponent(lblSlope)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(lblSlopeValue)
+					.addContainerGap(95, Short.MAX_VALUE))
 		);
 		calibrationGraph.setLayout(gl_calibrationGraph);
 		
@@ -673,5 +705,44 @@ public class MainWindow extends JFrame {
 	        } 
 	       
 	    }
+	private void tableHeaderClicked(MouseEvent evt){
+		int selectedColumn = mainTable.columnAtPoint(evt.getPoint());
+		DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+		
+		//clear last selection
+		if (mainTable.selectedColumn != -1 && mainTable.selectedColumn < mainTable.getColumnModel().getColumnCount()){
+			TableCellRenderer oldHeader = mainTable.getColumnModel().getColumn(0).getHeaderRenderer();
+			
+			mainTable.getColumnModel().getColumn(mainTable.selectedColumn).setHeaderRenderer(oldHeader);
+			
+		}
+		
+		headerRenderer.setBackground(new Color(15, 110, 135));
+        headerRenderer.setForeground(Color.white); // white foreground
+        headerRenderer.setFont(new Font("Roboto Medium", Font.BOLD, 14));
+        headerRenderer.setHorizontalAlignment( JLabel.CENTER );
+        
+		
+		if (selectedColumn > Strings.CONCENTRATION_COLUMN_INDEX) {
+			mainTable.selectedColumn = selectedColumn;
+    		mainTable.getColumnModel().getColumn(mainTable.selectedColumn).setHeaderRenderer(headerRenderer);
+		} else {
+			mainTable.selectedColumn = -1;
+		}
+	}
+	private void setlblValues(){
+		Calibration calibration = controller.getCalibrationData(calibrationTable.getSelectedRow());
+		lblInterceptValue.setText(Double.toString(calibration.getIntercept()));
+		lblPearsonValue.setText(Double.toString(calibration.getPearson()));
+		lblSlopeValue.setText(Double.toString(calibration.getSlope()));
+	}
+
 	
+//--------------------------------------Methods from controller ------------------------------------------
+	public void setNewCalibration(Calibration calibration){
+		calibrationTable.addRow(calibration);
+	}
+	public void errorOnCalibration(){
+		JOptionPane.showMessageDialog(null, Strings.ERROR_CALIBRATE);
+	}
 }

@@ -11,11 +11,14 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 
 import controller.Controller;
 import validation.Validation;
@@ -24,15 +27,14 @@ import values.Strings;
 public class MainTable extends CustomTable {
 	
 	private int lastBlankRow = 1;
-	private SortableJTableModel model;
 	
 	public MainTable(SortableJTableModel model, Controller controller){
 		super(model, controller);
-		this.model = model;
 	}
 
 	@Override
-	public void addRow(File file) {
+	public void addRow(Object pFile) {
+		File file = (File)pFile;
 		Date key = controller.addFile(file.getAbsolutePath());
 		renderNewFile(key);
 	}
@@ -130,6 +132,60 @@ public class MainTable extends CustomTable {
 		else{
 			JOptionPane.showMessageDialog(null, message);
 		}
+	}
+	@Override
+	public void actionButton(){
+		ArrayList<Double> listAbsorbance = getStdValuesFromColumn(selectedColumn);
+    	ArrayList<Double> listConcentration = getStdValuesFromColumn(Strings.CONCENTRATION_COLUMN_INDEX);
+ 
+    	if(listConcentration.size() > 1) {
+    		controller.addCalibration(listAbsorbance, listConcentration, getWaveLength(selectedColumn));
+    	}else{
+    		JOptionPane.showMessageDialog(null, Strings.ERROR_NEW_CALIBRATION);
+    	}
+	}
+	
+	private ArrayList<Double> getStdValuesFromColumn(int index) {
+		DefaultTableModel model = (DefaultTableModel) this.getModel();
+		ArrayList<Double> values = new ArrayList<Double>();
+		
+		int numRows = this.getSelectedRowCount();
+		int[] rows = this.getSelectedRows();
+		
+		for (int i=0; i<numRows; i++ ) {
+			//if STD file type
+			Object value = model.getValueAt(rows[i], Strings.TYPE_COLUMN_INDEX);
+			if (value != null && value.toString().equals(Strings.STD)) {
+				
+				if (model.getValueAt(rows[i], index) != null) {
+					values.add(Double.parseDouble(model.getValueAt(rows[i], index).toString()));
+				}
+				else {
+					//error value no inserted
+					JOptionPane.showMessageDialog(null, "No value at row #" + i + " column #" + index);
+					break;
+				}
+			}
+		}
+		
+		return values;
+	}
+	private String getWaveLength(int column){	
+		String headerValue = this.columnModel.getColumn(column).getHeaderValue().toString();	
+		return (String) headerValue.subSequence(headerValue.indexOf('(')+1, headerValue.lastIndexOf(')'));
+	}
+
+	@Override
+	public void addDropdowns() {
+		TableColumn typeColumn = getColumnModel().getColumn(values.Strings.TYPE_COLUMN_INDEX);
+	    
+    	JComboBox<String> comboBox = new JComboBox<String>();
+    	comboBox.addItem(values.Strings.SAMPLE);
+    	comboBox.addItem(values.Strings.STD);
+    	comboBox.setEditable(true);
+    	comboBox.setFocusable(false);
+    	
+    	typeColumn.setCellEditor(new DefaultCellEditor(comboBox));
 	}
 
 

@@ -6,6 +6,7 @@ import java.util.Hashtable;
 
 import javax.swing.JOptionPane;
 
+import model.Calibration;
 import model.CalibrationTable;
 import model.MainTable;
 import model.TextFile;
@@ -83,6 +84,18 @@ public class Controller {
 
 		}
 		return null;
+	}
+	
+	public void addCalibration(ArrayList<Double> absorbances, ArrayList<Double> concentrations,
+			String wavelength){
+		if(calibrationTable.addCalibration(absorbances, concentrations, wavelength)){
+			graphicInterface.setNewCalibration(calibrationTable.getLastCalibration()); 
+		}else
+			graphicInterface.errorOnCalibration();
+	}
+	
+	public Calibration getCalibrationData(int index){
+		return calibrationTable.getCalibration(index);
 	}
 
 }

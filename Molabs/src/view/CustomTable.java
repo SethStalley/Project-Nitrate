@@ -20,39 +20,33 @@ public abstract class CustomTable extends JTable {
 	protected final int DATE_INDEX = 1;
 	protected final int TIME_INDEX = 2;	
 	private static final int headerHeigth = 28;
+	protected int selectedColumn;
 	protected Controller controller;
+	protected SortableJTableModel model;
 	
 	public CustomTable(SortableJTableModel model, Controller controller) {
 		this.setRowSelectionAllowed(true);
-		createTableHeaders(model);
+		createTableHeaders();
+		setModel(model);
+		this.model = model;
 		this.controller = controller;
+		selectedColumn = -1;
 	}
 	
-	private void createTableHeaders(SortableJTableModel model) {
+	private void createTableHeaders() {
 		JTableHeader header = getTableHeader();
         header.setBackground(new Color(236,134,50)); //orange
         header.setForeground(Color.white); // white foreground
         header.setPreferredSize(new Dimension((int) header.getPreferredSize().getWidth(),headerHeigth)); //increase header height
-        setModel(model); // sets model with header columns
-        getTableHeader().setOpaque(false); //let the table display the header
+        header.setOpaque(false); //let the table display the header
     }
 	
-	public abstract void addRow(File file);
+	public abstract void addRow(Object obj);
 	public abstract void addColumn(Object header, Object[] columns);
 	
 	public abstract Object getColumnValues(Integer colum);
 	
-	protected void addDropdowns() {
-    	TableColumn typeColumn = getColumnModel().getColumn(values.Strings.TYPE_COLUMN_INDEX);
-    
-    	JComboBox<String> comboBox = new JComboBox<String>();
-    	comboBox.addItem(values.Strings.SAMPLE);
-    	comboBox.addItem(values.Strings.STD);
-    	comboBox.setEditable(true);
-    	comboBox.setFocusable(false);
-    	
-    	typeColumn.setCellEditor(new DefaultCellEditor(comboBox));
-    }
+	public abstract void addDropdowns(); 
 
 	public void deleteSelectedFiles() {
 		int[] rows = this.getSelectedRows();
@@ -69,5 +63,7 @@ public abstract class CustomTable extends JTable {
 	}
 
 	public abstract void addBlankRow();
+	
+	public abstract void actionButton(); //calibrate or calculate calibration
 	
 }

@@ -43,9 +43,9 @@ public class SortableJTableModel extends DefaultTableModel{
 	 */
 	@Override
 	public boolean isCellEditable(int row, int column) {
-        if(column == 3){ //for dropdown
+        if(column == Strings.TYPE_COLUMN_INDEX){ //for dropdown
         	return true;
-        }else if(column == 4){
+        }else if(column == Strings.CONCENTRATION_COLUMN_INDEX){
         	Object value = this.getValueAt(row, Strings.TYPE_COLUMN_INDEX);
         	if(value.toString().equals(Strings.STD))
         		return true;

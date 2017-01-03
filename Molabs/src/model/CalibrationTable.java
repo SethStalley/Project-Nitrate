@@ -32,4 +32,8 @@ public class CalibrationTable extends JSON_Exportable{
 		return this.calibrations;
 	}
 	
+	public Calibration getLastCalibration(){ //agregar en modelo
+		return calibrations.get(calibrations.size()-1);
+	}
+	
 }
