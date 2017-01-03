@@ -41,15 +41,15 @@ public class Observer extends JFrame {
 		
 		btnBrowse = new GenericRoundedButton("Browse");
 		setButtonProperties(btnBrowse);
-		setButtonsListeners(btnBrowse);
+		btnBrowse.addMouseListener(setButtonsListeners(btnBrowse));
 		
 		btnStart = new GenericRoundedButton("Start");
 		setButtonProperties(btnStart);
-		setButtonsListeners(btnBrowse);
+		btnStart.addMouseListener(setButtonsListeners(btnStart));
 		
 		btnStop = new GenericRoundedButton("Stop");
 		setButtonProperties(btnStop);
-		setButtonsListeners(btnBrowse);
+		btnStop.addMouseListener(setButtonsListeners(btnStop));
 		
 //------------------------------Layout-----------------------------------------------------------------------
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
