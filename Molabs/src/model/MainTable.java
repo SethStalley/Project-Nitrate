@@ -58,6 +58,7 @@ public class MainTable extends JSON_Exportable{
 		return false;
 	}
 	
+	// key (key,column)
 	public boolean addWorkingCalibration(Integer[] key, Calibration calibration){
 		if (!this.workingCalibrations.contains(calibration)) {
 			this.workingCalibrations.put(key, calibration);
@@ -66,9 +67,10 @@ public class MainTable extends JSON_Exportable{
 		return false;
 	}
 	
-	public boolean removeWorkingCalibration(int index[]){
-		if(this.workingCalibrations.containsKey(index)) {
-			this.workingCalibrations.remove(index);
+	// key (key,column)
+	public boolean removeWorkingCalibration(int key[]){
+		if(this.workingCalibrations.containsKey(key)) {
+			this.workingCalibrations.remove(key);
 			return true;
 		}
 		return false;
