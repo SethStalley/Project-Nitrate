@@ -111,9 +111,9 @@ public class Controller {
 		graphicInterface.calculateConcentrations(key);
 	}
 	
-	public void removeWorkingCalibration(int key, int column){
+	public boolean addWorkingCalibration(int key, int column){
 		Integer[] array = {key,column};
-		mainTable.addWorkingCalibration(array, this.getCalibrationData(key));
+		return mainTable.addWorkingCalibration(array, this.getCalibrationData(key));
 	}
 	
 	/**
