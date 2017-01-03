@@ -104,6 +104,11 @@ public class MainTable extends CustomTable {
 	
 	public void addAbsorbanceColumnFromWavelength(String wavelength) {
 		String message = Validation.validWavelength(wavelength);
+		
+		if (getRowCount() <= 0) {
+			message = "There are currently no working files.";
+		}
+		
 		if(message == null){
 			ArrayList<Date> keys =  (ArrayList<Date>) this.getColumnValues(DATE_INDEX);
 			ArrayList<String> absorbances = new ArrayList<String>();
