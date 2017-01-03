@@ -29,10 +29,6 @@ public class Calibration {
 		}
 	}
 	
-	public double getConcentration(double absorbance) {
-		return (absorbance - sr.getIntercept()) / sr.getSlope();
-	}
-	
 	/*
 	 * Return the R correlation between the two data sets
 	 */
@@ -54,5 +50,9 @@ public class Calibration {
 
 	public String getWavelength() {
 		return this.wavelength;
+	}
+	
+	public double getConcentration(double absorbance) {
+		return (absorbance - sr.getIntercept()) / sr.getSlope();
 	}
 }

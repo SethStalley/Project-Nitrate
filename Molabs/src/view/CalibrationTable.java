@@ -2,6 +2,7 @@ package view;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
@@ -65,5 +66,6 @@ public class CalibrationTable extends CustomTable {
     	
     	typeColumn.setCellEditor(new DefaultCellEditor(comboBox));
 	}
+	
 	
 }

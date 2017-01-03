@@ -459,12 +459,21 @@ public class MainWindow extends JFrame {
 		//Remove Calibration Button
 		
 		btnRemoveCalibration = new GenericRoundedButton("Remove Calibration");
+		btnRemoveCalibration.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				calibrationTable.deleteSelectedCalibrations();
+			}
+		});
 		setButtonProperties(btnRemoveCalibration, pnSecondRow);
 		btnRemoveCalibration.addMouseListener(setButtonsListeners(btnRemoveCalibration));
 		
 		//Calibrate Button
 		
 		btnCalibrate = new GenericRoundedButton("Calibrate");
+		btnCalibrate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		setButtonProperties(btnCalibrate, pnSecondRow);
 		btnCalibrate.addMouseListener(setButtonsListeners(btnCalibrate));
 		btnCalibrate.addMouseListener(new MouseAdapter() {

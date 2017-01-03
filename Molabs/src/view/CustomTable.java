@@ -8,6 +8,7 @@ import java.util.Date;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -60,6 +61,21 @@ public abstract class CustomTable extends JTable {
 		Date key = (Date) this.getValueAt(index, DATE_INDEX);
 		this.controller.removeFile(key);
 		((DefaultTableModel) this.getModel()).removeRow(index);
+	}
+	
+	public void deleteSelectedCalibrations() {
+		int[] rows = this.getSelectedRows();
+		
+		for (int index : rows) {
+			deleteCalibration(index);
+		}
+	}
+	
+	private void deleteCalibration(int index) {
+		
+			((DefaultTableModel) this.getModel()).removeRow(index);
+			this.controller.removeCalibration(index);
+
 	}
 
 	public abstract void addBlankRow();

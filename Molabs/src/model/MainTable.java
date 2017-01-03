@@ -11,10 +11,12 @@ public class MainTable extends JSON_Exportable{
 	
 	private Hashtable<Date,TextFile> files;
 	private Hashtable<Integer, String> workingWavelengths;
+	private ArrayList<Calibration> workingCalibrations;
 	
 	public MainTable() {
 		this.files = new Hashtable<Date,TextFile>();
 		this.workingWavelengths = new Hashtable<Integer, String>();
+		this.workingCalibrations = new ArrayList<Calibration>();
 	}
 	
 	/*
@@ -54,6 +56,10 @@ public class MainTable extends JSON_Exportable{
 			return true;
 		}
 		return false;
+	}
+	
+	public void addWorkingCalibration(Calibration calibration){
+		workingCalibrations.add(calibration);
 	}
 	
 	

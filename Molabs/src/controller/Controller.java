@@ -76,6 +76,10 @@ public class Controller {
 		return this.mainTable.removeFile(key);
 	}
 	
+	public boolean removeCalibration(Integer key){
+		return this.calibrationTable.removeCalibration(key);
+	}
+	
 	public String getAbsorbance(String wavelength, Date key) {
 		TextFile file = this.mainTable.getFile(key);
 		
@@ -96,6 +100,16 @@ public class Controller {
 	
 	public Calibration getCalibrationData(int index){
 		return calibrationTable.getCalibration(index);
+	}
+	
+	/**
+	 * 
+	 * @param index 
+	 * @param absorbance of the concentration to be calculated
+	 * @return sample concentration for a given absorbance
+	 */
+	public Double getConcentration(int index, double absorbance){
+		return calibrationTable.getCalibration(index).getConcentration(absorbance);
 	}
 
 }

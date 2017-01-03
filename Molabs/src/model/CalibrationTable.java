@@ -24,6 +24,14 @@ public class CalibrationTable extends JSON_Exportable{
 		return false;
 	}
 	
+	public boolean removeCalibration(int index){
+		if(this.calibrations.containsKey(index)) {
+			this.calibrations.remove(index);
+			return true;
+		}
+		return false;
+	}
+	
 	public Calibration getCalibration(int index) {
 		return this.calibrations.get(index);	
 	}
