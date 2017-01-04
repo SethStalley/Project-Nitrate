@@ -115,7 +115,9 @@ public class MainTable extends CustomTable {
 
 	public void addBlankRow() {
 		Date date = new Date();
-		this.addRow(new Object[]{"Custom Row " + this.lastBlankRow++ ,date, date, Strings.SAMPLE});;
+		String name = "Custom Row " + this.lastBlankRow++;
+		this.addRow(new Object[]{name,date, date, Strings.SAMPLE});;
+		controller.addCustomRow(name, date);
 	}
 
 	public void addColumn(Object header, Object[] columns) {
@@ -179,7 +181,7 @@ public class MainTable extends CustomTable {
 			for (Date key : keys) {
 				String absorbance = controller.getAbsorbance(wavelength, key);
 				
-				if (absorbance == null) {
+				if (absorbance == null && !controller.getFileName(key).contains("Custom")) {
 					absorbance = "";
 					JOptionPane.showMessageDialog(null, "No absorbance value was found for that wavelength. Please choose different wavelength.");
 					return;
