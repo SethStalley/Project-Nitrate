@@ -789,6 +789,9 @@ public class MainWindow extends JFrame {
 		lblPearsonValue.setText(Double.toString(calibration.getPearson()));
 		Double tr = calibration.getIntercept();
 		lblSlopeValue.setText(Double.toString(calibration.getSlope()));
+		
+		//highlight rows
+		((MainTable) mainTable).highlightLightRowsRelatedToConcentration(calibration.getWavelength(),calibration.getFileKeys());
 	}
 
 	

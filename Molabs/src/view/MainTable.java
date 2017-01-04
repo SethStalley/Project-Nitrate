@@ -224,7 +224,7 @@ public class MainTable extends CustomTable {
 		int[] rows = this.getSelectedRows();
 		
 		for (int i=0; i<numRows; i++ ) {
-			if (isSTDRow(i)) {
+			if (isSTDRow(rows[i])) {
 				if (model.getValueAt(rows[i], index) != null) {
 					values.add(Double.parseDouble(model.getValueAt(rows[i], index).toString()));
 				}
@@ -251,7 +251,7 @@ public class MainTable extends CustomTable {
 		int[] rows = this.getSelectedRows();
 		
 		for (int i=0; i<numRows; i++ ) {
-			if (isSTDRow(i)) {
+			if (isSTDRow(rows[i])) {
 				
 				if (model.getValueAt(rows[i], index) != null) {
 					values.add((Date) model.getValueAt(rows[i], index));
@@ -319,6 +319,23 @@ public class MainTable extends CustomTable {
 		this.getColumnModel().getColumn(DATE_INDEX).setCellRenderer(new CellRenderDateAsYYMMDD());
 		this.getColumnModel().getColumn(TIME_INDEX).setCellRenderer(new CellRenderDateAsTimeOfDay());
 		
+	}
+	
+	
+	public void highlightLightRowsRelatedToConcentration(String wavelength, ArrayList<Date> keys) {
+		clearSelection();
+		
+		for (int i=0; i< getRowCount();i++) {
+			Date rowKey = (Date) getValueAt(i, Strings.MAINTABLE_COLUMN_DATE);
+			if (keys.contains(rowKey)) {
+				this.addRowSelectionInterval(i, i);
+    			this.setColumnSelectionInterval(0, getColumnCount()-1);
+			}
+		}
+
+		//highlight column
+		//int column = controller.getAbsorbanceColumnIndex(wavelength);
+		//this.addColumnSelectionInterval(column,column);
 	}
 
 

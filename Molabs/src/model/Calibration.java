@@ -20,6 +20,7 @@ public class Calibration {
 		this.concentrations = concentrations;
 		this.absorbances = absorbances;
 		this.wavelength = wavelength;
+		this.fileKeys = fileKeys;
 		
 		fillRegressionData();
 	}
@@ -55,5 +56,9 @@ public class Calibration {
 	
 	public double getConcentration(double absorbance) {
 		return (absorbance - sr.getIntercept()) / sr.getSlope();
+	}
+
+	public ArrayList<Date> getFileKeys() {
+		return this.fileKeys;
 	}
 }
