@@ -20,6 +20,7 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -40,6 +41,7 @@ public class MainTable extends CustomTable {
 	public MainTable(SortableJTableModel model, Controller controller){
 		super(model, controller);
 		resizeColumns();
+		//setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 	}
 
 	@Override
@@ -120,7 +122,9 @@ public class MainTable extends CustomTable {
 
 	public void addBlankRow() {
 		Date date = new Date();
-		this.addRow(new Object[]{"Custom Row " + this.lastBlankRow++ ,date, date, Strings.SAMPLE});;
+		String name = "Custom Row " + this.lastBlankRow++;
+		this.addRow(new Object[]{name,date, date, Strings.SAMPLE});;
+		controller.addCustomRow(name, date);
 	}
 
 	public void addColumn(Object header, Object[] columns) {
@@ -186,7 +190,7 @@ public class MainTable extends CustomTable {
 			for (Date key : keys) {
 				String absorbance = controller.getAbsorbance(wavelength, key);
 				
-				if (absorbance == null) {
+				if (absorbance == null && !controller.getFileName(key).contains("Custom")) {
 					absorbance = "";
 					JOptionPane.showMessageDialog(null, "No absorbance value was found for that wavelength. Please choose different wavelength.");
 					return;
@@ -233,7 +237,7 @@ public class MainTable extends CustomTable {
 		int[] rows = this.getSelectedRows();
 		
 		for (int i=0; i<numRows; i++ ) {
-			if (isSTDRow(i)) {
+			if (isSTDRow(rows[i])) {
 				if (model.getValueAt(rows[i], index) != null) {
 					values.add(Double.parseDouble(model.getValueAt(rows[i], index).toString()));
 				}
@@ -260,7 +264,7 @@ public class MainTable extends CustomTable {
 		int[] rows = this.getSelectedRows();
 		
 		for (int i=0; i<numRows; i++ ) {
-			if (isSTDRow(i)) {
+			if (isSTDRow(rows[i])) {
 				
 				if (model.getValueAt(rows[i], index) != null) {
 					values.add((Date) model.getValueAt(rows[i], index));
@@ -324,11 +328,26 @@ public class MainTable extends CustomTable {
 	        }
 		
 		//resets date format
-		
 		this.getColumnModel().getColumn(DATE_INDEX).setCellRenderer(new CellRenderDateAsYYMMDD());
 		this.getColumnModel().getColumn(TIME_INDEX).setCellRenderer(new CellRenderDateAsTimeOfDay());
 		
 	}
+	
+	
+	public void highlightLightRowsRelatedToConcentration(String wavelength, ArrayList<Date> keys) {
+		clearSelection();
+		
+		for (int i=0; i< getRowCount();i++) {
+			Date rowKey = (Date) getValueAt(i, Strings.MAINTABLE_COLUMN_DATE);
+			if (keys.contains(rowKey)) {
+				this.addRowSelectionInterval(i, i);
+		
+    			this.addColumnSelectionInterval(0, Strings.CONCENTRATION_COLUMN_INDEX);
+    			int absorbanceIndex = controller.getAbsorbanceColumnIndex(wavelength);
+    			this.addColumnSelectionInterval(absorbanceIndex, absorbanceIndex);
+			}
+		}
+
 
 	@Override
 	public void rightClickAction(MouseEvent evt) {
@@ -383,7 +402,6 @@ public class MainTable extends CustomTable {
 		model.removeColumn(this.convertColumnIndexToModel(index));
 		resizeColumns();
 	}
-
 
 
 }

@@ -109,6 +109,7 @@ public class MainWindow extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		initComponents();
+		setupKeyAdapters();
 	}
 	
 	private void initComponents(){
@@ -121,6 +122,10 @@ public class MainWindow extends JFrame {
 		setMainPanelLayout();
 		
 		txtWavelength.addKeyListener(new EnterKey(this));
+	}
+	
+	private void setupKeyAdapters() {
+        mainTable.addKeyListener(new ExcelAdapter(mainTable));
 	}
 	
 //----------------------initial setup of components section-------------------------------------------------------
@@ -769,6 +774,9 @@ public class MainWindow extends JFrame {
 		lblPearsonValue.setText(Double.toString(calibration.getPearson()));
 		Double tr = calibration.getIntercept();
 		lblSlopeValue.setText(Double.toString(calibration.getSlope()));
+		
+		//highlight rows
+		((MainTable) mainTable).highlightLightRowsRelatedToConcentration(calibration.getWavelength(),calibration.getFileKeys());
 	}
 
 

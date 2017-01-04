@@ -56,6 +56,8 @@ public abstract class CustomTable extends JTable {
 		
 		for (int index : rows) {
 			deleteFile(index);
+			deleteSelectedFiles();
+			break;
 		}
 	}
 	

@@ -75,6 +75,10 @@ public class Controller {
 		return date;
 	}
 	
+	public void addCustomRow(String name, Date key) {
+		this.mainTable.addRow(name, key);
+	}
+	
 	/**
 	 * @param Date key of file.
 	 * @return String name of data File.

@@ -16,9 +16,9 @@ public class CalibrationTable extends JSON_Exportable{
 			ArrayList<Double> absorbances, ArrayList<Double> concentrations,
 			String wavelength) {
 		Calibration cal = new Calibration(fileKeys, absorbances, concentrations, wavelength);
-		this.calibrations.put(cal.getDate(), cal);
 		
-		if (cal.getWavelength() != null) {
+		if (cal.getWavelength() != null && !Double.isNaN(cal.getPearson())) {
+			this.calibrations.put(cal.getDate(), cal);
 			return cal;
 		}
 		
