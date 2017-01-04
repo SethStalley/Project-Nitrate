@@ -2,6 +2,9 @@ package view;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,6 +19,7 @@ import javax.swing.table.TableColumn;
 
 import controller.Controller;
 import model.Calibration;
+import values.rightclickIdentifier;
 
 public abstract class CustomTable extends JTable {
 	
@@ -88,5 +92,16 @@ public abstract class CustomTable extends JTable {
 	}
 	
 	public abstract void actionButton(); //calibrate or calculate calibration
+	
+	public void deleteColumn(int index){
+		model.removeColumn(index);
+	}
+	public String getSelectedHeader(int index){
+		return (String)this.getColumnModel().getColumn(index).getHeaderValue();
+	}
+	
+	public abstract void rightClickAction(MouseEvent evt);
+	
+	public abstract void leftClickAction(MouseEvent evt);
 	
 }

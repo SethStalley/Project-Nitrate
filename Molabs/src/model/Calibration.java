@@ -50,6 +50,7 @@ public class Calibration {
 	}
 
 	public String getWavelength() {
+		System.out.println(this.wavelength);
 		return this.wavelength;
 	}
 	

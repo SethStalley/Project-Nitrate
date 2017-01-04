@@ -32,8 +32,9 @@ public class WorkingWavelength {
 	}
 	
 	public boolean removeWorkingCalibration(int index) {
-		if (this.workingConcentrationColumns.contains(index)) {
+		if (this.workingConcentrationColumns.containsKey(index)) {
 			this.workingConcentrationColumns.remove(index);
+			System.out.println("entro");
 			return true;
 		}
 		return false;

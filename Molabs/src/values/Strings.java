@@ -12,6 +12,9 @@ public class Strings {
 	public static final String ERROR_CALIBRATE = "Error on the new calibration.";
 	public static final String ERROR_NO_ACTIVE_CALIBRATION = "Please select one calibration as type Active."; //unkown
 	public static final String ERROR_NO_ABSORBANCE_SELECTED = "Please select one absorbance column";
+	public static final String ALERT_DELETE_ROW = "Are you sure you want to delete this row (s)?";
+	public static final String ALERT_DELETE_COLUMN_CONCENTRATION = "Are you sure you want to delete this concentration?";
+	public static final String ALERT_DELETE_COLUMN_ABSORBANCE = "Are you sure you want to delete this absorbance, it will delete all concentrations that used this absorbance for calibration?";
 	
 	
 	/*

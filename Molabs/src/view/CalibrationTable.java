@@ -1,5 +1,8 @@
 package view;
 
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,6 +16,7 @@ import javax.swing.table.TableColumn;
 import controller.Controller;
 import model.Calibration;
 import values.Strings;
+import values.rightclickIdentifier;
 
 public class CalibrationTable extends CustomTable {
 
@@ -63,6 +67,18 @@ public class CalibrationTable extends CustomTable {
     	comboBox.getSelectedItem().toString();
     	
     	typeColumn.setCellEditor(new DefaultCellEditor(comboBox));
+	}
+
+	@Override
+	public void rightClickAction(MouseEvent evt) {
+		// TODO Auto-generated method stubd
+		
+	}
+
+	@Override
+	public void leftClickAction(MouseEvent evt) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

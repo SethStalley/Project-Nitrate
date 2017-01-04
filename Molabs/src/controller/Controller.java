@@ -156,6 +156,10 @@ public class Controller {
 		}
 		
 	}
+	public void removeConcentrationColumn(int key){
+		removeWorkingConcentrationColumn(key);
+		graphicInterface.deleteColumnMainTable(key);
+	}
 	
 	public String getAbsorbance(String wavelength, Date key) {
 		TextFile file = this.mainTable.getFile(key);

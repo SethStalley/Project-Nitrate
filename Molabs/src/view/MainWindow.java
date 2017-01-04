@@ -29,6 +29,8 @@ import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+
 import java.awt.FlowLayout;
 import javax.swing.JSplitPane;
 import javax.swing.JInternalFrame;
@@ -57,6 +59,7 @@ import model.Calibration;
 import validation.Validation;
 import values.Preferences;
 import values.Strings;
+import values.rightclickIdentifier;
 
 import javax.swing.JTabbedPane;
 
@@ -390,6 +393,7 @@ public class MainWindow extends JFrame {
 		});
 		setButtonProperties(btnConcentration, pnMain);
 		btnConcentration.addMouseListener(setButtonsListeners(btnConcentration));		
+		
 		
 //--------Layout Four butons to the left and 2 and a textfield to the right--------------------------------
 		
@@ -746,37 +750,13 @@ public class MainWindow extends JFrame {
 	
 	
 	private void tableHeaderClicked(MouseEvent evt){
-		int selectedColumn = mainTable.columnAtPoint(evt.getPoint());
-		DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
-		
-		//clear last selection
-		if (mainTable.selectedColumn != -1 && mainTable.selectedColumn < mainTable.getColumnModel().getColumnCount()){
-			TableCellRenderer oldHeader = mainTable.getColumnModel().getColumn(0).getHeaderRenderer();
-			
-			mainTable.getColumnModel().getColumn(mainTable.selectedColumn).setHeaderRenderer(oldHeader);
-			
+		if(SwingUtilities.isLeftMouseButton(evt)){
+			mainTable.leftClickAction(evt);
+			mainTablePane.repaint();
+		}else{
+			mainTable.rightClickAction(evt);
 		}
-		
-		headerRenderer.setBackground(new Color(15, 110, 135));
-        headerRenderer.setForeground(Color.white); // white foreground
-        headerRenderer.setFont(new Font("Roboto Medium", Font.BOLD, 14));
-        headerRenderer.setHorizontalAlignment( JLabel.CENTER );
-        
-		
-		if (selectedColumn > Strings.CONCENTRATION_COLUMN_INDEX) {
-			mainTable.selectedColumn = selectedColumn;
-			String headerValue = (String)mainTable.getColumnModel().getColumn(mainTable.selectedColumn).getHeaderValue();
-			if(headerValue.substring(0, 1).equals("A")){
-				mainTable.getColumnModel().getColumn(mainTable.selectedColumn).setHeaderRenderer(headerRenderer);
-			}
-			else{
-				mainTable.selectedColumn = -1;
-			}
-		} else {
-			mainTable.selectedColumn = -1;
-		}
-		
-		mainTablePane.repaint();
+			
 	}
 	
 	private void setlblValues(){
@@ -790,6 +770,7 @@ public class MainWindow extends JFrame {
 		Double tr = calibration.getIntercept();
 		lblSlopeValue.setText(Double.toString(calibration.getSlope()));
 	}
+
 
 	
 //--------------------------------------Methods from controller ------------------------------------------
@@ -825,5 +806,8 @@ public class MainWindow extends JFrame {
 
 	public void calculateConcentrations(Date key) {
 		((MainTable) mainTable).calculateConcentrations(key);
+	}
+	public void deleteColumnMainTable(int index){
+		mainTable.deleteColumn(index);
 	}
 }

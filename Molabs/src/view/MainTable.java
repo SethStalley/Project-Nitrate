@@ -1,8 +1,13 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -18,6 +23,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.text.JTextComponent;
 
@@ -25,6 +31,7 @@ import controller.Controller;
 import model.WorkingWavelength;
 import validation.Validation;
 import values.Strings;
+import values.rightclickIdentifier;
 
 public class MainTable extends CustomTable {
 	
@@ -124,11 +131,13 @@ public class MainTable extends CustomTable {
 		//sort table by date
 		this.model.sortAddedRowByDate(DATE_INDEX);
 		selectedColumn = -1;
+		this.model.fireTableStructureChanged();
 		resizeColumns();
 	}
 	
 	public void calculateConcentrations(Date key) {
 		String wavelength = controller.getCalibrationData(key).getWavelength();
+		System.out.println(wavelength);
 		int absorbanceIndex = controller.getAbsorbanceColumnIndex(wavelength);
 		
 		if (absorbanceIndex > 0) {
@@ -147,7 +156,7 @@ public class MainTable extends CustomTable {
 						concentrations.toArray());
 				
 				//move column to desired place
-				moveColumn(getColumnCount()-1, absorbanceIndex+controller.getNumberWorkingConcentrations(absorbanceIndex)+1);
+				getColumnModel().moveColumn(getColumnCount()-1, absorbanceIndex+controller.getNumberWorkingConcentrations(absorbanceIndex)+1);
 				controller.addWorkingCalibration(absorbanceIndex,key);
 				
 			} else { 
@@ -319,6 +328,60 @@ public class MainTable extends CustomTable {
 		this.getColumnModel().getColumn(DATE_INDEX).setCellRenderer(new CellRenderDateAsYYMMDD());
 		this.getColumnModel().getColumn(TIME_INDEX).setCellRenderer(new CellRenderDateAsTimeOfDay());
 		
+	}
+
+	@Override
+	public void rightClickAction(MouseEvent evt) {
+		int selectedColumn = this.columnAtPoint(evt.getPoint());
+		rightclickIdentifier type;
+		if(getSelectedHeader(selectedColumn).substring(0, 1).equals("A"))
+			type = rightclickIdentifier.ABSORBANCE;
+		else
+			type = rightclickIdentifier.CONCENTRATION;
+		
+		if (selectedColumn > Strings.CONCENTRATION_COLUMN_INDEX) {
+			PopUpMenu menu = new PopUpMenu(controller,type, selectedColumn);
+			menu.show(evt.getComponent(), evt.getX(), evt.getY());
+		}
+	}
+
+	@Override
+	public void leftClickAction(MouseEvent evt) {
+		int selectedColumn = this.columnAtPoint(evt.getPoint());
+		DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+		
+		//clear last selection
+		if (this.selectedColumn != -1 && this.selectedColumn < this.getColumnModel().getColumnCount()){
+			TableCellRenderer oldHeader = this.getColumnModel().getColumn(0).getHeaderRenderer();
+					
+			this.getColumnModel().getColumn(this.selectedColumn).setHeaderRenderer(oldHeader);
+					
+				}
+				
+			headerRenderer.setBackground(new Color(15, 110, 135));
+		    headerRenderer.setForeground(Color.white); // white foreground
+		    headerRenderer.setFont(new Font("Roboto Medium", Font.BOLD, 14));
+		    headerRenderer.setHorizontalAlignment( JLabel.CENTER );
+		        
+				
+			if (selectedColumn > Strings.CONCENTRATION_COLUMN_INDEX) {
+				this.selectedColumn = selectedColumn;
+				String headerValue = this.getSelectedHeader(this.selectedColumn);
+				if(headerValue.substring(0, 1).equals("A")){
+					this.getColumnModel().getColumn(this.selectedColumn).setHeaderRenderer(headerRenderer);
+				}
+				else{
+					this.selectedColumn = -1;
+				}
+			} else {
+				this.selectedColumn = -1;
+			}		
+	}
+	
+	@Override
+	public void deleteColumn(int index){
+		model.removeColumn(this.convertColumnIndexToModel(index));
+		resizeColumns();
 	}
 
 

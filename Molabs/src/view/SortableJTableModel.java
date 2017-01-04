@@ -1,6 +1,7 @@
 package view;
 
 import java.util.Date;
+import java.util.Vector;
 
 import javax.swing.table.DefaultTableModel;
 import values.Strings;
@@ -61,4 +62,15 @@ public class SortableJTableModel extends DefaultTableModel{
         }else return false;
         
     }
+	
+	public void removeColumn(int column) {
+		System.out.println(columnIdentifiers.get(column));
+        columnIdentifiers.remove(column);
+        for (Object row: dataVector) {
+        	System.out.println(((Vector) row).get(column));
+            ((Vector) row).remove(column);
+        }
+        fireTableStructureChanged();
+    }
+	
 }
