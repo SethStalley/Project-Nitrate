@@ -1,17 +1,18 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.Hashtable;
-
-import javax.swing.JOptionPane;
+import java.util.Iterator;
 
 import model.Calibration;
 import model.CalibrationTable;
 import model.FileObserver;
 import model.MainTable;
 import model.TextFile;
-import values.Preferences;
+import model.WorkingWavelength;
 import view.MainWindow;
 
 public class Controller {
@@ -83,14 +84,6 @@ public class Controller {
 		return file.getName();
 	}
 	
-	/**
-	 * Get working wavelengths from mainTable property
-	 * @return ArrayList<String> with all active wavelengths
-	 */
-	public Hashtable<Integer, String> getMainTableWavelengths() {
-		return this.mainTable.getWorkingWaveLengths();
-	}
-	
 	
 	/**
 	 * @param Date key of file.
@@ -101,12 +94,67 @@ public class Controller {
 		return file.getType();
 	}
 	
+	/** 
+	 * @param String wavelength of absorbance column
+	 * @return int which is column index of the absorbance column 
+	 */
+	public int getAbsorbanceColumnIndex(String wavelength) {
+		Enumeration<Integer> keys = mainTable.getWorkingWaveLengths().keys();
+		while (keys.hasMoreElements() ) {
+			int index = keys.nextElement();
+			
+			if (mainTable.getWorkingWaveLengths().get(index).getWavelength().equals(wavelength)){
+				return index;
+			}
+		}
+		return -1;
+	}
+	
+	/**
+	 * Checks if a active concentration column already exists.
+	 * @param Date of the calibration
+	 * @return boolean
+	 */
+	public boolean concentrationColumnExists(Date key) {
+		Collection<WorkingWavelength> workingWavelengths = mainTable.getWorkingWaveLengths().values();
+		Iterator<WorkingWavelength> iterWorking = workingWavelengths.iterator();
+		
+		while (iterWorking.hasNext() ) {
+			Collection<Calibration> calibrations = iterWorking.next().getWokringConcentrationColumns().values();
+			Iterator<Calibration> iterCalibrations = calibrations.iterator();
+			
+			while(iterCalibrations.hasNext()) {
+				if (iterCalibrations.next().getDate().toString().equals(key.toString()) ) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	public boolean removeFile(Date key) {
 		return this.mainTable.removeFile(key);
 	}
 	
-	public boolean removeCalibration(Integer key){
+	public boolean removeCalibration(Date key){
 		return this.calibrationTable.removeCalibration(key);
+	}
+	
+	
+	public void removeWorkingConcentrationColumn(int key) {
+		Collection<WorkingWavelength> workingColleciton = this.mainTable.getWorkingWaveLengths().values();
+		Iterator<WorkingWavelength> iterWorking = workingColleciton.iterator();
+		
+		while (iterWorking.hasNext()) {
+			WorkingWavelength workingWavelength = iterWorking.next();
+			
+			boolean success = workingWavelength.removeWorkingCalibration(key);
+			
+			if(success) {
+				break;
+			}
+		}
+		
 	}
 	
 	public String getAbsorbance(String wavelength, Date key) {
@@ -114,20 +162,22 @@ public class Controller {
 		
 		if (file != null) {
 			return file.getAbsorbance(wavelength);
-
 		}
 		return null;
 	}
 	
-	public void addCalibration(ArrayList<Double> absorbances, ArrayList<Double> concentrations,
+	public void addCalibration(ArrayList<Date> fileKeys, ArrayList<Double> absorbances, ArrayList<Double> concentrations,
 			String wavelength){
-		if(calibrationTable.addCalibration(absorbances, concentrations, wavelength)){
-			graphicInterface.setNewCalibration(calibrationTable.getLastCalibration()); 
+		
+		Calibration cal = calibrationTable.addCalibration(fileKeys, absorbances, concentrations, wavelength);
+		
+		if(cal != null){
+			graphicInterface.setNewCalibration(cal); 
 		}else
 			graphicInterface.errorOnCalibration();
 	}
 	
-	public Calibration getCalibrationData(int index){
+	public Calibration getCalibrationData(Date index){
 		return calibrationTable.getCalibration(index);
 	}
 	
@@ -135,14 +185,27 @@ public class Controller {
 	 * calculates all concentration on maintable, according to a absorbance and calibration
 	 * @param key
 	 */
-	
-	public void calculateConcentrations(int key){
+	public void calculateConcentrations(Date key){
 		graphicInterface.calculateConcentrations(key);
 	}
 	
-	public boolean addWorkingCalibration(int key, int column){
-		Integer[] array = {key,column};
-		return mainTable.addWorkingCalibration(array, this.getCalibrationData(key));
+	public boolean addWorkingCalibration(int absorbanceKey, Date calibrationKey){
+		Calibration cal = calibrationTable.getCalibration(calibrationKey);
+		WorkingWavelength wavelength = this.mainTable.getWorkingWaveLengths().get(absorbanceKey);
+		
+		if (cal != null && wavelength != null) {
+			wavelength.addWorkingConcentration(cal);			
+		}
+		return false;
+	}
+	
+	public int getNumberWorkingConcentrations(int absorbanceIndex) {
+		WorkingWavelength workingWavelength = this.mainTable.getWorkingWaveLengths().get(absorbanceIndex);
+		
+		if (workingWavelength != null) {
+			return workingWavelength.getNumOfConcentrations();
+		}
+		return -1;
 	}
 	
 	/**
@@ -151,8 +214,12 @@ public class Controller {
 	 * @param absorbance of the concentration to be calculated
 	 * @return sample concentration for a given absorbance
 	 */
-	public Double getConcentration(int index, double absorbance){
+	public Double getConcentration(Date index, double absorbance){
 		return calibrationTable.getCalibration(index).getConcentration(absorbance);
+	}
+
+	public Hashtable<Integer, WorkingWavelength> getMainTableWavelengths() {
+		return mainTable.getWorkingWaveLengths();
 	}
 
 }

@@ -7,12 +7,13 @@ import org.apache.commons.math3.stat.regression.SimpleRegression;
 
 public class Calibration {
 	SimpleRegression sr;
-	public ArrayList<Double> absorbances;
-	public ArrayList<Double> concentrations;
+	private ArrayList<Date> fileKeys;
+	private ArrayList<Double> absorbances;
+	private ArrayList<Double> concentrations;
 	private Date date;
 	private String wavelength;
 	
-	public Calibration(ArrayList<Double> absorbances, ArrayList<Double> concentrations,
+	public Calibration(ArrayList<Date> fileKeys, ArrayList<Double> absorbances, ArrayList<Double> concentrations,
 			String wavelength) {
 		this.date = new Date();
 		this.sr = new SimpleRegression();

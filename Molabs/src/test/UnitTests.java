@@ -6,6 +6,7 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 import javax.swing.table.DefaultTableModel;
@@ -39,13 +40,14 @@ public class UnitTests {
 		Calibration calibration;
 		ArrayList<Double> absorbances = new ArrayList<Double>();
 		ArrayList<Double> concentrations = new ArrayList<Double>();
-		
+	
+
 		absorbances.add(0.049);
 		absorbances.add(0.068);
 		concentrations.add(1.0);
 		concentrations.add(1.5);
 		
-		calibration = new Calibration(absorbances, concentrations, "223.7");
+		calibration = new Calibration(null,absorbances, concentrations, "223.7");
 
 		assertTrue(calibration.getSlope() == 0.038000000000000006);
 	}
@@ -76,9 +78,11 @@ public class UnitTests {
 		concentrations.add(1.0);
 		concentrations.add(1.5);
 		
-		cTable.addCalibration(absorbances, concentrations, "223.7");
+		cTable.addCalibration(null,absorbances, concentrations, "223.7");
+		Collection<Calibration> calTableCol = cTable.getAllCalibration().values();
+		Calibration cal = calTableCol.iterator().next();
 		
-		assertTrue(cTable.getCalibration(0).getWavelength().equals("223.7"));
+		assertTrue(cal.getWavelength().equals("223.7"));
 	}
 
 }

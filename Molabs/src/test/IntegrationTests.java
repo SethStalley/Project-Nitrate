@@ -53,15 +53,18 @@ public class IntegrationTests {
 		CalibrationTable cTable2;
 		
 		//fill first cTable with some data
+		ArrayList<Date> dates = new ArrayList<Date>();
 		ArrayList<Double> absorbances = new ArrayList<Double>();
 		ArrayList<Double> concentrations = new ArrayList<Double>();
+		Date date = new Date();
 		
+		dates.add(date);
 		absorbances.add(0.049);
 		absorbances.add(0.068);
 		concentrations.add(1.0);
 		concentrations.add(1.5);
 		
-		cTable.addCalibration(absorbances, concentrations, "223.7");
+		cTable.addCalibration(dates, absorbances, concentrations, "223.7");
 		
 		
 		Gson gson = new GsonBuilder()
@@ -72,6 +75,6 @@ public class IntegrationTests {
 		String json = cTable.getAsJSON();
 		cTable2 = gson.fromJson(json, CalibrationTable.class);
 		
-		assertTrue(cTable.getCalibration(0).equals(cTable.getCalibration(0)));
+		assertTrue(cTable.getCalibration(date).equals(cTable.getCalibration(date)));
 	}
 }

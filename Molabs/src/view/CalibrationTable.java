@@ -23,30 +23,14 @@ public class CalibrationTable extends CustomTable {
 	@Override
 	public void addRow(Object pCalibration) {
 		Calibration calibration = (Calibration) pCalibration;
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy - hh:mm:ss");
 			
 	    ((DefaultTableModel) getModel()).addRow(
-	    		new Object[]{"",dateFormat.format(calibration.getDate()), calibration.getWavelength()});
-	    	
+	    		new Object[]{"",calibration.getDate(), calibration.getWavelength()});
+	    
+	    //render date format gui. That way Cell still holds a Date object.
+	    this.getColumnModel().getColumn(DATE_INDEX).setCellRenderer(new CellRenderDateAsYYMMDD_TIME());
+	    
 	    addDropdowns();
-	}
-
-	@Override
-	public void addColumn(Object header, Object[] columns) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Object getColumnValues(Integer colum) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void addBlankRow() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -54,10 +38,10 @@ public class CalibrationTable extends CustomTable {
 	    DefaultTableModel model = (DefaultTableModel) getModel();
 	    Boolean control = true;
 	    for(int row = 0; row < this.model.getRowCount(); row++){
-	    	@SuppressWarnings("unchecked")
 			String status = (String) this.model.getValueAt(row, Strings.STATUS_COLUMN_INDEX);
 	    	if(status.equals("Active")){
-	    		controller.calculateConcentrations(row);
+	    		Date key = (Date) getValueAt(row, Strings.CALIBRATIONTABLE_COLUMN_DATE);
+	    		controller.calculateConcentrations(key);
 	    		control = false;
 	    		break;
 	    	}
@@ -79,12 +63,6 @@ public class CalibrationTable extends CustomTable {
     	comboBox.getSelectedItem().toString();
     	
     	typeColumn.setCellEditor(new DefaultCellEditor(comboBox));
-	}
-
-	@Override
-	public void calculateConcentrations(int key) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	

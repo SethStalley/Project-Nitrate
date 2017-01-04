@@ -207,7 +207,7 @@ public class MainWindow extends JFrame {
 		setMenuItemProperties(mntmAddRow, mnEdit);
 		mntmAddRow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				mainTable.addBlankRow();
+				((MainTable) mainTable).addBlankRow();
 			}
 		});
 		
@@ -330,7 +330,7 @@ public class MainWindow extends JFrame {
 		btnAddRow.addMouseListener(setButtonsListeners(btnAddRow));
 		btnAddRow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				mainTable.addBlankRow();
+				((MainTable) mainTable).addBlankRow();
 			}
 		});
 		
@@ -775,8 +775,13 @@ public class MainWindow extends JFrame {
 		mainTablePane.repaint();
 		System.out.println("what");
 	}
+	
 	private void setlblValues(){
-		Calibration calibration = controller.getCalibrationData(calibrationTable.getSelectedRow());
+		int row = calibrationTable.getSelectedRow();
+		Date key = (Date) calibrationTable.getValueAt(row, Strings.CALIBRATIONTABLE_COLUMN_DATE);
+		
+		Calibration calibration = controller.getCalibrationData(key);
+		
 		lblInterceptValue.setText(Double.toString(calibration.getIntercept()));
 		lblPearsonValue.setText(Double.toString(calibration.getPearson()));
 		lblSlopeValue.setText(Double.toString(calibration.getSlope()));
@@ -807,7 +812,7 @@ public class MainWindow extends JFrame {
 		JOptionPane.showMessageDialog(null, Strings.ERROR_STARTING_OBSERVER);
 	}
 
-	public void calculateConcentrations(int key) {
-		mainTable.calculateConcentrations(key);
+	public void calculateConcentrations(Date key) {
+		((MainTable) mainTable).calculateConcentrations(key);
 	}
 }

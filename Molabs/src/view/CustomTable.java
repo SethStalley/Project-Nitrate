@@ -43,13 +43,8 @@ public abstract class CustomTable extends JTable {
         header.setOpaque(false); //let the table display the header
     }
 	
-	public abstract void addRow(Object obj);
-	public abstract void addColumn(Object header, Object[] columns);
-	
-	
-	public abstract Object getColumnValues(Integer colum);
 
-	
+	public abstract void addRow(Object value);
 	public abstract void addDropdowns(); 
 
 	public void deleteSelectedFiles() {
@@ -61,7 +56,7 @@ public abstract class CustomTable extends JTable {
 	}
 	
 	private void deleteFile(int index) {
-		Date key = (Date) this.getValueAt(index, DATE_INDEX);
+		Date key = getDateFromRow(index);
 		this.controller.removeFile(key);
 		((DefaultTableModel) this.getModel()).removeRow(index);
 	}
@@ -75,16 +70,23 @@ public abstract class CustomTable extends JTable {
 	}
 	
 	private void deleteCalibration(int index) {
-		
-			((DefaultTableModel) this.getModel()).removeRow(index);
-			this.controller.removeCalibration(index);
+		this.controller.removeCalibration(getDateFromRow(index));
+		((DefaultTableModel) this.getModel()).removeRow(index);
 
 	}
-
-	public abstract void addBlankRow();
+	
+	private Date getDateFromRow(int rowIndex) {
+		return (Date) this.getValueAt(rowIndex, DATE_INDEX);
+	}
+	
+	public Object getColumnValues(Integer column) {
+		ArrayList<Object> result = new ArrayList<Object>();
+		for(int row = 0; row < this.model.getRowCount(); row++){
+			result.add(this.model.getValueAt(row, column));
+		}
+		return result;
+	}
 	
 	public abstract void actionButton(); //calibrate or calculate calibration
-
-	public abstract void calculateConcentrations(int key);
 	
 }

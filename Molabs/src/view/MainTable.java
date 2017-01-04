@@ -19,6 +19,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.text.JTextComponent;
 
 import controller.Controller;
+import model.WorkingWavelength;
 import validation.Validation;
 import values.Strings;
 
@@ -65,17 +66,27 @@ public class MainTable extends CustomTable {
 		this.getColumnModel().getColumn(TIME_INDEX).setCellRenderer(new CellRenderDateAsTimeOfDay());
 		
 		//fill out absorbance values
-		Hashtable<Integer, String> waveLengths = controller.getMainTableWavelengths();
+		Hashtable<Integer, WorkingWavelength> waveLengths = controller.getMainTableWavelengths();
 		
 		Enumeration<Integer> keys = waveLengths.keys();
 		
 		while(keys.hasMoreElements()) {
 			Integer column = keys.nextElement();
-			String wavelength = waveLengths.get(column);
-			String absorbance = controller.getAbsorbance(wavelength, (Date) getValueAt(getRowCount()-1, DATE_INDEX));
+			WorkingWavelength wavelength = waveLengths.get(column);
+			String absorbance = controller.getAbsorbance(wavelength.getWavelength(), (Date) getValueAt(getRowCount()-1, DATE_INDEX));
 			
-			if (absorbance != null)
+			if (absorbance != null) {
 				this.setValueAt(absorbance, getRowCount()-1, column);
+			
+				//add concentration columns
+				Enumeration<Integer> concentrationKeys = wavelength.getWokringConcentrationColumns().keys();
+				while (concentrationKeys.hasMoreElements()) {
+					column = concentrationKeys.nextElement();
+					Double concentrationValue = wavelength.getWokringConcentrationColumns().get(column).getConcentration( Double.parseDouble(absorbance));
+		
+					this.setValueAt(new DecimalFormat("#.######").format(concentrationValue), getRowCount()-1, column);
+				}
+			}
 		}
 		
 		//sort table by date
@@ -97,22 +108,11 @@ public class MainTable extends CustomTable {
 		this.addRow(new Object[]{name,date, date, type});
 	}
 
-	@Override
 	public void addBlankRow() {
 		Date date = new Date();
 		this.addRow(new Object[]{"Custom Row " + this.lastBlankRow++ ,date, date, Strings.SAMPLE});;
 	}
 
-	@Override
-	public Object getColumnValues(Integer column) {
-		ArrayList<Object> result = new ArrayList<Object>();
-		for(int row = 0; row < this.model.getRowCount(); row++){
-			result.add(this.model.getValueAt(row, column));
-		}
-		return result;
-	}
-
-	@Override
 	public void addColumn(Object header, Object[] columns) {
 		model.addColumn(header, columns);
 		//add our dropdown options
@@ -124,24 +124,37 @@ public class MainTable extends CustomTable {
 		resizeColumns();
 	}
 	
-	public void calculateConcentrations(int key) {
-		// could receive a calibration instead, or a key to that calibration
-		if(this.selectedColumn < 0){
-			JOptionPane.showMessageDialog(null, Strings.ERROR_SELECT_ABSORBANCE_COLUMN);
-			return;
+	public void calculateConcentrations(Date key) {
+		String wavelength = controller.getCalibrationData(key).getWavelength();
+		int absorbanceIndex = controller.getAbsorbanceColumnIndex(wavelength);
+		
+		if (absorbanceIndex > 0) {
+			if(!this.controller.concentrationColumnExists(key)) {
+				
+				ArrayList<String> listAbsorbance = (ArrayList<String>) getColumnValues(absorbanceIndex);
+				ArrayList<String> concentrations = new ArrayList<String>();
+				for(String absorbance : listAbsorbance){
+					Double absorbanceValue = Double.parseDouble(absorbance);
+					Double concentrationValue = controller.getConcentration(key, absorbanceValue);
+					
+					concentrations.add(new DecimalFormat("#.######").format(concentrationValue));
+				}
+			
+				addColumn("Concentration("+wavelength+")",
+						concentrations.toArray());
+				
+				//move column to desired place
+				moveColumn(getColumnCount()-1, absorbanceIndex+controller.getNumberWorkingConcentrations(absorbanceIndex)+1);
+				controller.addWorkingCalibration(absorbanceIndex,key);
+				
+			} else { 
+				JOptionPane.showMessageDialog(null, Strings.ERROR_COCENTRATION_EXISTS);
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, Strings.ERROR_ABSORBANCE_COLUMN_MISSING);
 		}
-		@SuppressWarnings("unchecked")
-		ArrayList<String> listAbsorbance = (ArrayList<String>) getColumnValues(this.selectedColumn);
-		ArrayList<String> concentrations = new ArrayList<String>();
-		for(String absorbance : listAbsorbance){
-			Double concentrationValue = Double.parseDouble(absorbance);
-			concentrationValue = controller.getConcentration(key, concentrationValue);
-			concentrations.add(new DecimalFormat("#.######").format(concentrationValue));
-		}
-		addColumn("Concentration("+controller.getCalibrationData(key).getWavelength()+")",
-				concentrations.toArray());
-		controller.addWorkingCalibration(key, this.model.getColumnCount()-1);
 	}
+	
 	
 	
 	public void addAbsorbanceColumnFromWavelength(String wavelength) {
@@ -175,11 +188,17 @@ public class MainTable extends CustomTable {
 	}
 	@Override
 	public void actionButton(){
+		if(this.selectedColumn < 0){
+			JOptionPane.showMessageDialog(null, Strings.ERROR_SELECT_ABSORBANCE_COLUMN);
+			return;
+		}
+		
 		ArrayList<Double> listAbsorbance = getStdValuesFromColumn(selectedColumn);
     	ArrayList<Double> listConcentration = getStdValuesFromColumn(Strings.CONCENTRATION_COLUMN_INDEX);
- 
+    	ArrayList<Date> fileKeys = getSelectedFileKeys(Strings.MAINTABLE_COLUMN_DATE);
+    	
     	if(listConcentration.size() > 1) {
-    		controller.addCalibration(listAbsorbance, listConcentration, getWaveLength(selectedColumn));
+    		controller.addCalibration(fileKeys, listAbsorbance, listConcentration, getWaveLength(selectedColumn));
     	}else{
     		JOptionPane.showMessageDialog(null, Strings.ERROR_NEW_CALIBRATION);
     	}
@@ -193,10 +212,7 @@ public class MainTable extends CustomTable {
 		int[] rows = this.getSelectedRows();
 		
 		for (int i=0; i<numRows; i++ ) {
-			//if STD file type
-			Object value = model.getValueAt(rows[i], Strings.TYPE_COLUMN_INDEX);
-			if (value != null && value.toString().equals(Strings.STD)) {
-				
+			if (isSTDRow(i)) {
 				if (model.getValueAt(rows[i], index) != null) {
 					values.add(Double.parseDouble(model.getValueAt(rows[i], index).toString()));
 				}
@@ -210,6 +226,44 @@ public class MainTable extends CustomTable {
 		
 		return values;
 	}
+	
+	/**
+	 * Returns all keys of selected rows.
+	 * @return ArrayList<Date> of the rows. 
+	 */
+	private ArrayList<Date> getSelectedFileKeys(int index) {
+		DefaultTableModel model = (DefaultTableModel) this.getModel();
+		ArrayList<Date> values = new ArrayList<Date>();
+		
+		int numRows = this.getSelectedRowCount();
+		int[] rows = this.getSelectedRows();
+		
+		for (int i=0; i<numRows; i++ ) {
+			if (isSTDRow(i)) {
+				
+				if (model.getValueAt(rows[i], index) != null) {
+					values.add((Date) model.getValueAt(rows[i], index));
+				}
+				else {
+					//error value no inserted
+					JOptionPane.showMessageDialog(null, "No value at row #" + i + " column #" + index);
+					break;
+				}
+			}
+		}
+		
+		return values;
+	}
+	
+	private boolean isSTDRow(int index) {
+		//if STD file type
+		Object value = model.getValueAt(index, Strings.TYPE_COLUMN_INDEX);
+		if (value != null && value.toString().equals(Strings.STD)) {
+			return true;
+		}
+		return false;
+	}
+	
 	private String getWaveLength(int column){	
 		String headerValue = this.columnModel.getColumn(column).getHeaderValue().toString();	
 		return (String) headerValue.subSequence(headerValue.indexOf('(')+1, headerValue.lastIndexOf(')'));
@@ -237,7 +291,7 @@ public class MainTable extends CustomTable {
 		for(int i = Strings.NUMBER_DEFAULT_COLUMNS; i<contColumns; i++){
 			getColumnModel().getColumn(i).setPreferredWidth(Strings.ADDED_COLUMN_WIDTH);
 		}
-		this.getTableHeader().setPreferredSize(new Dimension(10000,32)); //no tengo idea... pero si lo quito los headers no se mueven
+		this.getTableHeader().setPreferredSize(new Dimension(10000,35)); //no tengo idea... pero si lo quito los headers no se mueven
 	}
 
 

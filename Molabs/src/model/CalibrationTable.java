@@ -1,30 +1,31 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Hashtable;
 
 public class CalibrationTable extends JSON_Exportable{
 
-	private Hashtable<Integer,Calibration> calibrations;
+	private Hashtable<Date,Calibration> calibrations;
 	
 	public CalibrationTable() {
-		this.calibrations = new Hashtable<Integer,Calibration>();
+		this.calibrations = new Hashtable<Date,Calibration>();
 	}
 	
-	public boolean addCalibration(ArrayList<Double> absorbances, ArrayList<Double> concentrations,
+	public Calibration addCalibration(ArrayList<Date> fileKeys,
+			ArrayList<Double> absorbances, ArrayList<Double> concentrations,
 			String wavelength) {
-		Integer last = calibrations.size();
-		Calibration cal = new Calibration(absorbances, concentrations, wavelength);
-		this.calibrations.put(last, cal);
+		Calibration cal = new Calibration(fileKeys, absorbances, concentrations, wavelength);
+		this.calibrations.put(cal.getDate(), cal);
 		
 		if (cal.getWavelength() != null) {
-			return true;
+			return cal;
 		}
 		
-		return false;
+		return null;
 	}
 	
-	public boolean removeCalibration(int index){
+	public boolean removeCalibration(Date index){
 		if(this.calibrations.containsKey(index)) {
 			this.calibrations.remove(index);
 			return true;
@@ -32,16 +33,12 @@ public class CalibrationTable extends JSON_Exportable{
 		return false;
 	}
 	
-	public Calibration getCalibration(int index) {
+	public Calibration getCalibration(Date index) {
 		return this.calibrations.get(index);	
 	}
 	
-	public Hashtable<Integer,Calibration> getAllCalibration() {
+	public Hashtable<Date,Calibration> getAllCalibration() {
 		return this.calibrations;
-	}
-	
-	public Calibration getLastCalibration(){ //agregar en modelo
-		return calibrations.get(calibrations.size()-1);
 	}
 	
 }

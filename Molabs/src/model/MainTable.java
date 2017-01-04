@@ -1,22 +1,17 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 public class MainTable extends JSON_Exportable{
 	
 	private Hashtable<Date,TextFile> files;
-	private Hashtable<Integer, String> workingWavelengths;
-	private Hashtable<Integer[],Calibration> workingCalibrations; // key must be column index in main table
+	private Hashtable<Integer, WorkingWavelength> workingWavelength;
 	
 	public MainTable() {
 		this.files = new Hashtable<Date,TextFile>();
-		this.workingWavelengths = new Hashtable<Integer, String>();
-		this.workingCalibrations = new Hashtable<Integer[],Calibration>();
+		this.workingWavelength = new Hashtable<Integer, WorkingWavelength>();
 	}
 	
 	/*
@@ -43,38 +38,21 @@ public class MainTable extends JSON_Exportable{
 	}
 	
 	public boolean addWorkingWavelength(int index, String wavelength) {
-		if (!this.workingWavelengths.contains(wavelength)) {
-			this.workingWavelengths.put(index, wavelength);
+		if (!this.workingWavelength.contains(index)) {
+			this.workingWavelength.put(index, new WorkingWavelength(index, wavelength));
 			return true;
 		}
 		return false;
 	}
 	
-	public boolean removeWorkingWavelength(String wavelength) {
-		if(this.workingWavelengths.contains(wavelength)) {
-			this.workingWavelengths.remove(wavelength);
+	public boolean removeWorkingWavelength(int index) {
+		if(this.workingWavelength.contains(index)) {
+			this.workingWavelength.remove(index);
 			return true;
 		}
 		return false;
 	}
 	
-	// key (key,column)
-	public boolean addWorkingCalibration(Integer[] key, Calibration calibration){
-		if (!this.workingCalibrations.contains(calibration)) {
-			this.workingCalibrations.put(key, calibration);
-			return true;
-		}
-		return false;
-	}
-	
-	// key (key,column)
-	public boolean removeWorkingCalibration(int key[]){
-		if(this.workingCalibrations.containsKey(key)) {
-			this.workingCalibrations.remove(key);
-			return true;
-		}
-		return false;
-	}
 	
 	
 	public Hashtable<Date,TextFile> getAllFiles() {
@@ -85,8 +63,8 @@ public class MainTable extends JSON_Exportable{
 		return this.files.get(dateKey);
 	}
 	
-	public Hashtable<Integer, String> getWorkingWaveLengths() {
-		return this.workingWavelengths;
+	public Hashtable<Integer, WorkingWavelength> getWorkingWaveLengths() {
+		return this.workingWavelength;
 	}
 
 }
