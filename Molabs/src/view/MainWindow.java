@@ -460,8 +460,7 @@ public class MainWindow extends JFrame {
 		mainTable.getTableHeader().setReorderingAllowed(false);
 		mainTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		
-		mainTablePane.setViewportView(mainTable);
-		
+		mainTablePane.setViewportView(mainTable);		
 		
 	}
 	private void setSecondPanel(){

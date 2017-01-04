@@ -32,9 +32,6 @@ public class MainTable extends CustomTable {
 	public MainTable(SortableJTableModel model, Controller controller){
 		super(model, controller);
 		resizeColumns();
-		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-		this.setDefaultRenderer(String.class, centerRenderer);
 	}
 
 	@Override
@@ -250,8 +247,19 @@ public class MainTable extends CustomTable {
 		}
 		this.getTableHeader().setPreferredSize(new Dimension(10000,32)); //no tengo idea... pero si lo quito los headers no se mueven
 		
+		//centers cells
+		
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+		for(int x=0;x<getColumnCount();x++){
+	         getColumnModel().getColumn(x).setCellRenderer( centerRenderer );
+	        }
+		
+		//resets date format
+		
 		this.getColumnModel().getColumn(DATE_INDEX).setCellRenderer(new CellRenderDateAsYYMMDD());
 		this.getColumnModel().getColumn(TIME_INDEX).setCellRenderer(new CellRenderDateAsTimeOfDay());
+		
 	}
 
 
