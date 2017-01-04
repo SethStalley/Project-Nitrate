@@ -106,6 +106,7 @@ public class MainWindow extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		initComponents();
+		setupKeyAdapters();
 	}
 	
 	private void initComponents(){
@@ -118,6 +119,10 @@ public class MainWindow extends JFrame {
 		setMainPanelLayout();
 		
 		txtWavelength.addKeyListener(new EnterKey(this));
+	}
+	
+	private void setupKeyAdapters() {
+        mainTable.addKeyListener(new ExcelAdapter(mainTable));
 	}
 	
 //----------------------initial setup of components section-------------------------------------------------------
