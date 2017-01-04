@@ -2,28 +2,23 @@ package view;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.LineNumberReader;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.EventObject;
 import java.util.Hashtable;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import javax.swing.text.JTextComponent;
 
 import controller.Controller;
-import model.Calibration;
 import validation.Validation;
 import values.Strings;
 
@@ -40,8 +35,27 @@ public class MainTable extends CustomTable {
 	public void addRow(Object pFile) {
 		File file = (File)pFile;
 		Date key = controller.addFile(file.getAbsolutePath());
-		renderNewFile(key);
+		if(key != null)
+			renderNewFile(key);
 	}
+	
+	/**
+	 * Overrides JTable's edit cell method. When a edits a cell with existing
+	 * data, the data is overwritten instead of being appended.
+	 */
+	public boolean editCellAt(int row, int column, EventObject e){
+        boolean result = super.editCellAt(row, column, e);
+        final Component editor = getEditorComponent();
+        if (editor == null || !(editor instanceof JTextComponent)) {
+            return result;
+        }
+        
+        if (e instanceof KeyEvent) {
+            ((JTextComponent) editor).selectAll();
+        }
+        
+        return result;
+    }
 	
 	private void addRow(Object[] object) {
 		model.addRow(object);
@@ -118,9 +132,11 @@ public class MainTable extends CustomTable {
 		}
 		@SuppressWarnings("unchecked")
 		ArrayList<String> listAbsorbance = (ArrayList<String>) getColumnValues(this.selectedColumn);
-		ArrayList<Double> concentrations = new ArrayList<Double>();
+		ArrayList<String> concentrations = new ArrayList<String>();
 		for(String absorbance : listAbsorbance){
-			concentrations.add(controller.getConcentration(key, Double.parseDouble(absorbance)));
+			Double concentrationValue = Double.parseDouble(absorbance);
+			concentrationValue = controller.getConcentration(key, concentrationValue);
+			concentrations.add(new DecimalFormat("#.######").format(concentrationValue));
 		}
 		addColumn("Concentration("+controller.getCalibrationData(key).getWavelength()+")",
 				concentrations.toArray());

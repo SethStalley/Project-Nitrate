@@ -66,7 +66,12 @@ public class Controller {
 	 * @return Date which is the files key.
 	 */
 	public Date addFile(String path) {
-		return this.mainTable.addFile(path);
+		Date date = this.mainTable.addFile(path);
+		
+		if (date == null) {
+			graphicInterface.errorOnOpenFile();
+		}
+		return date;
 	}
 	
 	/**

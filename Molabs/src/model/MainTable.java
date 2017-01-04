@@ -25,12 +25,12 @@ public class MainTable extends JSON_Exportable{
 	public Date addFile(String path) {
 		TextFile txtData = new TextFile(path);
 		
-		if(txtData.getDate() != null) {
+		if(txtData.getDate() != null && this.files.get(txtData.getDate()) == null) {
 			this.files.put(txtData.getDate(), txtData);
+			return txtData.getDate();
 		}
 		
-		//this may be null, that's ok it just needs to be checked
-		return txtData.getDate();
+		return null;
 	}
 	
 	public boolean removeFile(Date key) {
