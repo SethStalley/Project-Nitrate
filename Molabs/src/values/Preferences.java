@@ -7,7 +7,7 @@ import java.awt.Color;
  */
 public class Preferences {
 
-	public static final int WINDOW_NORMAL_RGB = new Color(240,240,240).getRGB();
-	public static final int WINDOW_OBSERVER_RUNNING_RGB = new Color(204,204,204).getRGB();
+	public static final int WINDOW_NORMAL_RGB = new Color(204,204,204).getRGB();
+	public static final int WINDOW_OBSERVER_RUNNING_RGB = new Color(160,157,157).getRGB();
 	
 }

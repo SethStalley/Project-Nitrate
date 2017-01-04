@@ -11,6 +11,7 @@ public class Strings {
 	public static final String ERROR_NEW_CALIBRATION = "Select more than one concentrations for the new calibration.";
 	public static final String ERROR_CALIBRATE = "Error on the new calibration.";
 	public static final String ERROR_NO_ACTIVE_CALIBRATION = "Please select one calibration as type Active."; //unkown
+	public static final String ERROR_NO_ABSORBANCE_SELECTED = "Please select one absorbance column";
 	
 	
 	/*

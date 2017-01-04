@@ -2,10 +2,14 @@ package view;
 
 import java.text.SimpleDateFormat;
 
+import javax.swing.JLabel;
 import javax.swing.table.DefaultTableCellRenderer;
 
 public class CellRenderDateAsYYMMDD extends DefaultTableCellRenderer {
-    public CellRenderDateAsYYMMDD() { super(); }
+    public CellRenderDateAsYYMMDD() { 
+    	super();
+    	setHorizontalAlignment( JLabel.CENTER );
+    }
 
     @Override
     public void setValue(Object value) {

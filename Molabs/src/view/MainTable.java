@@ -13,7 +13,10 @@ import java.util.Hashtable;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.text.JTextComponent;
@@ -186,22 +189,25 @@ public class MainTable extends CustomTable {
 			JOptionPane.showMessageDialog(null, message);
 		}
 	}
-	@Override
+	@Override //calibrate
 	public void actionButton(){
-		if(this.selectedColumn < 0){
-			JOptionPane.showMessageDialog(null, Strings.ERROR_SELECT_ABSORBANCE_COLUMN);
-			return;
-		}
+
+		if(selectedColumn == -1)
+			JOptionPane.showMessageDialog(null, Strings.ERROR_NO_ABSORBANCE_SELECTED);
+		else{
 		
-		ArrayList<Double> listAbsorbance = getStdValuesFromColumn(selectedColumn);
-    	ArrayList<Double> listConcentration = getStdValuesFromColumn(Strings.CONCENTRATION_COLUMN_INDEX);
-    	ArrayList<Date> fileKeys = getSelectedFileKeys(Strings.MAINTABLE_COLUMN_DATE);
-    	
-    	if(listConcentration.size() > 1) {
-    		controller.addCalibration(fileKeys, listAbsorbance, listConcentration, getWaveLength(selectedColumn));
-    	}else{
-    		JOptionPane.showMessageDialog(null, Strings.ERROR_NEW_CALIBRATION);
-    	}
+			ArrayList<Double> listAbsorbance = getStdValuesFromColumn(selectedColumn);
+	    	ArrayList<Double> listConcentration = getStdValuesFromColumn(Strings.CONCENTRATION_COLUMN_INDEX);
+	    	ArrayList<Date> fileKeys = getSelectedFileKeys(Strings.MAINTABLE_COLUMN_DATE);
+	    	
+		
+	    	if(listConcentration.size() > 1) {
+	    		controller.addCalibration(fileKeys, listAbsorbance, listConcentration, getWaveLength(selectedColumn));
+	    	}else{
+	    		JOptionPane.showMessageDialog(null, Strings.ERROR_NEW_CALIBRATION);
+	    	}
+		}
+
 	}
 	
 	private ArrayList<Double> getStdValuesFromColumn(int index) {
@@ -291,7 +297,22 @@ public class MainTable extends CustomTable {
 		for(int i = Strings.NUMBER_DEFAULT_COLUMNS; i<contColumns; i++){
 			getColumnModel().getColumn(i).setPreferredWidth(Strings.ADDED_COLUMN_WIDTH);
 		}
-		this.getTableHeader().setPreferredSize(new Dimension(10000,35)); //no tengo idea... pero si lo quito los headers no se mueven
+
+		this.getTableHeader().setPreferredSize(new Dimension(10000,32)); //no tengo idea... pero si lo quito los headers no se mueven
+		
+		//centers cells
+		
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+		for(int x=0;x<getColumnCount();x++){
+	         getColumnModel().getColumn(x).setCellRenderer( centerRenderer );
+	        }
+		
+		//resets date format
+		
+		this.getColumnModel().getColumn(DATE_INDEX).setCellRenderer(new CellRenderDateAsYYMMDD());
+		this.getColumnModel().getColumn(TIME_INDEX).setCellRenderer(new CellRenderDateAsTimeOfDay());
+		
 	}
 
 

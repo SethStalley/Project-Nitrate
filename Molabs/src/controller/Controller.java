@@ -173,6 +173,7 @@ public class Controller {
 		
 		if(cal != null){
 			graphicInterface.setNewCalibration(cal); 
+
 		}else
 			graphicInterface.errorOnCalibration();
 	}

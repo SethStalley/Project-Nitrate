@@ -73,7 +73,7 @@ public class MainWindow extends JFrame {
 	private static final int HEIGTH_TABS = 30;
 	
 	private JMenuBar menuBar;
-	private JMenu mnFile, mnEdit, mnTools, mnUsers;
+	private JMenu mnFile, mnEdit, mnTools, mnUsers, mnObserver;
 	
 	private JMenuItem mntmOpenProject, mntmSaveProject, mntmOpenData, mntmDeleteDataFile, mntmPrint, mntmExit; //File
 	
@@ -305,6 +305,15 @@ public class MainWindow extends JFrame {
 		mnUsers = new JMenu("Users");
 		setMenuProperties(mnUsers);
 		
+		//Invisible observer
+		mnObserver = new JMenu("                                   Observer running");
+		mnObserver.setBackground(new Color(51,51,51));
+		mnObserver.setForeground(Color.WHITE);
+		mnObserver.setFont(new Font("Roboto Medium", Font.BOLD, 12));
+		menuBar.add(mnObserver);
+		mnObserver.setEnabled(false);
+		mnObserver.setVisible(false);
+		
 	}
 	private void setFirstPanel(){		
 		pnFirstRow = new JPanel();
@@ -451,8 +460,7 @@ public class MainWindow extends JFrame {
 		mainTable.getTableHeader().setReorderingAllowed(false);
 		mainTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		
-		mainTablePane.setViewportView(mainTable);
-		
+		mainTablePane.setViewportView(mainTable);		
 		
 	}
 	private void setSecondPanel(){
@@ -492,10 +500,6 @@ public class MainWindow extends JFrame {
 		//Calibrate Button
 		
 		btnCalibrate = new GenericRoundedButton("Calibrate");
-		btnCalibrate.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		setButtonProperties(btnCalibrate, pnSecondRow);
 		btnCalibrate.addMouseListener(setButtonsListeners(btnCalibrate));
 		btnCalibrate.addMouseListener(new MouseAdapter() {
@@ -773,7 +777,6 @@ public class MainWindow extends JFrame {
 		}
 		
 		mainTablePane.repaint();
-		System.out.println("what");
 	}
 	
 	private void setlblValues(){
@@ -784,17 +787,25 @@ public class MainWindow extends JFrame {
 		
 		lblInterceptValue.setText(Double.toString(calibration.getIntercept()));
 		lblPearsonValue.setText(Double.toString(calibration.getPearson()));
+		Double tr = calibration.getIntercept();
 		lblSlopeValue.setText(Double.toString(calibration.getSlope()));
 	}
 
 	
 //--------------------------------------Methods from controller ------------------------------------------
 	public void observerRunningColor() {
-		getContentPane().setBackground(new Color(Preferences.WINDOW_OBSERVER_RUNNING_RGB));
+		pnMain.setBackground(new Color(Preferences.WINDOW_OBSERVER_RUNNING_RGB));
+		pnFirstRow.setBackground(new Color(Preferences.WINDOW_OBSERVER_RUNNING_RGB));
+		pnSecondRow.setBackground(new Color(Preferences.WINDOW_OBSERVER_RUNNING_RGB));
+		mnObserver.setVisible(true);
+		
 	}
 	
 	public void observerStoppedColor() {
-		getContentPane().setBackground(new Color(Preferences.WINDOW_NORMAL_RGB));
+		pnMain.setBackground(new Color(Preferences.WINDOW_NORMAL_RGB));
+		pnFirstRow.setBackground(new Color(Preferences.WINDOW_NORMAL_RGB));
+		pnSecondRow.setBackground(new Color(Preferences.WINDOW_NORMAL_RGB));
+		mnObserver.setVisible(false);
 	}
 	
 	public void setNewCalibration(Calibration calibration){
