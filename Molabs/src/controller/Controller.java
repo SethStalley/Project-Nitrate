@@ -11,6 +11,7 @@ import model.CalibrationTable;
 import model.FileObserver;
 import model.MainTable;
 import model.TextFile;
+import values.Preferences;
 import view.MainWindow;
 
 public class Controller {
@@ -31,16 +32,28 @@ public class Controller {
 	private void instanceComponents() {
 		this.mainTable = new MainTable();
 		this.calibrationTable = new CalibrationTable();
-		this.fileObserver = FileObserver.getInstance(this);
 	}
 	
+	public void startObserver(String path) {
+		stopObserver();
+		
+		this.fileObserver = new FileObserver(this, (view.MainTable) graphicInterface.mainTable);
+		Boolean success = !path.isEmpty() && this.fileObserver.startObserver(path);
+		
+		if (success) {
+			graphicInterface.observerRunningColor();
+		} else {
+			System.out.println("here");
+		    graphicInterface.errorStartingObserver();
+		}
+		
+	}
 	
-	/**
-	 * Get working wavelengths from mainTable property
-	 * @return ArrayList<String> with all active wavelengths
-	 */
-	public Hashtable<Integer, String> getMainTableWavelengths() {
-		return this.mainTable.getWorkingWaveLengths();
+	public void stopObserver() {
+		if (this.fileObserver != null)
+			this.fileObserver.stopObserver();
+		this.fileObserver = null;
+		graphicInterface.observerStoppedColor();
 	}
 	
 	public void addWorkingWavelength(int index, String wavelength) {
@@ -63,6 +76,14 @@ public class Controller {
 	public String getFileName(Date key) {
 		TextFile file = this.mainTable.getFile(key);
 		return file.getName();
+	}
+	
+	/**
+	 * Get working wavelengths from mainTable property
+	 * @return ArrayList<String> with all active wavelengths
+	 */
+	public Hashtable<Integer, String> getMainTableWavelengths() {
+		return this.mainTable.getWorkingWaveLengths();
 	}
 	
 	
@@ -114,9 +135,9 @@ public class Controller {
 		graphicInterface.calculateConcentrations(key);
 	}
 	
-	public void removeWorkingCalibration(int key, int column){
+	public boolean addWorkingCalibration(int key, int column){
 		Integer[] array = {key,column};
-		mainTable.addWorkingCalibration(array, this.getCalibrationData(key));
+		return mainTable.addWorkingCalibration(array, this.getCalibrationData(key));
 	}
 	
 	/**

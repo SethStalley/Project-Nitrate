@@ -1,30 +1,13 @@
 package values;
 
+import java.awt.Color;
+
 /*
  * Singleton class that stores user preferences during runtime and on load
  */
 public class Preferences {
 
-	private static Preferences instance = null;
-	private String liveFolderPath;
-	
-	public Preferences() {
-		this.liveFolderPath = "";
-	}
-	
-	public static Preferences getInstance() {
-      if(instance == null) {
-         instance = new Preferences();
-      }
-      return instance;
-   }
-	
-	public void setLiveFolderPath(String path) {
-		this.liveFolderPath = path;
-	}
-	
-	public String getLiveFolderPath() {
-		return this.liveFolderPath;
-	}
+	public static final int WINDOW_NORMAL_RGB = new Color(240,240,240).getRGB();
+	public static final int WINDOW_OBSERVER_RUNNING_RGB = new Color(204,204,204).getRGB();
 	
 }

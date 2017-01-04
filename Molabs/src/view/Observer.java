@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -20,6 +21,7 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import controller.Controller;
+import values.Preferences;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -28,15 +30,25 @@ public class Observer extends JFrame {
 	private JTextField txtActualFolder;
 	private JButton btnBrowse, btnStart, btnStop;
 	private Controller controller;
+	private static Observer instance = null;
 	
-	public Observer(Controller controller) {
+	public Observer( Controller controller) {
+		instance = this;
 		this.controller = controller;
 		setMinimumSize(new Dimension(500, 180));
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MainWindow.class.getResource("/Resources/Icon.png")));
 		setTitle("MOLABS Observer");
 		setLocationRelativeTo(null);
-		getContentPane().setBackground(new Color(204, 204, 204));
+		getContentPane().setBackground(new Color(Preferences.WINDOW_NORMAL_RGB));
 		initComponents();
+	}
+	
+	public static Observer getInstance(Controller controller) {
+		if (instance == null) {
+			return new Observer(controller);
+		}
+		
+		return instance;
 	}
 	
 	private void initComponents(){
@@ -49,21 +61,34 @@ public class Observer extends JFrame {
 		btnBrowse = new GenericRoundedButton("Browse");
 		setButtonProperties(btnBrowse);
 		setButtonsListeners(btnBrowse);
+		btnBrowse.addMouseListener(setButtonsListeners(btnBrowse));
 		btnBrowse.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				setLiveFolderPath();
-				
 			}
 		});
 		
+		
 		btnStart = new GenericRoundedButton("Start");
 		setButtonProperties(btnStart);
-		setButtonsListeners(btnBrowse);
+		btnStart.addMouseListener(setButtonsListeners(btnStart));
+		btnStart.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				startObserver();
+			}
+		});
 		
 		btnStop = new GenericRoundedButton("Stop");
 		setButtonProperties(btnStop);
-		setButtonsListeners(btnBrowse);
+		btnStop.addMouseListener(setButtonsListeners(btnStop));
+		btnStop.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				stopObserver();
+			}
+		});
 		
 //------------------------------Layout-----------------------------------------------------------------------
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
@@ -105,6 +130,18 @@ public class Observer extends JFrame {
 		getContentPane().setLayout(groupLayout);
 	}
 	
+	public void startObserver() {
+		String path = txtActualFolder.getText();
+		controller.startObserver(path);
+		getContentPane().setBackground(new Color(Preferences.WINDOW_OBSERVER_RUNNING_RGB));
+	
+	}
+	
+	public void stopObserver() {
+		controller.stopObserver();
+		getContentPane().setBackground(new Color(Preferences.WINDOW_NORMAL_RGB));
+	}
+	
 	private void setLiveFolderPath() {
 		String path = getLiveFolderPath();
 		this.txtActualFolder.setText(path);
@@ -127,7 +164,6 @@ public class Observer extends JFrame {
 	    	path = chooser.getSelectedFile().getAbsolutePath();
 	    }
 	    
-		
 		return path;
 	}
 	

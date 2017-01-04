@@ -120,7 +120,7 @@ public class MainTable extends CustomTable {
 		}
 		addColumn("Concentration("+controller.getCalibrationData(key).getWavelength()+")",
 				concentrations.toArray());
-		controller.removeWorkingCalibration(key, this.model.getColumnCount()-1);
+		controller.addWorkingCalibration(key, this.model.getColumnCount()-1);
 	}
 	
 	

@@ -32,5 +32,6 @@ public class Strings {
 	public static final int CONCENTRATION_COLUMN_INDEX = 4;
 	public static final int STATUS_COLUMN_INDEX = 0;
 	public static final Object NO_ROW_SELECTED = "No row selected";
-	public static final String ACTIVE = "Active";	
+	public static final String ACTIVE = "Active";
+	public static final Object ERROR_STARTING_OBSERVER = "Could not start observer.\nSpecified path is probably incorrect";	
 }

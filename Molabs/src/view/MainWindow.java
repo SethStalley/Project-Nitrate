@@ -55,6 +55,7 @@ import javax.swing.table.TableCellRenderer;
 import controller.Controller;
 import model.Calibration;
 import validation.Validation;
+import values.Preferences;
 import values.Strings;
 
 import javax.swing.JTabbedPane;
@@ -79,7 +80,7 @@ public class MainWindow extends JFrame {
 	private JMenuItem mntmAddRow, mntmCopyRow, mntmPasteRow, mntmDeleteRow; //Edit
 	
 	private JMenuItem mntmFindObsorbance, mntmCalibrate, mntmCalibrationGraph, 
-					  mntmConcentrationGraph, mntmOpenObserver, mntmCloseObserver, 
+					  mntmConcentrationGraph, mntmObserver, mntmOpenObserver, mntmCloseObserver, 
 					  mntmAlertValues, mntmExportExcel; //Tools
 	
 	private JMenuItem mntmAddUser, mntmDeleteUser; //Users
@@ -104,7 +105,6 @@ public class MainWindow extends JFrame {
 		setTitle("MOLABS");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
-		getContentPane().setBackground(new Color(204, 204, 204));
 		initComponents();
 	}
 	
@@ -239,17 +239,32 @@ public class MainWindow extends JFrame {
 		mntmConcentrationGraph = new JMenuItem("Concentration Graph");
 		setMenuItemProperties(mntmConcentrationGraph, mnTools);
 		
-		mntmOpenObserver = new JMenuItem("Open Observer");
+		mntmObserver = new JMenuItem("Observer");
+		setMenuItemProperties(mntmObserver, mnTools);
+		mntmObserver.addActionListener(new java.awt.event.ActionListener() {
+	        @Override
+	        public void actionPerformed(java.awt.event.ActionEvent evt) {
+	           Observer.getInstance(controller).setVisible(true);
+	        }
+	    });
+		
+		mntmOpenObserver = new JMenuItem("Start Observer");
 		setMenuItemProperties(mntmOpenObserver, mnTools);
 		mntmOpenObserver.addActionListener(new java.awt.event.ActionListener() {
 	        @Override
 	        public void actionPerformed(java.awt.event.ActionEvent evt) {
-	            new Observer(controller).setVisible(true);
+	           Observer.getInstance(controller).startObserver();
 	        }
 	    });
 		
-		mntmCloseObserver = new JMenuItem("Close Observer");
+		mntmCloseObserver = new JMenuItem("Stop Observer");
 		setMenuItemProperties(mntmCloseObserver, mnTools);
+		mntmCloseObserver.addActionListener(new java.awt.event.ActionListener() {
+	        @Override
+	        public void actionPerformed(java.awt.event.ActionEvent evt) {
+	           Observer.getInstance(controller).stopObserver();
+	        }
+	    });
 		
 		mntmAlertValues = new JMenuItem("Alert Values");
 		setMenuItemProperties(mntmAlertValues, mnTools);
@@ -719,7 +734,7 @@ public class MainWindow extends JFrame {
 	            this.mainTable.addRow(file);
 	        } 
 	       
-	    }
+	}
 	
 	
 	private void tableHeaderClicked(MouseEvent evt){
@@ -762,11 +777,23 @@ public class MainWindow extends JFrame {
 
 	
 //--------------------------------------Methods from controller ------------------------------------------
+	public void observerRunningColor() {
+		getContentPane().setBackground(new Color(Preferences.WINDOW_OBSERVER_RUNNING_RGB));
+	}
+	
+	public void observerStoppedColor() {
+		getContentPane().setBackground(new Color(Preferences.WINDOW_NORMAL_RGB));
+	}
+	
 	public void setNewCalibration(Calibration calibration){
 		calibrationTable.addRow(calibration);
 	}
 	public void errorOnCalibration(){
 		JOptionPane.showMessageDialog(null, Strings.ERROR_CALIBRATE);
+	}
+	
+	public void errorStartingObserver() {
+		JOptionPane.showMessageDialog(null, Strings.ERROR_STARTING_OBSERVER);
 	}
 
 	public void calculateConcentrations(int key) {
