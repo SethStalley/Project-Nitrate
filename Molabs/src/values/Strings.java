@@ -27,11 +27,19 @@ public class Strings {
 	 */
 	public static final String SUCCESS_TABLE_EXPORT = "Table exported successfully";
 	
-	
+	/*
+	 * Table 
+	 */
 	public static final int TYPE_COLUMN_INDEX = 3;	
 	public static final int CONCENTRATION_COLUMN_INDEX = 4;
 	public static final int STATUS_COLUMN_INDEX = 0;
 	public static final Object NO_ROW_SELECTED = "No row selected";
 	public static final String ACTIVE = "Active";
-	public static final Object ERROR_STARTING_OBSERVER = "Could not start observer.\nSpecified path is probably incorrect";	
+	public static final Object ERROR_STARTING_OBSERVER = "Could not start observer.\nSpecified path is probably incorrect";
+	public static final int DEFAULT_COLUMN_WIDTH = 150;
+	public static final int ADDED_COLUMN_WIDTH = 150;
+	public static final int NUMBER_DEFAULT_COLUMNS = 5;
+	
+	
+
 }

@@ -135,21 +135,21 @@ public class MainWindow extends JFrame {
 		gl_pnMain.setHorizontalGroup(
 			gl_pnMain.createParallelGroup(Alignment.LEADING)
 				.addComponent(pnFirstRow, GroupLayout.DEFAULT_SIZE, 1264, Short.MAX_VALUE)
-				.addGroup(gl_pnMain.createSequentialGroup()
+				.addGroup(Alignment.TRAILING, gl_pnMain.createSequentialGroup()
 					.addGap(21)
 					.addGroup(gl_pnMain.createParallelGroup(Alignment.TRAILING)
-						.addComponent(pnSecondRow, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(mainTablePane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 1219, Short.MAX_VALUE))
+						.addComponent(mainTablePane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 1219, Short.MAX_VALUE)
+						.addComponent(pnSecondRow, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 					.addGap(24))
 		);
 		gl_pnMain.setVerticalGroup(
 			gl_pnMain.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_pnMain.createSequentialGroup()
 					.addComponent(pnFirstRow, GroupLayout.PREFERRED_SIZE, 63, GroupLayout.PREFERRED_SIZE)
-					.addGap(28)
-					.addComponent(mainTablePane, GroupLayout.PREFERRED_SIZE, 230, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
-					.addComponent(pnSecondRow, GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(mainTablePane, GroupLayout.PREFERRED_SIZE, 259, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(pnSecondRow, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addContainerGap())
 		);
 				
@@ -386,44 +386,42 @@ public class MainWindow extends JFrame {
 		
 		GroupLayout gl_pnFirstRow = new GroupLayout(pnFirstRow);
 		gl_pnFirstRow.setHorizontalGroup(
-		gl_pnFirstRow.createParallelGroup(Alignment.LEADING)
-			.addGroup(gl_pnFirstRow.createSequentialGroup()
-			.addContainerGap()
-			.addComponent(btnOpenFile, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-			.addPreferredGap(ComponentPlacement.UNRELATED)
-			.addComponent(btnAddRow, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-			.addPreferredGap(ComponentPlacement.UNRELATED)
-			.addComponent(btnDeleteRow, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-			.addPreferredGap(ComponentPlacement.UNRELATED)
-			.addComponent(btnSaveProject, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-			.addPreferredGap(ComponentPlacement.RELATED, 196, Short.MAX_VALUE)
-			.addComponent(lblWavelengthnm)
-			.addPreferredGap(ComponentPlacement.RELATED)
-			.addComponent(txtWavelength, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-			.addPreferredGap(ComponentPlacement.UNRELATED)
-			.addComponent(btnAbsorbance, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-			.addPreferredGap(ComponentPlacement.UNRELATED)
-			.addComponent(btnConcentration, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-			.addContainerGap())
+			gl_pnFirstRow.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_pnFirstRow.createSequentialGroup()
+					.addGap(22)
+					.addComponent(btnOpenFile, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(btnAddRow, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(btnDeleteRow, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(btnSaveProject, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, 420, Short.MAX_VALUE)
+					.addComponent(lblWavelengthnm)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(txtWavelength, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(btnAbsorbance, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(btnConcentration, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(24))
 		);
 		gl_pnFirstRow.setVerticalGroup(
 			gl_pnFirstRow.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_pnFirstRow.createSequentialGroup()
-				.addContainerGap(13, Short.MAX_VALUE)
-				.addGroup(gl_pnFirstRow.createParallelGroup(Alignment.BASELINE)
-					.addComponent(txtWavelength, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addComponent(btnAbsorbance, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addComponent(btnConcentration, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addComponent(lblWavelengthnm))
-				.addContainerGap())
-			.addGroup(gl_pnFirstRow.createSequentialGroup()
-				.addContainerGap(16, Short.MAX_VALUE)
-				.addGroup(gl_pnFirstRow.createParallelGroup(Alignment.BASELINE)
-					.addComponent(btnOpenFile, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addComponent(btnAddRow, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addComponent(btnDeleteRow, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addComponent(btnSaveProject, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-				.addContainerGap())
+					.addContainerGap(27, Short.MAX_VALUE)
+					.addGroup(gl_pnFirstRow.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_pnFirstRow.createParallelGroup(Alignment.BASELINE)
+							.addComponent(btnConcentration, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(btnAbsorbance, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(txtWavelength, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(lblWavelengthnm))
+						.addGroup(gl_pnFirstRow.createParallelGroup(Alignment.BASELINE)
+							.addComponent(btnOpenFile, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(btnAddRow, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(btnDeleteRow, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(btnSaveProject, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap())
 		);
 		
 //--------Ends Layout Four butons to the left and 2 and a textfield to the right--------------------------------	
@@ -433,7 +431,7 @@ public class MainWindow extends JFrame {
 		
 	}
 	private void setMainTable(){
-		mainTablePane = new JScrollPane();
+		mainTablePane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
 		mainTable = new MainTable(new SortableJTableModel(
 				new String[] {
@@ -450,6 +448,8 @@ public class MainWindow extends JFrame {
 			}
 		});
 		
+		mainTable.getTableHeader().setReorderingAllowed(false);
+		mainTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		
 		mainTablePane.setViewportView(mainTable);
 		
@@ -474,6 +474,7 @@ public class MainWindow extends JFrame {
         		setlblValues();
         	}
         });
+		calibrationTable.getTableHeader().setReorderingAllowed(false);
 		
 		scrollPaneCalibration.setViewportView(calibrationTable);
 		
@@ -542,46 +543,47 @@ public class MainWindow extends JFrame {
 		gl_calibrationGraph.setHorizontalGroup(
 			gl_calibrationGraph.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_calibrationGraph.createSequentialGroup()
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addContainerGap()
 					.addGroup(gl_calibrationGraph.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblPearson)
 						.addGroup(gl_calibrationGraph.createSequentialGroup()
 							.addComponent(lblIntercept, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
-							.addGap(185)
-							.addComponent(lblNewLabel_2))
-						.addComponent(lblSlope, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE))
-					.addGap(178))
-				.addGroup(gl_calibrationGraph.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblPearsonValue)
-					.addContainerGap(475, Short.MAX_VALUE))
-				.addGroup(gl_calibrationGraph.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblInterceptValue)
-					.addContainerGap(475, Short.MAX_VALUE))
-				.addGroup(gl_calibrationGraph.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblSlopeValue)
-					.addContainerGap(475, Short.MAX_VALUE))
+							.addPreferredGap(ComponentPlacement.RELATED, 274, Short.MAX_VALUE)
+							.addComponent(lblNewLabel_2)
+							.addGap(178))
+						.addGroup(gl_calibrationGraph.createSequentialGroup()
+							.addComponent(lblPearsonValue)
+							.addContainerGap(610, Short.MAX_VALUE))
+						.addGroup(gl_calibrationGraph.createSequentialGroup()
+							.addComponent(lblInterceptValue)
+							.addContainerGap(610, Short.MAX_VALUE))
+						.addGroup(gl_calibrationGraph.createSequentialGroup()
+							.addComponent(lblSlopeValue)
+							.addContainerGap(610, Short.MAX_VALUE))
+						.addGroup(gl_calibrationGraph.createSequentialGroup()
+							.addComponent(lblPearson)
+							.addContainerGap(532, Short.MAX_VALUE))
+						.addGroup(gl_calibrationGraph.createSequentialGroup()
+							.addComponent(lblSlope, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap(539, Short.MAX_VALUE))))
 		);
 		gl_calibrationGraph.setVerticalGroup(
 			gl_calibrationGraph.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_calibrationGraph.createSequentialGroup()
-					.addGap(50)
+					.addGap(51)
 					.addComponent(lblPearson)
-					.addGap(7)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblPearsonValue)
 					.addGap(18)
 					.addGroup(gl_calibrationGraph.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblIntercept)
-						.addComponent(lblNewLabel_2))
+						.addComponent(lblNewLabel_2)
+						.addComponent(lblIntercept))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblInterceptValue)
 					.addGap(18)
 					.addComponent(lblSlope)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGap(11)
 					.addComponent(lblSlopeValue)
-					.addContainerGap(95, Short.MAX_VALUE))
+					.addContainerGap(109, Short.MAX_VALUE))
 		);
 		calibrationGraph.setLayout(gl_calibrationGraph);
 		
@@ -633,27 +635,29 @@ public class MainWindow extends JFrame {
 			gl_pnSecondRow.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_pnSecondRow.createSequentialGroup()
 					.addGroup(gl_pnSecondRow.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnCalibrate, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE)
-						.addGroup(gl_pnSecondRow.createParallelGroup(Alignment.LEADING)
-							.addComponent(btnRemoveCalibration, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addComponent(scrollPaneCalibration, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-					.addPreferredGap(ComponentPlacement.RELATED, 231, Short.MAX_VALUE)
-					.addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, 536, GroupLayout.PREFERRED_SIZE))
+						.addComponent(scrollPaneCalibration, GroupLayout.PREFERRED_SIZE, 504, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_pnSecondRow.createSequentialGroup()
+							.addGap(4)
+							.addComponent(btnCalibrate, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(btnRemoveCalibration, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, 625, GroupLayout.PREFERRED_SIZE))
 		);
 		gl_pnSecondRow.setVerticalGroup(
 			gl_pnSecondRow.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_pnSecondRow.createSequentialGroup()
-					.addGroup(gl_pnSecondRow.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_pnSecondRow.createSequentialGroup()
-							.addComponent(btnCalibrate, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
-							.addGap(35)
-							.addComponent(scrollPaneCalibration, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
-							.addGap(18)
-							.addComponent(btnRemoveCalibration, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_pnSecondRow.createSequentialGroup()
-							.addGap(11)
-							.addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, 290, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addGap(51)
+					.addComponent(scrollPaneCalibration, GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
+					.addGap(18)
+					.addGroup(gl_pnSecondRow.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnCalibrate, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnRemoveCalibration, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(26))
+				.addGroup(gl_pnSecondRow.createSequentialGroup()
+					.addGap(11)
+					.addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, 290, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
 		);
 		
 		pnSecondRow.setLayout(gl_pnSecondRow);
@@ -767,6 +771,9 @@ public class MainWindow extends JFrame {
 		} else {
 			mainTable.selectedColumn = -1;
 		}
+		
+		mainTablePane.repaint();
+		System.out.println("what");
 	}
 	private void setlblValues(){
 		Calibration calibration = controller.getCalibrationData(calibrationTable.getSelectedRow());

@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -32,6 +33,7 @@ public class MainTable extends CustomTable {
 	
 	public MainTable(SortableJTableModel model, Controller controller){
 		super(model, controller);
+		resizeColumns();
 	}
 
 	@Override
@@ -104,6 +106,8 @@ public class MainTable extends CustomTable {
 				
 		//sort table by date
 		this.model.sortAddedRowByDate(DATE_INDEX);
+		selectedColumn = -1;
+		resizeColumns();
 	}
 	
 	public void calculateConcentrations(int key) {
@@ -207,6 +211,17 @@ public class MainTable extends CustomTable {
     	comboBox.setFocusable(false);
     	
     	typeColumn.setCellEditor(new DefaultCellEditor(comboBox));
+	}
+	private void resizeColumns(){
+		for(int i = 0; i<Strings.NUMBER_DEFAULT_COLUMNS; i++){
+			getColumnModel().getColumn(i).setMinWidth(Strings.DEFAULT_COLUMN_WIDTH);
+		}
+
+		int contColumns = getModel().getColumnCount();
+		for(int i = Strings.NUMBER_DEFAULT_COLUMNS; i<contColumns; i++){
+			getColumnModel().getColumn(i).setPreferredWidth(Strings.ADDED_COLUMN_WIDTH);
+		}
+		this.getTableHeader().setPreferredSize(new Dimension(10000,32)); //no tengo idea... pero si lo quito los headers no se mueven
 	}
 
 
