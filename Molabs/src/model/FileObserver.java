@@ -72,8 +72,7 @@ public class FileObserver extends Thread{
 					
 		            Path path = ev.context();
 		            String completePath = Paths.get(dir.toString(), path.toString()).toString();
-		            
-		            controller.addFile(completePath);
+		           
 		            this.mainTable.addRow(new File(completePath));
 				}
 				
