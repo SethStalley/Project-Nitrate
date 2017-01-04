@@ -163,6 +163,9 @@ public class MainTable extends CustomTable {
 	public void addAbsorbanceColumnFromWavelength(String wavelength) {
 		String message = Validation.validWavelength(wavelength);
 		
+		if(controller.checkForWorkingWavelength(wavelength)){
+			message = "That wavelength was previously selected. Please choose a different wavelength.";
+		}
 		if (getRowCount() <= 0) {
 			message = "There are currently no working files.";
 		}
@@ -176,6 +179,8 @@ public class MainTable extends CustomTable {
 				
 				if (absorbance == null) {
 					absorbance = "";
+					JOptionPane.showMessageDialog(null, "No absorbance value was found for that wavelength. Please choose different wavelength.");
+					return;
 				}
 				absorbances.add(absorbance);
 			}

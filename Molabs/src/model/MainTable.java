@@ -52,6 +52,14 @@ public class MainTable extends JSON_Exportable{
 		}
 		return false;
 	}
+	public boolean checkForWorkingWavelength(String wavelength){
+		for(WorkingWavelength ww : this.workingWavelength.values()){
+			if (ww.getWavelength().equals(wavelength)){
+				return true;
+			}
+		}
+		return false;
+	}
 	
 	
 	

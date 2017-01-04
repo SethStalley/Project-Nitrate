@@ -222,5 +222,9 @@ public class Controller {
 	public Hashtable<Integer, WorkingWavelength> getMainTableWavelengths() {
 		return mainTable.getWorkingWaveLengths();
 	}
+	
+	public boolean checkForWorkingWavelength(String wavelength){
+		return mainTable.checkForWorkingWavelength(wavelength);
+	}
 
 }
