@@ -130,13 +130,13 @@ public class MainTable extends CustomTable {
 	public void addColumn(Object header, Object[] columns) {
 		model.addColumn(header, columns);
 		//add our dropdown options
-		addDropdowns();
 				
 		//sort table by date
 		this.model.sortAddedRowByDate(DATE_INDEX);
 		selectedColumn = -1;
 		this.model.fireTableStructureChanged();
 		resizeColumns();
+		addDropdowns();
 	}
 	
 	public void calculateConcentrations(Date key) {
@@ -347,6 +347,7 @@ public class MainTable extends CustomTable {
     			this.addColumnSelectionInterval(absorbanceIndex, absorbanceIndex);
 			}
 		}
+	}
 
 
 	@Override

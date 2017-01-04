@@ -125,7 +125,7 @@ public class MainWindow extends JFrame {
 	}
 	
 	private void setupKeyAdapters() {
-        mainTable.addKeyListener(new ExcelAdapter(mainTable));
+        //mainTable.addKeyListener(new ExcelAdapter(mainTable));
 	}
 	
 //----------------------initial setup of components section-------------------------------------------------------
