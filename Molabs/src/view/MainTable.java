@@ -173,16 +173,21 @@ public class MainTable extends CustomTable {
 			JOptionPane.showMessageDialog(null, message);
 		}
 	}
-	@Override
+	@Override //calibrate
 	public void actionButton(){
-		ArrayList<Double> listAbsorbance = getStdValuesFromColumn(selectedColumn);
-    	ArrayList<Double> listConcentration = getStdValuesFromColumn(Strings.CONCENTRATION_COLUMN_INDEX);
- 
-    	if(listConcentration.size() > 1) {
-    		controller.addCalibration(listAbsorbance, listConcentration, getWaveLength(selectedColumn));
-    	}else{
-    		JOptionPane.showMessageDialog(null, Strings.ERROR_NEW_CALIBRATION);
-    	}
+		if(selectedColumn == -1)
+			JOptionPane.showMessageDialog(null, Strings.ERROR_NO_ABSORBANCE_SELECTED);
+		else{
+		
+			ArrayList<Double> listAbsorbance = getStdValuesFromColumn(selectedColumn);
+	    	ArrayList<Double> listConcentration = getStdValuesFromColumn(Strings.CONCENTRATION_COLUMN_INDEX);
+	 
+	    	if(listConcentration.size() > 1) {
+	    		controller.addCalibration(listAbsorbance, listConcentration, getWaveLength(selectedColumn));
+	    	}else{
+	    		JOptionPane.showMessageDialog(null, Strings.ERROR_NEW_CALIBRATION);
+	    	}
+		}
 	}
 	
 	private ArrayList<Double> getStdValuesFromColumn(int index) {

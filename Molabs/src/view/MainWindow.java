@@ -501,10 +501,6 @@ public class MainWindow extends JFrame {
 		//Calibrate Button
 		
 		btnCalibrate = new GenericRoundedButton("Calibrate");
-		btnCalibrate.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		setButtonProperties(btnCalibrate, pnSecondRow);
 		btnCalibrate.addMouseListener(setButtonsListeners(btnCalibrate));
 		btnCalibrate.addMouseListener(new MouseAdapter() {
@@ -782,12 +778,12 @@ public class MainWindow extends JFrame {
 		}
 		
 		mainTablePane.repaint();
-		System.out.println("what");
 	}
 	private void setlblValues(){
 		Calibration calibration = controller.getCalibrationData(calibrationTable.getSelectedRow());
 		lblInterceptValue.setText(Double.toString(calibration.getIntercept()));
 		lblPearsonValue.setText(Double.toString(calibration.getPearson()));
+		Double tr = calibration.getIntercept();
 		lblSlopeValue.setText(Double.toString(calibration.getSlope()));
 	}
 

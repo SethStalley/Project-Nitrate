@@ -123,6 +123,8 @@ public class Controller {
 			String wavelength){
 		if(calibrationTable.addCalibration(absorbances, concentrations, wavelength)){
 			graphicInterface.setNewCalibration(calibrationTable.getLastCalibration()); 
+			Calibration cl = calibrationTable.getLastCalibration();
+			System.out.println("");
 		}else
 			graphicInterface.errorOnCalibration();
 	}
