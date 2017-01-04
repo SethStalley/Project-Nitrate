@@ -15,6 +15,7 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -33,6 +34,7 @@ public class MainTable extends CustomTable {
 	public MainTable(SortableJTableModel model, Controller controller){
 		super(model, controller);
 		resizeColumns();
+		//setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 	}
 
 	@Override
@@ -315,7 +317,6 @@ public class MainTable extends CustomTable {
 	        }
 		
 		//resets date format
-		
 		this.getColumnModel().getColumn(DATE_INDEX).setCellRenderer(new CellRenderDateAsYYMMDD());
 		this.getColumnModel().getColumn(TIME_INDEX).setCellRenderer(new CellRenderDateAsTimeOfDay());
 		
@@ -329,15 +330,13 @@ public class MainTable extends CustomTable {
 			Date rowKey = (Date) getValueAt(i, Strings.MAINTABLE_COLUMN_DATE);
 			if (keys.contains(rowKey)) {
 				this.addRowSelectionInterval(i, i);
-    			this.setColumnSelectionInterval(0, getColumnCount()-1);
+		
+    			this.addColumnSelectionInterval(0, Strings.CONCENTRATION_COLUMN_INDEX);
+    			int absorbanceIndex = controller.getAbsorbanceColumnIndex(wavelength);
+    			this.addColumnSelectionInterval(absorbanceIndex, absorbanceIndex);
 			}
 		}
 
-		//highlight column
-		//int column = controller.getAbsorbanceColumnIndex(wavelength);
-		//this.addColumnSelectionInterval(column,column);
 	}
-
-
 
 }
