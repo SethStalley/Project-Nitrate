@@ -73,7 +73,7 @@ public class MainWindow extends JFrame {
 	private static final int HEIGTH_TABS = 30;
 	
 	private JMenuBar menuBar;
-	private JMenu mnFile, mnEdit, mnTools, mnUsers;
+	private JMenu mnFile, mnEdit, mnTools, mnUsers, mnObserver;
 	
 	private JMenuItem mntmOpenProject, mntmSaveProject, mntmOpenData, mntmDeleteDataFile, mntmPrint, mntmExit; //File
 	
@@ -304,6 +304,15 @@ public class MainWindow extends JFrame {
 		
 		mnUsers = new JMenu("Users");
 		setMenuProperties(mnUsers);
+		
+		//Invisible observer
+		mnObserver = new JMenu("                                   Observer running");
+		mnObserver.setBackground(new Color(51,51,51));
+		mnObserver.setForeground(Color.WHITE);
+		mnObserver.setFont(new Font("Roboto Medium", Font.BOLD, 12));
+		menuBar.add(mnObserver);
+		mnObserver.setEnabled(false);
+		mnObserver.setVisible(false);
 		
 	}
 	private void setFirstPanel(){		
@@ -785,11 +794,18 @@ public class MainWindow extends JFrame {
 	
 //--------------------------------------Methods from controller ------------------------------------------
 	public void observerRunningColor() {
-		getContentPane().setBackground(new Color(Preferences.WINDOW_OBSERVER_RUNNING_RGB));
+		pnMain.setBackground(new Color(Preferences.WINDOW_OBSERVER_RUNNING_RGB));
+		pnFirstRow.setBackground(new Color(Preferences.WINDOW_OBSERVER_RUNNING_RGB));
+		pnSecondRow.setBackground(new Color(Preferences.WINDOW_OBSERVER_RUNNING_RGB));
+		mnObserver.setVisible(true);
+		
 	}
 	
 	public void observerStoppedColor() {
-		getContentPane().setBackground(new Color(Preferences.WINDOW_NORMAL_RGB));
+		pnMain.setBackground(new Color(Preferences.WINDOW_NORMAL_RGB));
+		pnFirstRow.setBackground(new Color(Preferences.WINDOW_NORMAL_RGB));
+		pnSecondRow.setBackground(new Color(Preferences.WINDOW_NORMAL_RGB));
+		mnObserver.setVisible(false);
 	}
 	
 	public void setNewCalibration(Calibration calibration){
