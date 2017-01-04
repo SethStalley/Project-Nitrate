@@ -792,6 +792,10 @@ public class MainWindow extends JFrame {
 		JOptionPane.showMessageDialog(null, Strings.ERROR_CALIBRATE);
 	}
 	
+	public void errorOnOpenFile() {
+		JOptionPane.showMessageDialog(null, Strings.ERROR_SELECT_FILE);
+	}
+	
 	public void errorStartingObserver() {
 		JOptionPane.showMessageDialog(null, Strings.ERROR_STARTING_OBSERVER);
 	}

@@ -70,7 +70,7 @@ public class TextFile extends JSON_Exportable{
             this.type = Strings.SAMPLE;
             
         } catch (Exception e) {
-        	e.printStackTrace();
+        	System.out.println("ERROR parsing text file");
         
         	return false;
         }
