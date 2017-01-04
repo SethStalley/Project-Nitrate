@@ -1,6 +1,7 @@
 DELIMITER $$
 DROP PROCEDURE IF EXISTS molabsdb.insertUser;$$
 CREATE PROCEDURE molabsdb.insertUser(pNewUserName VARCHAR(45), pNewPassword VARBINARY(512), pType VARCHAR(10),
+					pCompleteName VARCHAR(85), pTelephoneNumber VARCHAR(20), pEmail VARCHAR(45),
 					pUserName VARCHAR(45), pPassword VARBINARY(512)) -- these 2 is for user validation
 BEGIN
 
@@ -34,8 +35,8 @@ BEGIN
     END;*/
     
     
-	INSERT INTO molabsdb.users(username, password, type, date, createdBy)
-		VALUES(pNewUserName, pNewPassword, pType, NOW(), pUserName);
+	INSERT INTO molabsdb.users(username, password, type, date, createdBy,completeName, telephoneNumber, email)
+		VALUES(pNewUserName, pNewPassword, pType, NOW(), pUserName,pCompleteName,pTelephoneNumber, pEmail);
             
 	SET @idUser = (SELECT MAX(idUser) FROM molabsdb.users);
         
