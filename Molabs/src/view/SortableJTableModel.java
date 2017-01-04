@@ -51,6 +51,14 @@ public class SortableJTableModel extends DefaultTableModel{
         		return true;
         	return false;
         }
-        else return false;
+        else if(column >= Strings.CONCENTRATION_COLUMN_INDEX){
+        	Object valueCustom = this.getValueAt(row, 0);
+        	if(valueCustom.toString().startsWith("Custom")){
+        		return true;
+        	}
+        	return false;
+        	
+        }else return false;
+        
     }
 }
