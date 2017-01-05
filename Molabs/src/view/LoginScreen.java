@@ -17,6 +17,9 @@ import controller.DB;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
+
+import org.json.JSONException;
+
 import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
@@ -137,7 +140,7 @@ public class LoginScreen extends JFrame {
 	
 	
 	
-	public void validateEntry(){
+	public void validateEntry() {
 		String username = txtUsername.getText();
 		String password = txtPassword.getText();
 		DB db = DB.getInstance(username, password);
