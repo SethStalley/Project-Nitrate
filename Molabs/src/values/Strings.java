@@ -47,6 +47,7 @@ public class Strings {
 	public static final int NUMBER_DEFAULT_COLUMNS = 5;
 	public static final String ERROR_ABSORBANCE_COLUMN_MISSING = "The absorbance column for that wavelength does not exist";
 	public static final String ERROR_COCENTRATION_EXISTS = "That concentration column already exists.";
+	public static final String ERROR_PASSWORD_CONFIRMATION = "The provided passwords does not match.";
 	
 	
 

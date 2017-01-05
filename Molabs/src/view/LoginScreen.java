@@ -71,7 +71,7 @@ public class LoginScreen extends JFrame {
 		btnLogIn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				new MainWindow().setVisible(true);
+				new MainWindow("Aqui iria el username").setVisible(true);
 				dispose();
 			}
 		});

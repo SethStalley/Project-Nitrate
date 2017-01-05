@@ -34,6 +34,7 @@ import javax.swing.SwingUtilities;
 import java.awt.FlowLayout;
 import javax.swing.JSplitPane;
 import javax.swing.JInternalFrame;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -99,9 +100,14 @@ public class MainWindow extends JFrame {
 	private JLabel lblPearsonValue;
 	private JLabel lblInterceptValue;
 	private JLabel lblSlopeValue;
+	private JMenu mnUsernameIngresado;
 	
-	public MainWindow() {
+	
+	private String username;
+	
+	public MainWindow(String username) {
 		controller = new Controller(this);
+		this.username = username;
 		
 		setMinimumSize(new Dimension(1280, 720));
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MainWindow.class.getResource("/Resources/Icon.png")));
@@ -283,6 +289,12 @@ public class MainWindow extends JFrame {
 		//Users
 		mntmAddUser = new JMenuItem("Add User");
 		setMenuItemProperties(mntmAddUser, mnUsers);
+		mntmAddUser.addActionListener(new java.awt.event.ActionListener() {
+	        @Override
+	        public void actionPerformed(java.awt.event.ActionEvent evt) {
+	           CreateUser.getInstance(controller).setVisible(true);
+	        }
+	    });
 		
 		mntmDeleteUser = new JMenuItem("Delete User");
 		setMenuItemProperties(mntmDeleteUser, mnUsers);
@@ -320,6 +332,17 @@ public class MainWindow extends JFrame {
 		mnObserver.setFont(new Font("Roboto Medium", Font.BOLD, 12));
 		menuBar.add(mnObserver);
 		mnObserver.setEnabled(false);
+		
+		//Username registered
+		
+		mnUsernameIngresado = new JMenu("Current user: " + this.username);
+		mnUsernameIngresado.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		mnUsernameIngresado.setOpaque(true);
+		mnUsernameIngresado.setForeground(Color.WHITE);
+		mnUsernameIngresado.setFont(new Font("Roboto Medium", Font.BOLD, 12));
+		mnUsernameIngresado.setBackground(new Color(51, 51, 51));
+		menuBar.add(Box.createHorizontalGlue()); 
+		menuBar.add(mnUsernameIngresado);
 		mnObserver.setVisible(false);
 		
 	}
