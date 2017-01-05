@@ -11,11 +11,14 @@ import java.util.Date;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 
 import controller.Controller;
 import model.Calibration;
@@ -103,5 +106,20 @@ public abstract class CustomTable extends JTable {
 	public abstract void rightClickAction(MouseEvent evt);
 	
 	public abstract void leftClickAction(MouseEvent evt);
+	
+	protected void centerCells(){
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+		for(int x=0;x<getColumnCount();x++){
+	         getColumnModel().getColumn(x).setCellRenderer( centerRenderer );
+	        }
+	}
+	
+	public void forceUpdate(){
+		
+	}
+	public SortableJTableModel getAlternModel(){
+		return this.model;
+	}
 	
 }
