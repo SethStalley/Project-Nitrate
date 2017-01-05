@@ -50,17 +50,6 @@ public class PopUpMenu extends JPopupMenu {
     	});
         add(anItem);
     }
-    private void deleteAbsorbance(Controller controller, int index){
-    	anItem = new JMenuItem("Delete Abosrbance");
-    	anItem.addActionListener(new ActionListener() {
-	      public void actionPerformed(ActionEvent event) {
-				if(confirmDelete(Strings.ALERT_DELETE_COLUMN_ABSORBANCE)){
-					controller.removeAbsorbance(index);
-				}
-	      }
-    	});
-        add(anItem);
-    }
 	private boolean confirmDelete(String alert){
 		int dialogResult = JOptionPane.showConfirmDialog (null, alert);
 		if(dialogResult == JOptionPane.YES_OPTION){

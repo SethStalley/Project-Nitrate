@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.EventObject;
 import java.util.Hashtable;
+import java.util.Vector;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
@@ -132,6 +133,33 @@ public class MainTable extends CustomTable {
 		addDropdowns();
 	}
 	
+	private void modifyVectorModel(int index){
+		for (Object obj : this.model.getDataVector()) {
+	        Vector obj2 = (Vector) obj;
+	        obj2.add(index, obj2.get(obj2.size()-1));
+	        obj2.remove(obj2.size()-1);
+	        System.out.println(obj2.get(index));
+	        
+	    }
+		int columns = model.getColumnCount();
+		Object[] arr = new Object[columns];
+		
+		for(int i = 0; i<model.getColumnCount(); i++){
+			arr[i] = model.getColumnName(i);
+		}
+		
+		Object temp = arr[columns-1];
+		Object[] result = new Object[arr.length];
+	    for(int i = 0; i < index; i++)
+	        result[i] = arr[i];
+	    result[index] = temp;
+	    for(int i = index + 1; i < arr.length; i++)
+	        result[i] = arr[i - 1];
+	    
+		
+		model.setColumnIdentifiers(result);
+	}
+	
 	public void calculateConcentrations(Date key) {
 		String wavelength = controller.getCalibrationData(key).getWavelength();
 		int absorbanceIndex = controller.getAbsorbanceColumnIndex(wavelength);
@@ -154,8 +182,9 @@ public class MainTable extends CustomTable {
 				//move column to desired place
 				
 				int insertPosition = absorbanceIndex+controller.getNumberWorkingConcentrations(absorbanceIndex);
-				
 				getColumnModel().moveColumn(getColumnCount()-1, insertPosition);
+				modifyVectorModel(insertPosition);
+				
 			} else { 
 				JOptionPane.showMessageDialog(null, Strings.ERROR_COCENTRATION_EXISTS);
 			}
