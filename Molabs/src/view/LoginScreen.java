@@ -81,28 +81,7 @@ public class LoginScreen extends JFrame {
 		btnLogIn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				String username = txtUsername.getText();
-				String password = txtPassword.getText();
-				DB db = DB.getInstance(username, password);
-				String result = db.validateUser();
-				if(result != null){
-					if(result.equals("owner")){
-						new MainWindow(username + " (owner)").setVisible(true);
-					}
-					else if(result.equals("admin")){
-						new MainWindow(username + " (admin)").setVisible(true);
-					}
-					else if(result.equals("user")){
-						new MainWindow(username + " (user)").setVisible(true);
-					}
-					dispose();
-				}
-				else{
-					JOptionPane.showMessageDialog(null, "Combination of username and password incorrect.");
-				}
-
-				
-
+				validateEntry();
 			}
 		});
 		btnLogIn.setBorderPainted(false);
@@ -159,7 +138,24 @@ public class LoginScreen extends JFrame {
 	
 	
 	public void validateEntry(){
-		new MainWindow("Aqui iria el username").setVisible(true);
-		dispose();
+		String username = txtUsername.getText();
+		String password = txtPassword.getText();
+		DB db = DB.getInstance(username, password);
+		String result = db.validateUser();
+		if(result != null){
+			if(result.equals("owner")){
+				new MainWindow(username + " (owner)").setVisible(true);
+			}
+			else if(result.equals("admin")){
+				new MainWindow(username + " (admin)").setVisible(true);
+			}
+			else if(result.equals("user")){
+				new MainWindow(username + " (user)").setVisible(true);
+			}
+			dispose();
+		}
+		else{
+			JOptionPane.showMessageDialog(null, "Combination of username and password incorrect.");
+		}
 	}
 }
