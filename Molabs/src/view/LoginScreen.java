@@ -33,6 +33,9 @@ public class LoginScreen extends JFrame {
 		getContentPane().setBackground(new Color(204, 204, 204));
 		
 		initComponents();
+		
+		txtUsername.addKeyListener(new EnterKeyLogIn(this));
+		txtPassword.addKeyListener(new EnterKeyLogIn(this));
 	}
 	private void initComponents(){
 		
@@ -71,14 +74,14 @@ public class LoginScreen extends JFrame {
 		btnLogIn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				new MainWindow("Aqui iria el username").setVisible(true);
-				dispose();
+				validateEntry();
 			}
 		});
 		btnLogIn.setBorderPainted(false);
 		btnLogIn.setFont(new Font("Roboto Medium", Font.BOLD, 20));
 		btnLogIn.setBackground(new Color(247,163,94));
 		btnLogIn.setForeground(Color.WHITE);
+		this.addKeyListener(new EnterKeyLogIn(this));
 		
 //----------------------Layout-----------------------------------------------------------------------
 		
@@ -121,5 +124,14 @@ public class LoginScreen extends JFrame {
 //----------------------------------------Ends Layout-------------------------------------------------------------------
 		
 		getContentPane().setLayout(groupLayout);
+	}
+	
+	
+	
+	
+	
+	public void validateEntry(){
+		new MainWindow("Aqui iria el username").setVisible(true);
+		dispose();
 	}
 }
