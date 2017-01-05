@@ -13,7 +13,7 @@ public class EnterKeyLogIn extends KeyAdapter {
 	
     @Override 
     public void keyReleased(KeyEvent event) {
-    	System.out.println("here");
+    	
         if (event.getKeyCode()==KeyEvent.VK_ENTER) {
         	
         	window.validateEntry();
