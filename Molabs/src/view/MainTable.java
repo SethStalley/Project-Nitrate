@@ -350,11 +350,7 @@ public class MainTable extends CustomTable {
 		
 		//centers cells
 		
-		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-		for(int x=0;x<getColumnCount();x++){
-	         getColumnModel().getColumn(x).setCellRenderer( centerRenderer );
-	        }
+		centerCells();
 		
 		//resets date format
 		this.getColumnModel().getColumn(DATE_INDEX).setCellRenderer(new CellRenderDateAsYYMMDD());
@@ -372,7 +368,6 @@ public class MainTable extends CustomTable {
 		
     			this.addColumnSelectionInterval(0, Strings.CONCENTRATION_COLUMN_INDEX);
     			absorbanceIndex = controller.getAbsorbanceColumnIndex(wavelength);
-    			System.out.println(absorbanceIndex);
     			this.addColumnSelectionInterval(absorbanceIndex, absorbanceIndex);
 			}
 		}

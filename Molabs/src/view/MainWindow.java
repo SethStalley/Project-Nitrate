@@ -530,6 +530,13 @@ public class MainWindow extends JFrame {
         });
 		calibrationTable.getTableHeader().setReorderingAllowed(false);
 		
+		calibrationTable.addMouseListener(new java.awt.event.MouseAdapter() {
+		    @Override
+		    public void mouseClicked(java.awt.event.MouseEvent evt) {
+		        scrollPaneCalibration.repaint();
+		        }
+		    });
+		
 		scrollPaneCalibration.setViewportView(calibrationTable);
 		
 		//Remove Calibration Button
