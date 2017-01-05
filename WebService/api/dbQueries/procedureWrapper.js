@@ -41,7 +41,7 @@ module.exports = {
             if (procedures[procedureName]) {
                 var templateParameters = procedures[procedureName].parameters
                 
-                var query = "CALL trackdb."
+                var query = "CALL molabsdb."
                 query += procedureName
                 query += parametersAsString(templateParameters, req.query)
                 console.log(query)
