@@ -64,10 +64,8 @@ public class SortableJTableModel extends DefaultTableModel{
     }
 	
 	public void removeColumn(int column) {
-		System.out.println(columnIdentifiers.get(column));
         columnIdentifiers.remove(column);
         for (Object row: dataVector) {
-        	System.out.println(((Vector) row).get(column));
             ((Vector) row).remove(column);
         }
         fireTableStructureChanged();

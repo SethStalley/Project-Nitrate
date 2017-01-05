@@ -4,10 +4,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -20,8 +18,6 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -29,6 +25,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.text.JTextComponent;
 
 import controller.Controller;
+import model.Calibration;
 import model.WorkingWavelength;
 import validation.Validation;
 import values.Strings;
@@ -78,25 +75,21 @@ public class MainTable extends CustomTable {
 		this.getColumnModel().getColumn(TIME_INDEX).setCellRenderer(new CellRenderDateAsTimeOfDay());
 		
 		//fill out absorbance values
-		Hashtable<Integer, WorkingWavelength> waveLengths = controller.getMainTableWavelengths();
+		ArrayList<WorkingWavelength> waveLengths = controller.getMainTableWavelengths();
 		
-		Enumeration<Integer> keys = waveLengths.keys();
-		
-		while(keys.hasMoreElements()) {
-			Integer column = keys.nextElement();
-			WorkingWavelength wavelength = waveLengths.get(column);
-			String absorbance = controller.getAbsorbance(wavelength.getWavelength(), (Date) getValueAt(getRowCount()-1, DATE_INDEX));
-			
+		int column = Strings.CONCENTRATION_COLUMN_INDEX+1;
+		for(WorkingWavelength ww: waveLengths) {
+			String absorbance = controller.getAbsorbance(ww.getWavelength(), (Date) getValueAt(getRowCount()-1, DATE_INDEX));
+	
 			if (absorbance != null) {
 				this.setValueAt(absorbance, getRowCount()-1, column);
+				column++;
 			
 				//add concentration columns
-				Enumeration<Integer> concentrationKeys = wavelength.getWokringConcentrationColumns().keys();
-				while (concentrationKeys.hasMoreElements()) {
-					column = concentrationKeys.nextElement();
-					Double concentrationValue = wavelength.getWokringConcentrationColumns().get(column).getConcentration( Double.parseDouble(absorbance));
-		
+				for (Calibration cal : ww.getWokringConcentrationColumns()) {
+					Double concentrationValue = cal.getConcentration( Double.parseDouble(absorbance));
 					this.setValueAt(new DecimalFormat("#.######").format(concentrationValue), getRowCount()-1, column);
+					column++;
 				}
 			}
 		}
@@ -141,7 +134,6 @@ public class MainTable extends CustomTable {
 	
 	public void calculateConcentrations(Date key) {
 		String wavelength = controller.getCalibrationData(key).getWavelength();
-		System.out.println(wavelength);
 		int absorbanceIndex = controller.getAbsorbanceColumnIndex(wavelength);
 		
 		if (absorbanceIndex > 0) {
@@ -152,17 +144,18 @@ public class MainTable extends CustomTable {
 				for(String absorbance : listAbsorbance){
 					Double absorbanceValue = Double.parseDouble(absorbance);
 					Double concentrationValue = controller.getConcentration(key, absorbanceValue);
-					
 					concentrations.add(new DecimalFormat("#.######").format(concentrationValue));
 				}
 			
 				addColumn("Concentration("+wavelength+")",
 						concentrations.toArray());
 				
+				controller.addWorkingConcentration(absorbanceIndex,key);
 				//move column to desired place
-				getColumnModel().moveColumn(getColumnCount()-1, absorbanceIndex+controller.getNumberWorkingConcentrations(absorbanceIndex)+1);
-				controller.addWorkingCalibration(absorbanceIndex,key);
 				
+				int insertPosition = absorbanceIndex+controller.getNumberWorkingConcentrations(absorbanceIndex);
+				
+				getColumnModel().moveColumn(getColumnCount()-1, insertPosition);
 			} else { 
 				JOptionPane.showMessageDialog(null, Strings.ERROR_COCENTRATION_EXISTS);
 			}
@@ -201,7 +194,7 @@ public class MainTable extends CustomTable {
 			this.addColumn("Absorbance("+wavelength+")", absorbances.toArray());
 			
 			//save this as a working wavelength in model
-			controller.addWorkingWavelength(this.getColumnCount()-1, wavelength);
+			controller.addWorkingWavelength(wavelength);
 		}
 		else{
 			JOptionPane.showMessageDialog(null, message);
@@ -330,7 +323,6 @@ public class MainTable extends CustomTable {
 		//resets date format
 		this.getColumnModel().getColumn(DATE_INDEX).setCellRenderer(new CellRenderDateAsYYMMDD());
 		this.getColumnModel().getColumn(TIME_INDEX).setCellRenderer(new CellRenderDateAsTimeOfDay());
-		
 	}
 	
 	
@@ -398,10 +390,11 @@ public class MainTable extends CustomTable {
 			}		
 	}
 	
-	@Override
 	public void deleteColumn(int index){
-		model.removeColumn(this.convertColumnIndexToModel(index));
+		index = this.convertColumnIndexToModel(index);
+		super.model.removeColumn(index);
 		resizeColumns();
+		addDropdowns();
 	}
 
 

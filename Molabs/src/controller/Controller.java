@@ -44,7 +44,6 @@ public class Controller {
 		if (success) {
 			graphicInterface.observerRunningColor();
 		} else {
-			System.out.println("here");
 		    graphicInterface.errorStartingObserver();
 		}
 		
@@ -57,8 +56,8 @@ public class Controller {
 		graphicInterface.observerStoppedColor();
 	}
 	
-	public void addWorkingWavelength(int index, String wavelength) {
-		this.mainTable.addWorkingWavelength(index, wavelength);
+	public void addWorkingWavelength(String wavelength) {
+		this.mainTable.addWorkingWavelength(wavelength);
 	}
 	
 	/**
@@ -103,15 +102,7 @@ public class Controller {
 	 * @return int which is column index of the absorbance column 
 	 */
 	public int getAbsorbanceColumnIndex(String wavelength) {
-		Enumeration<Integer> keys = mainTable.getWorkingWaveLengths().keys();
-		while (keys.hasMoreElements() ) {
-			int index = keys.nextElement();
-			
-			if (mainTable.getWorkingWaveLengths().get(index).getWavelength().equals(wavelength)){
-				return index;
-			}
-		}
-		return -1;
+		return mainTable.getAbsorbanceColumnIndex(wavelength);
 	}
 	
 	/**
@@ -119,21 +110,8 @@ public class Controller {
 	 * @param Date of the calibration
 	 * @return boolean
 	 */
-	public boolean concentrationColumnExists(Date key) {
-		Collection<WorkingWavelength> workingWavelengths = mainTable.getWorkingWaveLengths().values();
-		Iterator<WorkingWavelength> iterWorking = workingWavelengths.iterator();
-		
-		while (iterWorking.hasNext() ) {
-			Collection<Calibration> calibrations = iterWorking.next().getWokringConcentrationColumns().values();
-			Iterator<Calibration> iterCalibrations = calibrations.iterator();
-			
-			while(iterCalibrations.hasNext()) {
-				if (iterCalibrations.next().getDate().toString().equals(key.toString()) ) {
-					return true;
-				}
-			}
-		}
-		return false;
+	public boolean concentrationColumnExists(Date key) {		
+		return mainTable.doesConcentrationColumnExist(key);
 	}
 	
 	public boolean removeFile(Date key) {
@@ -144,24 +122,14 @@ public class Controller {
 		return this.calibrationTable.removeCalibration(key);
 	}
 	
-	
-	public void removeWorkingConcentrationColumn(int key) {
-		Collection<WorkingWavelength> workingColleciton = this.mainTable.getWorkingWaveLengths().values();
-		Iterator<WorkingWavelength> iterWorking = workingColleciton.iterator();
-		
-		while (iterWorking.hasNext()) {
-			WorkingWavelength workingWavelength = iterWorking.next();
-			
-			boolean success = workingWavelength.removeWorkingCalibration(key);
-			
-			if(success) {
-				break;
-			}
-		}
-		
+	public void removeAbsorbanceColumn(int key) {
+		WorkingWavelength ww = this.mainTable.getAbsorbanceColumn(key);
+		this.mainTable.removeWorkingWavelength(key);
+		graphicInterface.delteAbsorbanceMainTable(key, ww.getNumOfConcentrations());
 	}
+	
 	public void removeConcentrationColumn(int key){
-		removeWorkingConcentrationColumn(key);
+		this.mainTable.removeWorkingConcentrationColumn(key);
 		graphicInterface.deleteColumnMainTable(key);
 	}
 	
@@ -198,21 +166,20 @@ public class Controller {
 		graphicInterface.calculateConcentrations(key);
 	}
 	
-	public boolean addWorkingCalibration(int absorbanceKey, Date calibrationKey){
+	public boolean addWorkingConcentration(int absorbanceKey, Date calibrationKey){
 		Calibration cal = calibrationTable.getCalibration(calibrationKey);
-		WorkingWavelength wavelength = this.mainTable.getWorkingWaveLengths().get(absorbanceKey);
-		
-		if (cal != null && wavelength != null) {
-			wavelength.addWorkingConcentration(cal);			
-		}
-		return false;
+		return mainTable.addWorkingConcentration(absorbanceKey, cal);
 	}
 	
+	/**
+	 * @param absorbanceIndex
+	 * @return int number of concentration columns that correspond to an absorbency column
+	 */
 	public int getNumberWorkingConcentrations(int absorbanceIndex) {
-		WorkingWavelength workingWavelength = this.mainTable.getWorkingWaveLengths().get(absorbanceIndex);
+		WorkingWavelength ww = mainTable.getAbsorbanceColumn(absorbanceIndex);
 		
-		if (workingWavelength != null) {
-			return workingWavelength.getNumOfConcentrations();
+		if (ww != null) {
+			return ww.getNumOfConcentrations();
 		}
 		return -1;
 	}
@@ -227,7 +194,7 @@ public class Controller {
 		return calibrationTable.getCalibration(index).getConcentration(absorbance);
 	}
 
-	public Hashtable<Integer, WorkingWavelength> getMainTableWavelengths() {
+	public ArrayList<WorkingWavelength> getMainTableWavelengths() {
 		return mainTable.getWorkingWaveLengths();
 	}
 	

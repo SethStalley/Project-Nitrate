@@ -1,23 +1,19 @@
 package model;
 
-import java.util.Hashtable;
+import java.util.ArrayList;
 
 public class WorkingWavelength {
-	private int absorbanceIndex;
 	private String wavelength;
-	Hashtable<Integer, Calibration> workingConcentrationColumns;
+	ArrayList<Calibration> workingConcentrationColumns;
 	
-	public WorkingWavelength(int absorbanceIndex, String wavelength) {
-		this.workingConcentrationColumns = new Hashtable<Integer,Calibration>();
+	public WorkingWavelength(String wavelength) {
+		this.workingConcentrationColumns = new ArrayList<Calibration>();
 		this.wavelength = wavelength;
-		this.absorbanceIndex = absorbanceIndex;
 	}
 	
-	public boolean addWorkingConcentration(Calibration calibration) {
-		int insertIndex = absorbanceIndex + workingConcentrationColumns.size() + 1;
-		
-		if (!this.workingConcentrationColumns.contains(insertIndex)) {
-			this.workingConcentrationColumns.put(insertIndex, calibration);
+	public boolean addWorkingConcentration(Calibration calibration) {		
+		if (!this.workingConcentrationColumns.contains(calibration)) {
+			this.workingConcentrationColumns.add(calibration);
 			return true;
 		}
 		return false;
@@ -27,14 +23,13 @@ public class WorkingWavelength {
 		return this.workingConcentrationColumns.get(index);
 	}
 	
-	public Hashtable<Integer, Calibration> getWokringConcentrationColumns() {
+	public ArrayList<Calibration> getWokringConcentrationColumns() {
 		return this.workingConcentrationColumns;
 	}
 	
-	public boolean removeWorkingCalibration(int index) {
-		if (this.workingConcentrationColumns.containsKey(index)) {
+	public boolean removeWorkingConcentration(int index) {
+		if (this.workingConcentrationColumns.get(index) != null) {
 			this.workingConcentrationColumns.remove(index);
-			System.out.println("entro");
 			return true;
 		}
 		return false;
@@ -46,7 +41,6 @@ public class WorkingWavelength {
 	
 	public int getNumOfConcentrations() {
 		return this.workingConcentrationColumns.size();
-	}
-	
+	}	
 	
 }

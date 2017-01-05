@@ -95,9 +95,7 @@ public abstract class CustomTable extends JTable {
 	
 	public abstract void actionButton(); //calibrate or calculate calibration
 	
-	public void deleteColumn(int index){
-		model.removeColumn(index);
-	}
+	
 	public String getSelectedHeader(int index){
 		return (String)this.getColumnModel().getColumn(index).getHeaderValue();
 	}

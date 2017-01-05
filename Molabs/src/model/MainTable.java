@@ -1,17 +1,20 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
 
+import values.Strings;
+
 
 public class MainTable extends JSON_Exportable{
-	
+	private int absorbanceStartColumn = Strings.CONCENTRATION_COLUMN_INDEX+1;
 	private Hashtable<Date,TextFile> files;
-	private Hashtable<Integer, WorkingWavelength> workingWavelength;
+	private ArrayList<WorkingWavelength> workingWavelength;
 	
 	public MainTable() {
 		this.files = new Hashtable<Date,TextFile>();
-		this.workingWavelength = new Hashtable<Integer, WorkingWavelength>();
+		this.workingWavelength = new ArrayList<>();
 	}
 	
 	/*
@@ -37,31 +40,47 @@ public class MainTable extends JSON_Exportable{
 		return this.files.put(date, file) == null;
 	}
 	
-	public boolean addWorkingWavelength(int index, String wavelength) {
-		if (!this.workingWavelength.contains(index)) {
-			this.workingWavelength.put(index, new WorkingWavelength(index, wavelength));
-			return true;
+	public void addWorkingWavelength(String wavelength) {
+		this.workingWavelength.add(new WorkingWavelength(wavelength));
+	}
+	
+	public boolean removeWorkingConcentrationColumn(int column) {
+		column %= absorbanceStartColumn;
+		
+		for (int i=0; i<workingWavelength.size();i++) {
+			column--;
+			WorkingWavelength ww = workingWavelength.get(i);
+			int numColumns = ww.workingConcentrationColumns.size();
+			if (numColumns +i< column) {
+				column -= numColumns;
+				continue;
+			} else{
+				ww.workingConcentrationColumns.remove(column);
+				return true;
+			}
 		}
+	
 		return false;
 	}
 	
 	public boolean removeWorkingWavelength(int index) {
-		if(this.workingWavelength.contains(index)) {
-			this.workingWavelength.remove(index);
-			return true;
+		WorkingWavelength ww = getWorkingWavelengthFromViewIndex(index);
+		
+		if (ww != null) {
+			workingWavelength.remove(ww);
 		}
 		return false;
 	}
+	
 	public boolean checkForWorkingWavelength(String wavelength){
-		for(WorkingWavelength ww : this.workingWavelength.values()){
+		for(WorkingWavelength ww : this.workingWavelength){
 			if (ww.getWavelength().equals(wavelength)){
 				return true;
 			}
 		}
 		return false;
 	}
-	
-	
+
 	
 	public Hashtable<Date,TextFile> getAllFiles() {
 		return this.files;
@@ -71,8 +90,64 @@ public class MainTable extends JSON_Exportable{
 		return this.files.get(dateKey);
 	}
 	
-	public Hashtable<Integer, WorkingWavelength> getWorkingWaveLengths() {
+	public ArrayList<WorkingWavelength> getWorkingWaveLengths() {
 		return this.workingWavelength;
 	}
 
+	public boolean addWorkingConcentration(int absorbanceKey, Calibration cal) {
+		WorkingWavelength wavelength = getWorkingWavelengthFromViewIndex(absorbanceKey);
+		
+		if (cal != null && wavelength != null) {
+			wavelength.addWorkingConcentration(cal);
+			return true;
+		}
+		return false;
+	}
+	
+	private WorkingWavelength getWorkingWavelengthFromViewIndex(int viewIndex) {
+		viewIndex %= absorbanceStartColumn;
+		
+		for (int i=0; i<workingWavelength.size(); i++){
+			WorkingWavelength ww = workingWavelength.get(i);
+			
+			if (i == viewIndex) {
+				return ww;
+			}
+			
+			viewIndex -= ww.getNumOfConcentrations();
+		}
+	
+		return null;
+	}
+
+	public int getAbsorbanceColumnIndex(String wavelength) {
+		int result = absorbanceStartColumn;
+		
+		for (int i=0 ;i<workingWavelength.size();i++) {
+			WorkingWavelength ww = workingWavelength.get(i);
+			if (ww.getWavelength().endsWith(wavelength)) {
+				return i + result;
+			}
+			
+			result += ww.getNumOfConcentrations();
+		}
+		
+		return -1;
+	}
+
+	public boolean doesConcentrationColumnExist(Date key) {
+		for (WorkingWavelength ww : workingWavelength) {
+			for (Calibration cal : ww.workingConcentrationColumns) {
+				if (cal.getDate().compareTo(key) == 0 ){
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+
+	public WorkingWavelength getAbsorbanceColumn(int absorbanceIndex) {
+		return getWorkingWavelengthFromViewIndex(absorbanceIndex);
+	}
 }

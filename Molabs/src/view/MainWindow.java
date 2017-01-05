@@ -839,6 +839,12 @@ public class MainWindow extends JFrame {
 		((MainTable) mainTable).calculateConcentrations(key);
 	}
 	public void deleteColumnMainTable(int index){
-		mainTable.deleteColumn(index);
+		((MainTable) mainTable).deleteColumn(index);
+	}
+
+	public void delteAbsorbanceMainTable(int key, int numOfConcentrations) {
+		for (int i=key+numOfConcentrations; i>=key; i--) {
+			((MainTable) mainTable).deleteColumn(i);	
+		}	
 	}
 }
