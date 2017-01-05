@@ -22,7 +22,7 @@ public class PopUpMenu extends JPopupMenu {
         	if(type == rightclickIdentifier.CONCENTRATION){
         		deleteConcentration(controller, index);
         	}else{
-        		
+        		deleteAbsorbance(controller, index);
         	}
         }
     }
