@@ -67,6 +67,7 @@ import javax.swing.JTabbedPane;
 public class MainWindow extends JFrame {
 	
 	private Controller controller;
+	private boolean isMaster;
 	
 	//Storage components
 	
@@ -87,7 +88,7 @@ public class MainWindow extends JFrame {
 					  mntmConcentrationGraph, mntmObserver, mntmOpenObserver, mntmCloseObserver, 
 					  mntmAlertValues, mntmExportExcel; //Tools
 	
-	private JMenuItem mntmAddUser, mntmDeleteUser; //Users
+	private JMenuItem mntmAddUser, mntmListUser; //Users
 	private JPanel pnMain;
 	private JButton btnOpenFile, btnAddRow, btnDeleteRow, btnSaveProject, btnConcentration, btnAbsorbance; // first row buttons
 	private JButton btnRemoveCalibration, btnCalibrate; //buttons second row panel
@@ -292,12 +293,18 @@ public class MainWindow extends JFrame {
 		mntmAddUser.addActionListener(new java.awt.event.ActionListener() {
 	        @Override
 	        public void actionPerformed(java.awt.event.ActionEvent evt) {
-	           CreateUser.getInstance(controller).setVisible(true);
+	           new CreateUser(controller,false,false).setVisible(true); ///////////////////////master alambrado por ahora que no hay users.
 	        }
 	    });
 		
-		mntmDeleteUser = new JMenuItem("Delete User");
-		setMenuItemProperties(mntmDeleteUser, mnUsers);
+		mntmListUser = new JMenuItem("List Users");
+		setMenuItemProperties(mntmListUser, mnUsers);
+		mntmListUser.addActionListener(new java.awt.event.ActionListener() {
+	        @Override
+	        public void actionPerformed(java.awt.event.ActionEvent evt) {
+	           new ListUsers(controller,false).setVisible(true); ///////////////////////master alambrado por ahora que no hay users.
+	        }
+	    });
 		
 	}
 	private void setMenu(){

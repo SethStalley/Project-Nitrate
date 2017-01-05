@@ -24,6 +24,8 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicBorders.RadioButtonBorder;
 
 import controller.Controller;
@@ -38,15 +40,14 @@ import java.awt.Component;
 public class CreateUser extends JFrame {
 	private JButton btnExit, btnCreate;
 	private Controller controller;
-	private static CreateUser instance = null;
 	private JTextField txtUsername, txtName, txtEmail, txtPhone;
 	private JPasswordField txtPassword, txtConfirmPassword;
 	private ButtonGroup radioGroup;
 	private JRadioButton rdbtnUser, rdbtnAdmin;
 	private JLabel lblPhone,lblUsername, lblPassword, lblConfirmPassword, lblName, lblEmail, lblType; 
+	private JRadioButton rdbtnMaster;
 	
-	public CreateUser( Controller controller) {
-		instance = this;
+	public CreateUser( Controller controller, boolean admin, boolean update) {
 		this.controller = controller;
 		setMinimumSize(new Dimension(500, 360));
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MainWindow.class.getResource("/Resources/Icon.png")));
@@ -54,14 +55,12 @@ public class CreateUser extends JFrame {
 		setLocationRelativeTo(null);
 		getContentPane().setBackground(new Color(Preferences.WINDOW_NORMAL_RGB));
 		initComponents();
-	}
-	
-	public static CreateUser getInstance(Controller controller) {
-		if (instance == null) {
-			return new CreateUser(controller);
+		if(admin){
+			setAdminValues();
 		}
-		
-		return instance;
+		if(update){
+			setUpdateValues();
+		}
 	}
 	
 	private void initComponents(){
@@ -70,6 +69,7 @@ public class CreateUser extends JFrame {
 		
 		txtUsername = new JTextField();
 		txtUsername.setColumns(10);
+		txtUsername.getDocument().addDocumentListener(setCreateButton());
 
 		
 		lblPassword = new JLabel("Password: ");
@@ -77,20 +77,22 @@ public class CreateUser extends JFrame {
 		
 		txtPassword = new JPasswordField();
 		txtPassword.setColumns(10);
+		txtPassword.getDocument().addDocumentListener(setCreateButton());
 		
 		lblConfirmPassword = new JLabel("Confirm Password: ");
 		lblConfirmPassword.setFont(new Font("Roboto Medium", Font.PLAIN, 11));
 		
 		txtConfirmPassword = new JPasswordField();
 		txtConfirmPassword.setColumns(10);
+		txtConfirmPassword.getDocument().addDocumentListener(setCreateButton());
 		
-		lblName = new JLabel("Name: ");
+		lblName = new JLabel("Name (optional): ");
 		lblName.setFont(new Font("Roboto Medium", Font.PLAIN, 11));
 		
 		txtName = new JTextField();
 		txtName.setColumns(10);
 		
-		lblEmail = new JLabel("Email: ");
+		lblEmail = new JLabel("Email (optional): ");
 		lblEmail.setFont(new Font("Roboto Medium", Font.PLAIN, 11));
 		
 		txtEmail = new JTextField();
@@ -99,7 +101,7 @@ public class CreateUser extends JFrame {
 		txtPhone = new JTextField();
 		txtPhone.setColumns(10);
 		
-		lblPhone = new JLabel("Phone: ");
+		lblPhone = new JLabel("Phone (optional): ");
 		lblPhone.setFont(new Font("Roboto Medium", Font.PLAIN, 11));
 		
 		rdbtnUser = new JRadioButton("User");
@@ -128,6 +130,7 @@ public class CreateUser extends JFrame {
 				}
 			}
 		});
+		btnCreate.setVisible(false);
 		
 		btnExit = new GenericRoundedButton("Exit");
 		setButtonProperties(btnExit);
@@ -138,6 +141,9 @@ public class CreateUser extends JFrame {
 				dispose();
 			}
 		});
+		
+		rdbtnMaster = new JRadioButton("Master");
+		rdbtnMaster.setBackground(new Color(204, 204, 204));
 		
 		
 //------------------------------Layout-----------------------------------------------------------------------
@@ -158,20 +164,19 @@ public class CreateUser extends JFrame {
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(txtName, GroupLayout.PREFERRED_SIZE, 184, GroupLayout.PREFERRED_SIZE)
 						.addComponent(txtConfirmPassword, GroupLayout.PREFERRED_SIZE, 184, GroupLayout.PREFERRED_SIZE)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(txtUsername, GroupLayout.PREFERRED_SIZE, 184, GroupLayout.PREFERRED_SIZE)
-							.addGap(57))
+						.addComponent(txtUsername, GroupLayout.PREFERRED_SIZE, 184, GroupLayout.PREFERRED_SIZE)
 						.addComponent(txtPassword, GroupLayout.PREFERRED_SIZE, 184, GroupLayout.PREFERRED_SIZE)
 						.addComponent(txtEmail, GroupLayout.PREFERRED_SIZE, 184, GroupLayout.PREFERRED_SIZE)
 						.addComponent(txtPhone, GroupLayout.PREFERRED_SIZE, 184, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(rdbtnUser)
-							.addGap(40)
-							.addComponent(rdbtnAdmin, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addGap(160)))
-					.addContainerGap())
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(rdbtnAdmin, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(rdbtnMaster, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(65, Short.MAX_VALUE))
 				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap(289, Short.MAX_VALUE)
+					.addContainerGap(277, Short.MAX_VALUE)
 					.addComponent(btnCreate, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(btnExit, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)
@@ -209,14 +214,15 @@ public class CreateUser extends JFrame {
 							.addGap(18)
 							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 								.addComponent(rdbtnUser)
+								.addComponent(lblType, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
 								.addComponent(rdbtnAdmin)
-								.addComponent(lblType, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)))
+								.addComponent(rdbtnMaster)))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(280)
 							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 								.addComponent(btnCreate, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
 								.addComponent(btnExit, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))))
-					.addContainerGap(16, Short.MAX_VALUE))
+					.addContainerGap(15, Short.MAX_VALUE))
 		);
 		
 //---------------------------------------Ends Layout ------------------------------------------------------------
@@ -252,5 +258,44 @@ public class CreateUser extends JFrame {
 		else
 			JOptionPane.showMessageDialog(null, Strings.ERROR_PASSWORD_CONFIRMATION);
 		return false;
+	}
+	private void setUpdateValues(){
+		btnCreate.setText("Update");
+		
+	}
+	private void setAdminValues(){
+		rdbtnAdmin.setVisible(false);
+		rdbtnMaster.setVisible(false);
+		rdbtnUser.setVisible(false);
+		lblType.setVisible(false);
+	}
+	private DocumentListener setCreateButton(){
+		DocumentListener doc = new DocumentListener() {
+			@Override
+			  public void changedUpdate(DocumentEvent e) {
+			    changed();
+			  }
+			@Override
+			  public void removeUpdate(DocumentEvent e) {
+			    changed();
+			  }
+			@Override
+			  public void insertUpdate(DocumentEvent e) {
+			    changed();
+			  }
+
+			  public void changed() {
+				  String pass1 = new String(txtPassword.getPassword());
+				  String pass2 = new String(txtConfirmPassword.getPassword());
+			     if (txtUsername.getText().equals("") || pass1.equals("") || pass2.equals("")){
+			       btnCreate.setVisible(false);
+			     }
+			     else {
+			       btnCreate.setVisible(true);
+			    }
+
+			  }
+			};
+			return doc;
 	}
 }
