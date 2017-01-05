@@ -21,6 +21,8 @@ public class PopUpMenu extends JPopupMenu {
         }else{
         	if(type == rightclickIdentifier.CONCENTRATION){
         		deleteConcentration(controller, index);
+        	}else{
+        		
         	}
         }
     }
@@ -31,6 +33,17 @@ public class PopUpMenu extends JPopupMenu {
 	      public void actionPerformed(ActionEvent event) {
 				if(confirmDelete(Strings.ALERT_DELETE_COLUMN_CONCENTRATION)){
 					controller.removeConcentrationColumn(index);
+				}
+	      }
+    	});
+        add(anItem);
+    }
+    private void deleteAbsorbance(Controller controller, int index){
+    	anItem = new JMenuItem("Delete Abosrbance");
+    	anItem.addActionListener(new ActionListener() {
+	      public void actionPerformed(ActionEvent event) {
+				if(confirmDelete(Strings.ALERT_DELETE_COLUMN_ABSORBANCE)){
+					controller.removeAbsorbance(index);
 				}
 	      }
     	});

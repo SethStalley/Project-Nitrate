@@ -234,5 +234,9 @@ public class Controller {
 	public boolean checkForWorkingWavelength(String wavelength){
 		return mainTable.checkForWorkingWavelength(wavelength);
 	}
+	
+	public void removeAbsorbance(int key){
+		
+	}
 
 }
