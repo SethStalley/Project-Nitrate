@@ -498,6 +498,12 @@ public class MainWindow extends JFrame {
 		
 		mainTable.getTableHeader().setReorderingAllowed(false);
 		mainTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		mainTable.addMouseListener(new java.awt.event.MouseAdapter() {
+		    @Override
+		    public void mouseClicked(java.awt.event.MouseEvent evt) {
+		        calibrationTable.clearSelection();
+		        }
+		    });
 		
 		mainTablePane.setViewportView(mainTable);		
 		
@@ -518,7 +524,8 @@ public class MainWindow extends JFrame {
 		
 		calibrationTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
         	public void valueChanged(ListSelectionEvent event) {
-        		setlblValues();
+        		 if (!event.getValueIsAdjusting() && calibrationTable.getSelectedRow() != -1)
+        			 setlblValues();
         	}
         });
 		calibrationTable.getTableHeader().setReorderingAllowed(false);
