@@ -47,7 +47,7 @@ public class ListUsers extends JFrame {
 	
 	public ListUsers( Controller controller, boolean admin) {
 		this.controller = controller;
-		setMinimumSize(new Dimension(500, 360));
+		setMinimumSize(new Dimension(585, 360));
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MainWindow.class.getResource("/Resources/Icon.png")));
 		setTitle("MOLABS Users");
 		setLocationRelativeTo(null);
@@ -87,7 +87,7 @@ public class ListUsers extends JFrame {
 		JScrollPane scrollPane = new JScrollPane();
 		userTable = new userTable(new SortableJTableModel(
 				new String[] {
-						"Username","Name","Email","Phone" },0), controller); 
+						"Username","Type","Name","Email","Phone" },0), controller); 
 		userTable.setRowHeight(24);
 		
 		userTable.getTableHeader().setFont(new Font("Roboto Medium", Font.BOLD, 12));
@@ -104,7 +104,7 @@ public class ListUsers extends JFrame {
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap(235, Short.MAX_VALUE)
+					.addContainerGap(307, Short.MAX_VALUE)
 					.addComponent(btnUpdate, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(btnDelete, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)
@@ -113,8 +113,8 @@ public class ListUsers extends JFrame {
 					.addContainerGap())
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(18)
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 444, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(22, Short.MAX_VALUE))
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 533, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(18, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)

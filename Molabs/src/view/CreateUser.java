@@ -142,8 +142,13 @@ public class CreateUser extends JFrame {
 			}
 		});
 		
-		rdbtnMaster = new JRadioButton("Master");
+		rdbtnMaster = new JRadioButton("Owner");
 		rdbtnMaster.setBackground(new Color(204, 204, 204));
+		
+		radioGroup = new ButtonGroup();
+		radioGroup.add(rdbtnAdmin);
+		radioGroup.add(rdbtnUser);
+		radioGroup.add(rdbtnMaster);
 		
 		
 //------------------------------Layout-----------------------------------------------------------------------
