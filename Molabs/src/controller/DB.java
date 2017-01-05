@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.ArrayList;
 
 public class DB {
 	// controls access to database
@@ -36,6 +37,39 @@ public class DB {
 	
 	public String validateUser(){//returns the type of the user if it is correct. Null otherwise
 		return "owner";
+	}
+	
+	public ArrayList<String[]> getUsersForUsername(){
+		ArrayList<String[]> users = new ArrayList<String[]>();
+		return users;
+	}
+	
+	public String createUser(String[] userData){
+		String user = userData[0];
+		String pass = userData[1];
+		String type = userData[2];
+		String name = userData[3];
+		String email = userData[4];
+		String phone = userData[5];
+		
+		return null;
+	}
+	
+	public String updateUser(String[] userData){
+		String newUser = userData[0];
+		String pass = userData[1];
+		String type = userData[2];
+		String name = userData[3];
+		String email = userData[4];
+		String phone = userData[5];
+		String userToUpdate = userData[6];
+		
+		return null;
+	}
+	
+	public String deleteUser(String username){
+		
+		return null;
 	}
 
 }
