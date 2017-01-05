@@ -132,7 +132,7 @@ public class MainWindow extends JFrame {
 	}
 	
 	private void setupKeyAdapters() {
-        //mainTable.addKeyListener(new ExcelAdapter(mainTable));
+        mainTable.addKeyListener(new ExcelAdapter(mainTable));
 	}
 	
 //----------------------initial setup of components section-------------------------------------------------------
@@ -529,6 +529,13 @@ public class MainWindow extends JFrame {
         	}
         });
 		calibrationTable.getTableHeader().setReorderingAllowed(false);
+		
+		calibrationTable.addMouseListener(new java.awt.event.MouseAdapter() {
+		    @Override
+		    public void mouseClicked(java.awt.event.MouseEvent evt) {
+		        scrollPaneCalibration.repaint();
+		        }
+		    });
 		
 		scrollPaneCalibration.setViewportView(calibrationTable);
 		

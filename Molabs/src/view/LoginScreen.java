@@ -7,9 +7,13 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+
+import controller.DB;
+
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
@@ -17,6 +21,8 @@ import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class LoginScreen extends JFrame {
 	private JTextField txtUsername, txtPassword;
@@ -33,6 +39,9 @@ public class LoginScreen extends JFrame {
 		getContentPane().setBackground(new Color(204, 204, 204));
 		
 		initComponents();
+		
+		txtUsername.addKeyListener(new EnterKeyLogIn(this));
+		txtPassword.addKeyListener(new EnterKeyLogIn(this));
 	}
 	private void initComponents(){
 		
@@ -68,17 +77,18 @@ public class LoginScreen extends JFrame {
 		lblPassword.setFont(new Font("Roboto Medium", Font.PLAIN, 16));
 		
 		btnLogIn= new JButton("Sign In");
+
 		btnLogIn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				new MainWindow("Aqui iria el username").setVisible(true);
-				dispose();
+				validateEntry();
 			}
 		});
 		btnLogIn.setBorderPainted(false);
 		btnLogIn.setFont(new Font("Roboto Medium", Font.BOLD, 20));
 		btnLogIn.setBackground(new Color(247,163,94));
 		btnLogIn.setForeground(Color.WHITE);
+		this.addKeyListener(new EnterKeyLogIn(this));
 		
 //----------------------Layout-----------------------------------------------------------------------
 		
@@ -121,5 +131,31 @@ public class LoginScreen extends JFrame {
 //----------------------------------------Ends Layout-------------------------------------------------------------------
 		
 		getContentPane().setLayout(groupLayout);
+	}
+	
+	
+	
+	
+	
+	public void validateEntry(){
+		String username = txtUsername.getText();
+		String password = txtPassword.getText();
+		DB db = DB.getInstance(username, password);
+		String result = db.validateUser();
+		if(result != null){
+			if(result.equals("owner")){
+				new MainWindow(username + " (owner)").setVisible(true);
+			}
+			else if(result.equals("admin")){
+				new MainWindow(username + " (admin)").setVisible(true);
+			}
+			else if(result.equals("user")){
+				new MainWindow(username + " (user)").setVisible(true);
+			}
+			dispose();
+		}
+		else{
+			JOptionPane.showMessageDialog(null, "Combination of username and password incorrect.");
+		}
 	}
 }

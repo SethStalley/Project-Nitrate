@@ -7,9 +7,15 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -19,17 +25,25 @@ import values.Strings;
 import values.rightclickIdentifier;
 
 public class CalibrationTable extends CustomTable {
+	
+	ButtonGroup activeGroup;
 
 	public CalibrationTable(SortableJTableModel model, Controller controller) {
 		super(model, controller);
+		activeGroup = new ButtonGroup();
+		TableColumn typeColumn = getColumnModel().getColumn(Strings.STATUS_COLUMN_INDEX);
+		typeColumn.setCellRenderer(new RadioButtonRenderer());
+    	typeColumn.setCellEditor(new RadioButtonEditor(new JCheckBox()));
 	}
 
 	@Override
 	public void addRow(Object pCalibration) {
 		Calibration calibration = (Calibration) pCalibration;
-			
+		JRadioButton radio = new JRadioButton("");
+		radio.setHorizontalAlignment(JRadioButton.CENTER);
+		activeGroup.add(radio);
 	    ((DefaultTableModel) getModel()).addRow(
-	    		new Object[]{"",calibration.getDate(), calibration.getWavelength()});
+	    		new Object[]{radio,calibration.getDate(), calibration.getWavelength()});
 	    
 	    //render date format gui. That way Cell still holds a Date object.
 	    this.getColumnModel().getColumn(DATE_INDEX).setCellRenderer(new CellRenderDateAsYYMMDD_TIME());
@@ -42,8 +56,8 @@ public class CalibrationTable extends CustomTable {
 	    DefaultTableModel model = (DefaultTableModel) getModel();
 	    Boolean control = true;
 	    for(int row = 0; row < this.model.getRowCount(); row++){
-			String status = (String) this.model.getValueAt(row, Strings.STATUS_COLUMN_INDEX);
-	    	if(status.equals("Active")){
+			JRadioButton status = (JRadioButton) this.model.getValueAt(row, Strings.STATUS_COLUMN_INDEX);
+	    	if(status.isSelected()){
 	    		Date key = (Date) getValueAt(row, Strings.CALIBRATIONTABLE_COLUMN_DATE);
 	    		controller.calculateConcentrations(key);
 	    		control = false;
@@ -57,16 +71,27 @@ public class CalibrationTable extends CustomTable {
 
 	@Override
 	public void addDropdowns() {
+		
 		TableColumn typeColumn = getColumnModel().getColumn(Strings.STATUS_COLUMN_INDEX);
-	    
-    	JComboBox<String> comboBox = new JComboBox<String>();
-    	comboBox.addItem(" ");
-    	comboBox.addItem(Strings.ACTIVE);
-    	comboBox.setEditable(true);
-    	comboBox.setFocusable(false);
-    	comboBox.getSelectedItem().toString();
+		typeColumn.setCellRenderer(new RadioButtonRenderer());
+    	typeColumn.setCellEditor(new RadioButtonEditor(new JCheckBox()));
+    	this.getColumnModel().getColumn(DATE_INDEX).setCellRenderer(new CellRenderDateAsYYMMDD_TIME());
     	
-    	typeColumn.setCellEditor(new DefaultCellEditor(comboBox));
+    	
+    	
+	}
+	
+	@Override
+	protected void centerCells(){
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+		for(int x=1;x<getColumnCount();x++){
+	         getColumnModel().getColumn(x).setCellRenderer( centerRenderer );
+	        }
+		
+		//centerRenderer.setHorizontalAlignment(JRadioButton.CENTER); // try of centering the radio button....
+		//getColumnModel().getColumn(0).setCellRenderer( centerRenderer );
+		
 	}
 
 	@Override
