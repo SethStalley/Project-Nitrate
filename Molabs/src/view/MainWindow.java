@@ -807,6 +807,7 @@ public class MainWindow extends JFrame {
 		
 		//highlight rows
 		((MainTable) mainTable).highlightLightRowsRelatedToConcentration(calibration.getWavelength(),calibration.getFileKeys());
+		mainTablePane.repaint();
 	}
 
 

@@ -357,17 +357,28 @@ public class MainTable extends CustomTable {
 	
 	public void highlightLightRowsRelatedToConcentration(String wavelength, ArrayList<Date> keys) {
 		clearSelection();
-		
+		int absorbanceIndex = -1;
 		for (int i=0; i< getRowCount();i++) {
 			Date rowKey = (Date) getValueAt(i, Strings.MAINTABLE_COLUMN_DATE);
 			if (keys.contains(rowKey)) {
 				this.addRowSelectionInterval(i, i);
 		
     			this.addColumnSelectionInterval(0, Strings.CONCENTRATION_COLUMN_INDEX);
-    			int absorbanceIndex = controller.getAbsorbanceColumnIndex(wavelength);
+    			absorbanceIndex = controller.getAbsorbanceColumnIndex(wavelength);
+    			System.out.println(absorbanceIndex);
     			this.addColumnSelectionInterval(absorbanceIndex, absorbanceIndex);
 			}
 		}
+		
+		//paint of column header and selection
+		if(selectedColumn != -1 && this.selectedColumn < this.getColumnModel().getColumnCount()){
+			TableCellRenderer oldHeader = this.getColumnModel().getColumn(0).getHeaderRenderer();
+			
+			this.getColumnModel().getColumn(this.selectedColumn).setHeaderRenderer(oldHeader);
+		}
+		selectedColumn = absorbanceIndex;
+		
+		this.getColumnModel().getColumn(this.selectedColumn).setHeaderRenderer(getSelectedHeaderRenderer());
 	}
 
 
@@ -389,7 +400,6 @@ public class MainTable extends CustomTable {
 	@Override
 	public void leftClickAction(MouseEvent evt) {
 		int selectedColumn = this.columnAtPoint(evt.getPoint());
-		DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
 		
 		//clear last selection
 		if (this.selectedColumn != -1 && this.selectedColumn < this.getColumnModel().getColumnCount()){
@@ -398,18 +408,13 @@ public class MainTable extends CustomTable {
 			this.getColumnModel().getColumn(this.selectedColumn).setHeaderRenderer(oldHeader);
 					
 				}
-				
-			headerRenderer.setBackground(new Color(15, 110, 135));
-		    headerRenderer.setForeground(Color.white); // white foreground
-		    headerRenderer.setFont(new Font("Roboto Medium", Font.BOLD, 14));
-		    headerRenderer.setHorizontalAlignment( JLabel.CENTER );
 		        
 				
 			if (selectedColumn > Strings.CONCENTRATION_COLUMN_INDEX) {
 				this.selectedColumn = selectedColumn;
 				String headerValue = this.getSelectedHeader(this.selectedColumn);
 				if(headerValue.substring(0, 1).equals("A")){
-					this.getColumnModel().getColumn(this.selectedColumn).setHeaderRenderer(headerRenderer);
+					this.getColumnModel().getColumn(this.selectedColumn).setHeaderRenderer(getSelectedHeaderRenderer());
 				}
 				else{
 					this.selectedColumn = -1;
@@ -417,6 +422,15 @@ public class MainTable extends CustomTable {
 			} else {
 				this.selectedColumn = -1;
 			}		
+	}
+	
+	private DefaultTableCellRenderer getSelectedHeaderRenderer(){
+		DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+		headerRenderer.setBackground(new Color(15, 110, 135));
+	    headerRenderer.setForeground(Color.white); // white foreground
+	    headerRenderer.setFont(new Font("Roboto Medium", Font.BOLD, 14));
+	    headerRenderer.setHorizontalAlignment( JLabel.CENTER );
+	    return headerRenderer;
 	}
 	
 	public void deleteColumn(int index){
