@@ -15,7 +15,7 @@ var parametersAsString = function(templateParameters, parametersToAdd) {
             query += "("
         ]
 
-        query += parametersToAdd[templateParameters[i]]
+        query += "'" +parametersToAdd[templateParameters[i]]+ "'"
         
         if(i == templateParameters.length -1) {
             query += ');'
