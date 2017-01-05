@@ -3,8 +3,12 @@ package view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
+import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableModel;
 
@@ -22,6 +26,7 @@ public class userTable extends JTable {
 		this.controller = controller;
 	}
 	
+	
 	private void createTableHeaders() {
 		JTableHeader header = getTableHeader();
         header.setBackground(new Color(236,134,50)); //orange
@@ -29,5 +34,39 @@ public class userTable extends JTable {
         header.setPreferredSize(new Dimension((int) header.getPreferredSize().getWidth(),headerHeigth)); //increase header height
         header.setOpaque(false); //let the table display the header
     }
+	
+	public void loadUsers(ArrayList<String[]> users){
+		for(String[] user : users){
+			addUser(user);
+		}
+	}
+	
+	private void addUser(String[] data){
+		DefaultTableModel model = (DefaultTableModel) this.getModel();
+		
+		model.addRow(new Object[]{data[0], data[1], data[2], data[3], data[4]});
+		setFormat();
+	}
+	public String getSelectedUser(){
+		Integer index = this.getSelectedRow();
+		if (index >= 0){
+			return (String) this.getValueAt(index, 0);
+		}else{
+			return null;
+		}
+	}
+	
+	private void setFormat(){
+			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+			centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+			for(int x=0;x<getColumnCount();x++){
+		         getColumnModel().getColumn(x).setCellRenderer( centerRenderer );
+		    }
+	}
+	public void deleteUser(){
+		Integer index = this.getSelectedRow();
+		((DefaultTableModel)this.getModel()).removeRow(index);
+	}
+	
 
 }

@@ -293,7 +293,7 @@ public class MainWindow extends JFrame {
 		mntmAddUser.addActionListener(new java.awt.event.ActionListener() {
 	        @Override
 	        public void actionPerformed(java.awt.event.ActionEvent evt) {
-	           new CreateUser(controller,false,false).setVisible(true); ///////////////////////master alambrado por ahora que no hay users.
+	           new CreateUser(controller,false,false,"").setVisible(true); ///////////////////////master alambrado por ahora que no hay users.
 	        }
 	    });
 		

@@ -31,6 +31,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicBorders.RadioButtonBorder;
 
 import controller.Controller;
+import controller.DB;
 import values.Preferences;
 import values.Strings;
 
@@ -48,8 +49,10 @@ public class CreateUser extends JFrame {
 	private JRadioButton rdbtnUser, rdbtnAdmin;
 	private JLabel lblPhone,lblUsername, lblPassword, lblConfirmPassword, lblName, lblEmail, lblType; 
 	private JRadioButton rdbtnMaster;
+	private Boolean updateFlag;
+	private String userToUpdate;
 	
-	public CreateUser( Controller controller, boolean admin, boolean update) {
+	public CreateUser( Controller controller, boolean admin, boolean update, String userNameToUpdate) {
 		this.controller = controller;
 		setMinimumSize(new Dimension(500, 360));
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MainWindow.class.getResource("/Resources/Icon.png")));
@@ -57,11 +60,14 @@ public class CreateUser extends JFrame {
 		setLocationRelativeTo(null);
 		getContentPane().setBackground(new Color(Preferences.WINDOW_NORMAL_RGB));
 		initComponents();
+		updateFlag = update;
 		if(admin){
 			setAdminValues();
 		}
 		if(update){
+			userToUpdate = userNameToUpdate;
 			setUpdateValues();
+			setTitle("MOLABS Update User: "  + userNameToUpdate);
 		}
 	}
 	
@@ -125,12 +131,36 @@ public class CreateUser extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(inspectPassword()){
-					String type = getSelectedType();
-					
+							
+					String user = txtUsername.getText();
 					String pass = new String(txtPassword.getPassword());
-					
-					// private JTextField txtUsername, txtName, txtEmail, txtPhone;
-
+					String type = getSelectedType();
+					String name = txtName.getText();
+					String email = txtEmail.getText();
+					String phone = txtPhone.getText();
+					String result = null;
+					String sucessMessage = "Not initialized.";
+					if(!updateFlag){// create user
+						String[] data = {user, pass, type, name, email, phone};
+						result = DB.getInstance().createUser(data);
+						if(result == null){
+							sucessMessage = "User: " + user + " created.";
+						}
+					}
+					else{ // update user
+						String[] data = {user, pass, type, name, email, phone, userToUpdate};
+						result = DB.getInstance().updateUser(data);
+						if(result == null){
+							sucessMessage = "User: " + userToUpdate + " updated.";
+						}
+					}
+					if(result == null){
+						JOptionPane.showMessageDialog(null, sucessMessage);
+						dispose();
+					}
+					else{
+						JOptionPane.showMessageDialog(null, result);
+					}
 				}
 			}
 		});

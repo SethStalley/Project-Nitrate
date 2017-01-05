@@ -27,8 +27,10 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicBorders.RadioButtonBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 
 import controller.Controller;
+import controller.DB;
 import values.Preferences;
 import values.Strings;
 
@@ -54,6 +56,11 @@ public class ListUsers extends JFrame {
 		isAdmin = false; /// por ahorta por que no hay users.
 		getContentPane().setBackground(new Color(Preferences.WINDOW_NORMAL_RGB));
 		initComponents();
+		/*String[] user1 = {"usuario", "owner", "nombre", "email@gmail.com", "1234-1234"};
+		String[] user2 = {"usuario2", "owner2", "nombre2 ","email2@gmail.com", "1234-1234-2"};
+		((view.userTable) userTable).addUser(user1);
+		((view.userTable) userTable).addUser(user2);*/
+		((view.userTable) userTable).loadUsers(DB.getInstance().getUsersForUsername());
 	}
 	
 	private void initComponents(){
@@ -65,8 +72,15 @@ public class ListUsers extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new CreateUser(controller,isAdmin,true).setVisible(true);
-				dispose();
+				// search for user to udpate
+				String userToUpdate = ((view.userTable) userTable).getSelectedUser();
+				if (userToUpdate != null){
+					new CreateUser(controller,isAdmin,true,userToUpdate).setVisible(true);
+					dispose();
+				}
+				else{
+					JOptionPane.showMessageDialog(null, Strings.ERROR_NO_USER_SELECTED);
+				}
 			}
 		});
 		
@@ -81,6 +95,24 @@ public class ListUsers extends JFrame {
 		});
 		
 		btnDelete = new GenericRoundedButton("Delete");
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String userToUpdate = ((view.userTable) userTable).getSelectedUser();
+				if (userToUpdate != null){
+					String result = DB.getInstance().deleteUser(userToUpdate);
+					if(result == null){
+						((view.userTable) userTable).deleteUser();
+						JOptionPane.showMessageDialog(null, "User: " + userToUpdate + " deleted.");
+					}
+					else{
+						JOptionPane.showMessageDialog(null, result);
+					}
+				}
+				else{
+					JOptionPane.showMessageDialog(null, Strings.ERROR_NO_USER_SELECTED);
+				}
+			}
+		});
 		setButtonProperties(btnDelete);
 		btnDelete.addMouseListener(setButtonsListeners(btnDelete));
 		
