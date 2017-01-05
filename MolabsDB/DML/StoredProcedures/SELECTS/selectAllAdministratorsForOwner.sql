@@ -1,6 +1,6 @@
 DELIMITER $$
-DROP PROCEDURE IF EXISTS molabsdb.selectAllAdministrators;$$
-CREATE PROCEDURE molabsdb.selectAllAdministrators(pUserName VARCHAR(45), pPassword VARBINARY(512))
+DROP PROCEDURE IF EXISTS molabsdb.selectAllAdministratorsForOwner;$$
+CREATE PROCEDURE molabsdb.selectAllAdministratorsForOwner(pUserName VARCHAR(45), pPassword VARBINARY(512))
 BEGIN
 
 	-- retruns all public information of a given administrator
@@ -13,9 +13,9 @@ BEGIN
 		SET MESSAGE_TEXT = 'Validación de usuario incorrecta.';
 	END IF;
     
-    SELECT idUser, userName, type, date,completeName, telephoneNumber, email
+    SELECT idUser, userName, type, date,completeName, telephoneNumber, email, createdBy
 		FROM molabsdb.users
-			WHERE type = 'admin';
+			WHERE type = 'admin' AND createdBy = pUserName; -- you can only see your admnistratros
 		
     
 END$$

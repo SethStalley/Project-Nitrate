@@ -1,9 +1,9 @@
 DELIMITER $$
-DROP PROCEDURE IF EXISTS molabsdb.selectAllUsers;$$
-CREATE PROCEDURE molabsdb.selectAllUsers(pUserName VARCHAR(45), pPassword VARBINARY(512))
+DROP PROCEDURE IF EXISTS molabsdb.selectAllUsersForOwner;$$
+CREATE PROCEDURE molabsdb.selectAllUsersForOwner(pUserName VARCHAR(45), pPassword VARBINARY(512))
 BEGIN
 
-	-- retruns all public information of ALL users.
+	-- retruns all public information of ALL users. created by an owner.
     SET @type = (SELECT type
 					FROM molabsdb.users
 						WHERE userName = pUserName AND password = pPassword);
@@ -14,7 +14,8 @@ BEGIN
 	END IF;
     
     SELECT idUser, userName, type, date, createdBy,completeName, telephoneNumber, email
-		FROM molabsdb.users;
+		FROM molabsdb.users
+			WHERE createdBy = pUserName;-- you can only see your users
 		
     
 END$$

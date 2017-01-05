@@ -41,7 +41,7 @@ BEGIN
             userName = IFNULL(pNewUserName, userName),
             email = IFNULL(pEmail, email)
 				WHERE username = pUserNameToUpdate 
-					  AND createdBy = pUserName; -- only if you created this user you can modify it.
+					  AND (createdBy = pUserName OR pUserNameToUpdate = pUsername); -- only if you created this user you can modify it, or is it yourself :)
         
 
     

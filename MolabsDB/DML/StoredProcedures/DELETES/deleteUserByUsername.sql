@@ -27,9 +27,17 @@ BEGIN
         
         DELETE FROM molabsdb.graphs -- deletes graphs of user to be deleted
 			WHERE idUser = @idUserToDelete;
+            
+		DELETE g FROM molabsdb.graphs g INNER JOIN molabsdb.users us ON g.idUser = us.idUser-- deletes graphs of users created by that administrator
+			JOIN molabsdb.users u ON us.createdBy = u.userName
+				WHERE u.createdBy = pUserNameToDelete; -- deletes in case an owner is deleted, and must delete graphs for users of administratros created by that owner
 
         DELETE g FROM molabsdb.graphs g INNER JOIN molabsdb.users u ON g.idUser = u.idUser-- deletes graphs of users created by that administrator
 			WHERE u.createdBy = pUserNameToDelete;
+		
+        DELETE us FROM molabsdb.users u-- deletes users created administrators created by owner to be deleted
+			JOIN molabsdb.users us ON us.createdBy = u.userName
+				WHERE u.createdBy = pUserNameToDelete;
 
         DELETE FROM molabsdb.users -- deletes users created by that administrator
 			WHERE createdBy = pUserNameToDelete;

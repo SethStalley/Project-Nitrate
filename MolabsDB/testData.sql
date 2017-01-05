@@ -1,5 +1,5 @@
-INSERT INTO molabsdb.users(username, password, type, date, completeName, telephoneNumber, email)
-	VALUES('root' , CAST(SHA2('root', 512) AS BINARY), 'owner', NOW(), 'Root Quiros', '6666-6666','root@gmail.com');
+INSERT INTO molabsdb.users(username, password, type, date, completeName, telephoneNumber, email, createdBy)
+	VALUES('root' , CAST(SHA2('root', 512) AS BINARY), 'owner', NOW(), 'Root Quiros', '6666-6666','root@gmail.com','root'); -- this first user is created by himself
 
 CALL molabsdb.insertUser('seth', CAST(SHA2('omg', 512) AS BINARY), 'user', 'Seth Stalley', '1234-5678','seth@hotmail.com',
 	'root' , CAST(SHA2('root', 512) AS BINARY));
