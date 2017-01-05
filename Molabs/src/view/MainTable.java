@@ -189,6 +189,8 @@ public class MainTable extends CustomTable {
 				int insertPosition = absorbanceIndex+controller.getNumberWorkingConcentrations(absorbanceIndex);
 				getColumnModel().moveColumn(getColumnCount()-1, insertPosition);
 				modifyVectorModel(insertPosition);
+				resizeColumns();
+				addDropdowns();
 				
 			} else { 
 				JOptionPane.showMessageDialog(null, Strings.ERROR_COCENTRATION_EXISTS);
