@@ -170,9 +170,14 @@ public class MainTable extends CustomTable {
 				ArrayList<String> listAbsorbance = (ArrayList<String>) getColumnValues(absorbanceIndex);
 				ArrayList<String> concentrations = new ArrayList<String>();
 				for(String absorbance : listAbsorbance){
-					Double absorbanceValue = Double.parseDouble(absorbance);
-					Double concentrationValue = controller.getConcentration(key, absorbanceValue);
-					concentrations.add(new DecimalFormat("#.######").format(concentrationValue));
+					if (absorbance != null){
+						Double absorbanceValue = Double.parseDouble(absorbance);
+						Double concentrationValue = controller.getConcentration(key, absorbanceValue);
+						concentrations.add(new DecimalFormat("#.######").format(concentrationValue));
+					}
+					else{
+						concentrations.add("");
+					}
 				}
 			
 				addColumn("Concentration("+wavelength+")",
