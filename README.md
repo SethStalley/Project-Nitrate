@@ -5,3 +5,7 @@
 * Eclipse Neon
 * Maven
 
+----
+Course: Software Project
+@Instituto Tecnológico de Costa Rica
+
