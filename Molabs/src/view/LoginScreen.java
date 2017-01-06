@@ -32,10 +32,9 @@ public class LoginScreen extends JFrame {
 	private JLabel lblImageIcon, lblUsername, lblPassword;
 	private JButton btnLogIn;
 	
-	
 	public LoginScreen() {
 		setMinimumSize(new Dimension(640, 480));
-		setIconImage(Toolkit.getDefaultToolkit().getImage(MainWindow.class.getResource("/Resources/Icon.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Icon.png")));
 		setTitle("MOLABS");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -61,7 +60,7 @@ public class LoginScreen extends JFrame {
 		//Logo
 		
 		lblImageIcon = new JLabel("");
-		lblImageIcon.setIcon(new ImageIcon(LoginScreen.class.getResource("/resources/Logo.png")));
+		lblImageIcon.setIcon(new ImageIcon(getClass().getResource("/Logo.png")));
 		
 		//Username
 		

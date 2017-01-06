@@ -36,7 +36,7 @@ public class Observer extends JFrame {
 		instance = this;
 		this.controller = controller;
 		setMinimumSize(new Dimension(500, 180));
-		setIconImage(Toolkit.getDefaultToolkit().getImage(MainWindow.class.getResource("/Resources/Icon.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Icon.png")));
 		setTitle("MOLABS Observer");
 		setLocationRelativeTo(null);
 		getContentPane().setBackground(new Color(Preferences.WINDOW_NORMAL_RGB));
