@@ -40,6 +40,8 @@ public class DB {
 		if (instance == null) {
 			instance = new DB(username, password);
 		}
+		instance.username = username;
+		instance.password = password;
 		return instance;
 	}
 	
