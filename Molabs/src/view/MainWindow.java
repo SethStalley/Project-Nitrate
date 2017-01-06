@@ -1,9 +1,7 @@
 package view;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedHashMap;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -11,11 +9,6 @@ import java.awt.Color;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import java.awt.BorderLayout;
-import java.awt.Button;
-
-import javax.swing.JToolBar;
-import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
 import java.awt.Toolkit;
@@ -29,43 +22,31 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
-import java.awt.FlowLayout;
-import javax.swing.JSplitPane;
-import javax.swing.JInternalFrame;
 import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.JLabel;
 import java.awt.Component;
 import java.awt.GridLayout;
-import java.awt.Insets;
+
 
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 
 import controller.Controller;
 import model.Calibration;
-import validation.Validation;
 import values.Preferences;
 import values.Strings;
-import values.rightclickIdentifier;
 
 import javax.swing.JTabbedPane;
 
@@ -138,7 +119,6 @@ public class MainWindow extends JFrame {
 	private void setupKeyAdapters() {
 		excelAdapter = new ExcelAdapter(mainTable);
 		txtWavelength.addKeyListener(new EnterKey(this));
-        mainTable.addKeyListener(excelAdapter);
 	}
 	
 //----------------------initial setup of components section-------------------------------------------------------
@@ -241,12 +221,10 @@ public class MainWindow extends JFrame {
 		setMenuItemProperties(mntmCopyRow, mnEdit);
 		mntmCopyRow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("Copied");
-				excelAdapter.copyToClipboard(false);
+				excelAdapter.pasteFromClipboard();
 			}
 		});
-		mntmCopyRow.setAccelerator(KeyStroke.getKeyStroke("control C"));
-		
+	
 		mntmPasteRow = new JMenuItem("Paste");
 		setMenuItemProperties(mntmPasteRow, mnEdit);
 		mntmPasteRow.addActionListener(new ActionListener() {
@@ -254,7 +232,6 @@ public class MainWindow extends JFrame {
 				excelAdapter.pasteFromClipboard();
 			}
 		});
-		mntmPasteRow.setAccelerator(KeyStroke.getKeyStroke("control V"));
 		
 		mntmDeleteRow = new JMenuItem("Delete Row");
 		setMenuItemProperties(mntmDeleteRow, mnEdit);
@@ -343,7 +320,23 @@ public class MainWindow extends JFrame {
 		
 		//Edit
 		
-		mnEdit = new JMenu("Edit");
+		mnEdit = new JMenu("Edit"){
+			private KeyStroke accelerator;
+
+            @Override
+            public KeyStroke getAccelerator() {
+                return accelerator;
+            }
+
+            @Override
+            public void setAccelerator(KeyStroke keyStroke) {
+                KeyStroke oldAccelerator = accelerator;
+                this.accelerator = keyStroke;
+                repaint();
+                revalidate();
+                firePropertyChange("accelerator", oldAccelerator, accelerator);
+            }
+		};
 		setMenuProperties(mnEdit);
 		
 		//Tools
