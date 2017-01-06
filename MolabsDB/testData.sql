@@ -3,6 +3,9 @@ DELETE FROM molabsdb.users WHERE idUser > 0;
 
 INSERT INTO molabsdb.users(username, password, type, date, completeName, telephoneNumber, email, createdBy)
 	VALUES('root' , CAST(SHA2('root', 512) AS BINARY), 'owner', NOW(), 'Root Quiros', '6666-6666','root@gmail.com', 'root');
+    
+INSERT INTO molabsdb.users(username, password, type, date, completeName, telephoneNumber, email, createdBy)
+	VALUES('Lauranha' , CAST(SHA2('epsilon', 512) AS BINARY), 'owner', NOW(), 'Laura Hernández', '','', 'Lauranha');
 
 CALL molabsdb.insertUser('seth', 'omg', 'user', 'Seth Stalley', '1234-5678','seth@hotmail.com',
 	'root' , 'root');
