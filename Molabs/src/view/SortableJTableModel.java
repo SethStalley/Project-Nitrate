@@ -3,6 +3,7 @@ package view;
 import java.util.Date;
 import java.util.Vector;
 
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import values.Strings;
 
@@ -34,7 +35,6 @@ public class SortableJTableModel extends DefaultTableModel{
 		}
 	}
 	
-	
 	/**
 	 * Override of method to make the jtable cells non-editable unless its the
 	 * concentration row with STD type. True means editable
@@ -47,10 +47,7 @@ public class SortableJTableModel extends DefaultTableModel{
         if(column == Strings.TYPE_COLUMN_INDEX){ //for dropdown
         	return true;
         }else if(column == Strings.CONCENTRATION_COLUMN_INDEX){
-        	Object value = this.getValueAt(row, Strings.TYPE_COLUMN_INDEX);
-        	if(value.toString().equals(Strings.STD))
-        		return true;
-        	return false;
+        	return true;
         }
         else if(column >= Strings.CONCENTRATION_COLUMN_INDEX){
         	Object valueCustom = this.getValueAt(row, 0);
@@ -62,7 +59,7 @@ public class SortableJTableModel extends DefaultTableModel{
         }else return false;
         
     }
-	
+			
 	public void removeColumn(int column) {
         columnIdentifiers.remove(column);
         for (Object row: dataVector) {

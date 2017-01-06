@@ -24,19 +24,6 @@ public class ExcelAdapter extends KeyAdapter {
             this.table = table; 
     } 
 
-    @Override 
-    public void keyReleased(KeyEvent event) { 
-            if (event.isControlDown() || event.isMetaDown()) { 
-                    if (event.getKeyCode()==KeyEvent.VK_C) { // Copy                         
-                            copyToClipboard(false); 
-                    } else if (event.getKeyCode()==KeyEvent.VK_X) { // Cut 
-                            copyToClipboard(true); 
-                    } else if (event.getKeyCode()==KeyEvent.VK_V) { // Paste 
-                            pasteFromClipboard();           
-                    } 
-            } 
-    } 
-
     public void copyToClipboard(boolean isCut) { 
     		cancelEditing();
             int numCols=table.getSelectedColumnCount(); 

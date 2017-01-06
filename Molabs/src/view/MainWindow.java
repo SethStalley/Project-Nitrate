@@ -15,6 +15,7 @@ import java.awt.BorderLayout;
 import java.awt.Button;
 
 import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
 import java.awt.Toolkit;
@@ -41,8 +42,12 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
@@ -236,9 +241,11 @@ public class MainWindow extends JFrame {
 		setMenuItemProperties(mntmCopyRow, mnEdit);
 		mntmCopyRow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Copied");
 				excelAdapter.copyToClipboard(false);
 			}
 		});
+		mntmCopyRow.setAccelerator(KeyStroke.getKeyStroke("control C"));
 		
 		mntmPasteRow = new JMenuItem("Paste");
 		setMenuItemProperties(mntmPasteRow, mnEdit);
@@ -247,6 +254,7 @@ public class MainWindow extends JFrame {
 				excelAdapter.pasteFromClipboard();
 			}
 		});
+		mntmPasteRow.setAccelerator(KeyStroke.getKeyStroke("control V"));
 		
 		mntmDeleteRow = new JMenuItem("Delete Row");
 		setMenuItemProperties(mntmDeleteRow, mnEdit);
@@ -499,7 +507,7 @@ public class MainWindow extends JFrame {
 		
 		mainTable = new MainTable(new SortableJTableModel(
 				new String[] {
-						"Sample", "Date", "Time", "Type","Concentration"},0), controller); 
+						"Sample", "Date", "Time", "Type","STD CONC"},0), controller); 
 		mainTable.setRowHeight(24);
 		
 		mainTable.getTableHeader().setFont(new Font("Roboto Medium", Font.BOLD, 12));

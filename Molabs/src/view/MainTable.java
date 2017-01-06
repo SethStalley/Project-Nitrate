@@ -19,6 +19,8 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -336,7 +338,9 @@ public class MainTable extends CustomTable {
     	typeColumn.setCellEditor(new DefaultCellEditor(comboBox));
 	}
 	private void resizeColumns(){
-		for(int i = 0; i<Strings.NUMBER_DEFAULT_COLUMNS; i++){
+		getColumnModel().getColumn(0).setMinWidth(Strings.DATE_COLUMN_WIDTH);
+		
+		for(int i = 1; i<Strings.NUMBER_DEFAULT_COLUMNS; i++){
 			getColumnModel().getColumn(i).setMinWidth(Strings.DEFAULT_COLUMN_WIDTH);
 		}
 
@@ -424,6 +428,26 @@ public class MainTable extends CustomTable {
 				this.selectedColumn = -1;
 			}		
 	}
+	
+	/**
+	 * Do stuff with data that the user has inserted
+	 */
+	@Override
+	public void setValueAt(Object aValue, int row, int column) {
+		super.setValueAt(aValue, row, column);
+		changeTypeFromInput(aValue, row, column);
+	}
+	
+	private void changeTypeFromInput(Object aValue, int row, int column) {
+		if (column == Strings.CONCENTRATION_COLUMN_INDEX) {
+			if (!aValue.toString().equals("")) {
+				setValueAt(Strings.STD, row, Strings.TYPE_COLUMN_INDEX);
+			} else {
+				setValueAt(Strings.SAMPLE, row, Strings.TYPE_COLUMN_INDEX);
+			}
+		}
+	}
+
 	
 	private DefaultTableCellRenderer getSelectedHeaderRenderer(){
 		DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
