@@ -6,6 +6,6 @@
 * Maven
 
 ----
-Course: Software Project
+Course: Software Project   
 @Instituto Tecnológico de Costa Rica
 
