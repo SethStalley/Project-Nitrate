@@ -12,6 +12,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class DB {
@@ -48,24 +49,25 @@ public class DB {
 	}
 	
 	public String validateUser(){//returns the type of the user if it is correct. Null otherwise
-		HttpClient httpClient = HttpClientBuilder.create().build(); 
+
 		try {
 			// molabsdb.validateUser(pUserName VARCHAR(45), pPassword VARBINARY(512))
 			JSONObject json = new JSONObject();
 		    json.put("pUserName", username);// maybe need quotation ??
 		    json.put("pPassword", password);
+		   
+		    JSONArray jsonA = this.postRequest("validateUser", json);
 		    
+		    JSONObject resultJson =   (JSONObject) (((JSONArray) jsonA.get(0)).get(0));
 		    
-		    JOptionPane.showMessageDialog(null, json.toString());
-		    this.postRequest("validateUser", json);
-		    
+		    return resultJson.getString("type");
 
 		}catch (Exception ex) {
 
-		    JOptionPane.showMessageDialog(null, ex.toString());
+		    //JOptionPane.showMessageDialog(null, ex.toString());
 
 		}
-		return "owner";
+		return null;
 	}
 	
 	public ArrayList<String[]> getUsersForUsername(){
@@ -165,24 +167,31 @@ public class DB {
 		return null;
 	}
 	
-	private JSONObject postRequest(String procedure, JSONObject parameters){
+	private JSONArray postRequest(String procedure, JSONObject parameters){
 		HttpClient httpClient = HttpClientBuilder.create().build(); 
 		try {
 			
 
 		    HttpPost request = new HttpPost(url + procedure);
 		    StringEntity params = new StringEntity(parameters.toString());
-		    request.addHeader("content-type", "application/x-www-form-urlencoded");
+		    request.addHeader("content-type", "application/json");
 		    request.setEntity(params);
 		    HttpResponse response = httpClient.execute(request);
 		    
-		    String jsonn = EntityUtils.toString(response.getEntity());
-		    JOptionPane.showMessageDialog(null, jsonn);
+		    String jsonString = EntityUtils.toString(response.getEntity());
+		    
+		    JSONArray json = new JSONArray(jsonString);
+		    
+		    //JOptionPane.showMessageDialog(null,  (((JSONArray) json.get(0)).get(0).getClass()));
+		    
+		    return  json;
+
+		    
 		    
 
 		}catch (Exception ex) {
 
-		    JOptionPane.showMessageDialog(null, ex.toString());
+		    //JOptionPane.showMessageDialog(null, ex.toString());
 
 		}
 		return null;

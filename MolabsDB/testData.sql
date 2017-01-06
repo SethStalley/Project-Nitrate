@@ -16,7 +16,7 @@ CALL molabsdb.insertUser('admin', 'admin',  'admin', 'Admin Admin', '2222-2222',
 CALL molabsdb.insertUser('josue', 'josue',  'user','Josue Arrieta Salas', '8327-3913','josuearrietasalas@gmail.com',
 	'root' , 'root');
 
-CALL molabsdb.insertUser('user', 'ser',  'user','User User', '1111-1111','user@hotmail.com',
+CALL molabsdb.insertUser('user', 'user',  'user','User User', '1111-1111','user@hotmail.com',
 	'adrian' , 'lopez');
 
 SELECT * FROM molabsdb.users;

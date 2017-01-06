@@ -56,10 +56,10 @@ public class ListUsers extends JFrame {
 		isAdmin = false; /// por ahorta por que no hay users.
 		getContentPane().setBackground(new Color(Preferences.WINDOW_NORMAL_RGB));
 		initComponents();
-		/*String[] user1 = {"usuario", "owner", "nombre", "email@gmail.com", "1234-1234"};
+		String[] user1 = {"usuario", "owner", "nombre", "email@gmail.com", "1234-1234"};
 		String[] user2 = {"usuario2", "owner2", "nombre2 ","email2@gmail.com", "1234-1234-2"};
 		((view.userTable) userTable).addUser(user1);
-		((view.userTable) userTable).addUser(user2);*/
+		((view.userTable) userTable).addUser(user2);
 		((view.userTable) userTable).loadUsers(DB.getInstance().getUsersForUsername());
 	}
 	

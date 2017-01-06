@@ -41,7 +41,7 @@ public class userTable extends JTable {
 		}
 	}
 	
-	private void addUser(String[] data){
+	public void addUser(String[] data){
 		DefaultTableModel model = (DefaultTableModel) this.getModel();
 		
 		model.addRow(new Object[]{data[0], data[1], data[2], data[3], data[4]});
