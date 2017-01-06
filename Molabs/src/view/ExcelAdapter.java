@@ -27,20 +27,18 @@ public class ExcelAdapter extends KeyAdapter {
     @Override 
     public void keyReleased(KeyEvent event) { 
             if (event.isControlDown() || event.isMetaDown()) { 
-                    if (event.getKeyCode()==KeyEvent.VK_C) { // Copy                        
-                            cancelEditing(); 
+                    if (event.getKeyCode()==KeyEvent.VK_C) { // Copy                         
                             copyToClipboard(false); 
                     } else if (event.getKeyCode()==KeyEvent.VK_X) { // Cut 
-                            cancelEditing(); 
                             copyToClipboard(true); 
                     } else if (event.getKeyCode()==KeyEvent.VK_V) { // Paste 
-                            cancelEditing(); 
                             pasteFromClipboard();           
                     } 
             } 
     } 
 
-    private void copyToClipboard(boolean isCut) { 
+    public void copyToClipboard(boolean isCut) { 
+    		cancelEditing();
             int numCols=table.getSelectedColumnCount(); 
             int numRows=table.getSelectedRowCount(); 
             int[] rowsSelected=table.getSelectedRows(); 
@@ -70,7 +68,8 @@ public class ExcelAdapter extends KeyAdapter {
             CLIPBOARD.setContents(sel, sel); 
     } 
 
-    private void pasteFromClipboard() { 
+    public void pasteFromClipboard() { 
+    		cancelEditing();
             int startRow=table.getSelectedRows()[0]; 
             int startCol=table.getSelectedColumns()[0];
 

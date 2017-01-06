@@ -103,6 +103,7 @@ public class MainWindow extends JFrame {
 	private JLabel lblSlopeValue;
 	private JMenu mnUsernameIngresado;
 	
+	private ExcelAdapter excelAdapter;
 	
 	private String username;
 	
@@ -127,12 +128,12 @@ public class MainWindow extends JFrame {
 		setMainTable();
 		setSecondPanel();
 		setMainPanelLayout();
-		
-		txtWavelength.addKeyListener(new EnterKey(this));
 	}
 	
 	private void setupKeyAdapters() {
-        mainTable.addKeyListener(new ExcelAdapter(mainTable));
+		excelAdapter = new ExcelAdapter(mainTable);
+		txtWavelength.addKeyListener(new EnterKey(this));
+        mainTable.addKeyListener(excelAdapter);
 	}
 	
 //----------------------initial setup of components section-------------------------------------------------------
@@ -211,11 +212,16 @@ public class MainWindow extends JFrame {
 			}
 		});
 		
-		mntmPrint = new JMenuItem("Print");
+		mntmPrint = new JMenuItem("Export Graph");
 		setMenuItemProperties(mntmPrint, mnFile);
 		
 		mntmExit = new JMenuItem("Exit");
 		setMenuItemProperties(mntmExit, mnFile);
+		mntmExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
+			}
+		});
 		
 		//Edit
 		mntmAddRow = new JMenuItem("Add Row");
@@ -226,11 +232,21 @@ public class MainWindow extends JFrame {
 			}
 		});
 		
-		mntmCopyRow = new JMenuItem("Copy Row");
+		mntmCopyRow = new JMenuItem("Copy");
 		setMenuItemProperties(mntmCopyRow, mnEdit);
+		mntmCopyRow.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				excelAdapter.copyToClipboard(false);
+			}
+		});
 		
-		mntmPasteRow = new JMenuItem("Paste Row");
+		mntmPasteRow = new JMenuItem("Paste");
 		setMenuItemProperties(mntmPasteRow, mnEdit);
+		mntmPasteRow.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				excelAdapter.pasteFromClipboard();
+			}
+		});
 		
 		mntmDeleteRow = new JMenuItem("Delete Row");
 		setMenuItemProperties(mntmDeleteRow, mnEdit);
