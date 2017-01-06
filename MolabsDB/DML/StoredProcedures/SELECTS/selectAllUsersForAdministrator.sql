@@ -15,7 +15,7 @@ BEGIN
     
     SELECT idUser, userName, type, date,completeName, telephoneNumber, email
 		FROM molabsdb.users
-			WHERE (type = 'user' OR type = 'admin') AND createdBy = pUserName;
+			WHERE ((type = 'user' OR type = 'admin') AND createdBy = pUserName) OR (userName = pUserName);
 		
     
 END$$

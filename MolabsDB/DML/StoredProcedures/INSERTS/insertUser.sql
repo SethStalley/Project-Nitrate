@@ -25,8 +25,7 @@ BEGIN
     
     /* pType must only be: owner | admin | user */
      IF((pType != 'owner') AND (pType != 'admin') AND (pType != 'user')) THEN  /* User defined Errors */
-		 SIGNAL SQLSTATE '45000'
-		 SET MESSAGE_TEXT = 'Tipo de usuario ingresado incorrecto.';
+		 SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Tipo de usuario ingresado incorrecto.';
 	 END IF;
 
     /*DECLARE EXIT HANDLER FOR 1452 BEGIN Foreign Key Error

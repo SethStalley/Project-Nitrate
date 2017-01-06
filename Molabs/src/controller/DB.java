@@ -9,11 +9,14 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import values.Strings;
 
 public class DB {
 	// controls access to database
@@ -35,17 +38,21 @@ public class DB {
 	
 	public static DB getInstance(String username, String password) {
 		if (instance == null) {
-			return new DB(username, password);
+			instance = new DB(username, password);
 		}
 		return instance;
 	}
 	
 	public static DB getInstance(){
 		if (instance == null) {
-			return new DB();
+			instance =  new DB();
 		}
 		
 		return instance;
+	}
+	
+	public String user(){
+		return this.username;
 	}
 	
 	public String validateUser(){//returns the type of the user if it is correct. Null otherwise
@@ -55,14 +62,19 @@ public class DB {
 			JSONObject json = new JSONObject();
 		    json.put("pUserName", username);// maybe need quotation ??
 		    json.put("pPassword", password);
+		    
 		   
-		    JSONArray jsonA = this.postRequest("validateUser", json);
+		    JSONArray jsonA = new JSONArray(this.postRequest("validateUser", json));
 		    
 		    JSONObject resultJson =   (JSONObject) (((JSONArray) jsonA.get(0)).get(0));
 		    
 		    return resultJson.getString("type");
 
-		}catch (Exception ex) {
+		}
+		catch (HttpHostConnectException e){ //not working
+			return Strings.ERROR_NO_INTERNET;
+		}
+		catch (Exception ex) {
 
 		    //JOptionPane.showMessageDialog(null, ex.toString());
 
@@ -80,6 +92,28 @@ public class DB {
 			JSONObject json = new JSONObject();
 		    json.put("pUserName", username);
 		    json.put("pPassword", password);
+		    
+		    JSONArray jsonA = new JSONArray( this.postRequest("selectAllUsersForAdministrator", json));
+		    
+		    JSONArray jsonArray =  (((JSONArray) jsonA.get(0)));
+		    
+		    for(int i = 0; i < jsonArray.length() ; i++){
+		    	JSONObject resultJson = (JSONObject) jsonArray.get(i);
+		    	String userName = resultJson.getString("userName");
+		    	
+		    	if (userName.equals(this.username)){
+		    		String[] allData = {username, "you", resultJson.getString("completeName"),
+			    			resultJson.getString("email") ,resultJson.getString("telephoneNumber")};
+		    		users.add(0, allData);
+		    	}
+		    	else{
+		    		String[] allData = {resultJson.getString("userName"), resultJson.getString("type"), resultJson.getString("completeName"),
+			    			resultJson.getString("email") ,resultJson.getString("telephoneNumber")};
+		    		users.add(allData);
+		    	}
+
+		    }
+		    
 		}
 		catch(Exception e){
 			
@@ -107,14 +141,33 @@ public class DB {
 			json.put("pCompleteName", name);
 			json.put("pTelephoneNumber", phone);
 			json.put("pEmail", email);
-		    json.put("pUserName", username);
-		    json.put("pPassword", password);
+		    json.put("pUserName", this.username);
+		    json.put("pPassword", this.password);
+		    
+		   
+		    //JOptionPane.showMessageDialog(null, jsonA);
+		    
+		    JSONObject resultJson =   new JSONObject(this.postRequest("insertUser", json));
+		    
+	
+		    
+		    if (resultJson.has("code")){
+			    if(resultJson.getString("code").equals("ER_DUP_ENTRY")){
+			    	return Strings.ERROR_USER_REPEATED;
+			    }
+			    else{
+			    	return null;
+			    }
+		    }
+		    else{
+		    	return null;
+		    }
+		    
 		}
 		catch (Exception e){
-			JOptionPane.showMessageDialog(null, e.getMessage());
+			//JOptionPane.showMessageDialog(null, e.getMessage());
 		}
-		
-		return null;
+		return "Error. Please make sure you have internet connection.";
 	}
 	
 	public String updateUser(String[] userData){
@@ -127,6 +180,7 @@ public class DB {
 		String phone = userData[5];
 		String newUserToUpdate = userData[6];
 		
+		
 		try{
 			/*molabsdb.updateUser(pUserNameToUpdate VARCHAR (45), pNewUserName VARCHAR(45), pNewPassword VARBINARY(512), pType VARCHAR(10),
 					pCompleteName VARCHAR(85), pTelephoneNumber VARCHAR(20), pEmail VARCHAR(45),
@@ -137,17 +191,33 @@ public class DB {
 			json.put("pNewUserName", newUser);
 			json.put("pNewPassword", pass);
 			json.put("pType", type);
+			
 			json.put("pCompleteName", name);
 			json.put("pTelephoneNumber", phone);
 			json.put("pEmail", email);
+			
 		    json.put("pUserName", username);
 		    json.put("pPassword", password);
+		    
+		    JSONObject resultJson =   new JSONObject(this.postRequest("updateUser", json));
+	
+		    if (resultJson.has("code")){
+			    if(resultJson.getString("code").equals("ER_DUP_ENTRY")){
+			    	return Strings.ERROR_USER_REPEATED;
+			    }
+			    else{
+			    	return null;
+			    }
+		    }
+		    else{
+		    	return null;
+		    }
 		}
 		catch (Exception e){
-			JOptionPane.showMessageDialog(null, e.getMessage());
+			//JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 		
-		return null;
+		return "Error. Please make sure you have internet connection.";
 	}
 	
 	public String deleteUser(String pUsername){
@@ -158,16 +228,18 @@ public class DB {
 			json.put("pUserNameToDelete", pUsername);
 		    json.put("pUserName", username);
 		    json.put("pPassword", password);
+		    
+		    JSONObject resultJson =   new JSONObject(this.postRequest("deleteUserByUsername", json));
 		}
 		catch(Exception e){
 			
 		}
 		
 		
-		return null;
+		return "Error. Please make sure you have internet connection.";
 	}
 	
-	private JSONArray postRequest(String procedure, JSONObject parameters){
+	private String postRequest(String procedure, JSONObject parameters) throws HttpHostConnectException{
 		HttpClient httpClient = HttpClientBuilder.create().build(); 
 		try {
 			
@@ -180,16 +252,21 @@ public class DB {
 		    
 		    String jsonString = EntityUtils.toString(response.getEntity());
 		    
-		    JSONArray json = new JSONArray(jsonString);
+		    //JOptionPane.showMessageDialog(null, jsonString);
 		    
 		    //JOptionPane.showMessageDialog(null,  (((JSONArray) json.get(0)).get(0).getClass()));
 		    
-		    return  json;
+		    return  jsonString;
 
 		    
 		    
 
-		}catch (Exception ex) {
+		}
+		catch (HttpHostConnectException e){
+			throw e;
+		}
+		
+		catch (Exception ex) {
 
 		    //JOptionPane.showMessageDialog(null, ex.toString());
 

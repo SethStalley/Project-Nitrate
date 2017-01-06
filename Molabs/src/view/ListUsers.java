@@ -49,17 +49,14 @@ public class ListUsers extends JFrame {
 	
 	public ListUsers( Controller controller, boolean admin) {
 		this.controller = controller;
-		setMinimumSize(new Dimension(585, 360));
+		setMinimumSize(new Dimension(715, 360));
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MainWindow.class.getResource("/Resources/Icon.png")));
 		setTitle("MOLABS Users");
 		setLocationRelativeTo(null);
 		isAdmin = false; /// por ahorta por que no hay users.
 		getContentPane().setBackground(new Color(Preferences.WINDOW_NORMAL_RGB));
 		initComponents();
-		String[] user1 = {"usuario", "owner", "nombre", "email@gmail.com", "1234-1234"};
-		String[] user2 = {"usuario2", "owner2", "nombre2 ","email2@gmail.com", "1234-1234-2"};
-		((view.userTable) userTable).addUser(user1);
-		((view.userTable) userTable).addUser(user2);
+
 		((view.userTable) userTable).loadUsers(DB.getInstance().getUsersForUsername());
 	}
 	
@@ -73,10 +70,12 @@ public class ListUsers extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// search for user to udpate
-				String userToUpdate = ((view.userTable) userTable).getSelectedUser();
-				if (userToUpdate != null){
+				String[] userToUpdate = ((view.userTable) userTable).getSelectedUser();
+				if (userToUpdate[0] != null){
+					
 					new CreateUser(controller,isAdmin,true,userToUpdate).setVisible(true);
 					dispose();
+					
 				}
 				else{
 					JOptionPane.showMessageDialog(null, Strings.ERROR_NO_USER_SELECTED);
@@ -97,15 +96,20 @@ public class ListUsers extends JFrame {
 		btnDelete = new GenericRoundedButton("Delete");
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String userToUpdate = ((view.userTable) userTable).getSelectedUser();
+				String userToUpdate[] = ((view.userTable) userTable).getSelectedUser();
 				if (userToUpdate != null){
-					String result = DB.getInstance().deleteUser(userToUpdate);
-					if(result == null){
-						((view.userTable) userTable).deleteUser();
-						JOptionPane.showMessageDialog(null, "User: " + userToUpdate + " deleted.");
+					if (!userToUpdate.equals(DB.getInstance().user())){
+						String result = DB.getInstance().deleteUser(userToUpdate[0]);
+						if(result == null){
+							((view.userTable) userTable).deleteUser();
+							JOptionPane.showMessageDialog(null, "User: " + userToUpdate[0] + " deleted.");
+						}
+						else{
+							JOptionPane.showMessageDialog(null, result);
+						}
 					}
 					else{
-						JOptionPane.showMessageDialog(null, result);
+						JOptionPane.showMessageDialog(null, "You cannot delete yourself!");
 					}
 				}
 				else{
@@ -136,7 +140,7 @@ public class ListUsers extends JFrame {
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap(307, Short.MAX_VALUE)
+					.addContainerGap(320, Short.MAX_VALUE)
 					.addComponent(btnUpdate, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(btnDelete, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)
@@ -145,8 +149,8 @@ public class ListUsers extends JFrame {
 					.addContainerGap())
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(18)
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 533, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(18, Short.MAX_VALUE))
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 659, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(22, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)

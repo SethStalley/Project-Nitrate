@@ -41,16 +41,18 @@ public class userTable extends JTable {
 		}
 	}
 	
-	public void addUser(String[] data){
+	private void addUser(String[] data){
 		DefaultTableModel model = (DefaultTableModel) this.getModel();
 		
 		model.addRow(new Object[]{data[0], data[1], data[2], data[3], data[4]});
 		setFormat();
 	}
-	public String getSelectedUser(){
+	public String[] getSelectedUser(){
 		Integer index = this.getSelectedRow();
 		if (index >= 0){
-			return (String) this.getValueAt(index, 0);
+			String[] user = {(String) this.getValueAt(index, 0), (String) this.getValueAt(index, 2),
+					(String) this.getValueAt(index, 3), (String) this.getValueAt(index, 4), (String) this.getValueAt(index, 1)};
+			return user;
 		}else{
 			return null;
 		}

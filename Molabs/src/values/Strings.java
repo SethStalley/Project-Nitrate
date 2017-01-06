@@ -54,6 +54,9 @@ public class Strings {
 	public static final String ERROR_PASSWORD_CONFIRMATION = "The provided passwords does not match.";
 	public static final String ERROR_PASSWORD_FORMAT = "Password must be at least 5 digits long.";
 	public static final String ERROR_NO_USER_SELECTED = "Please select an user.";
+	public static final String ERROR_NO_INTERNET = "No internet connection.";
+	public static final String ERROR_USER_REPEATED = "There is already an user with that username. Please select an other one.";
+	
 	
 	
 

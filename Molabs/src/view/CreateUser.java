@@ -50,9 +50,9 @@ public class CreateUser extends JFrame {
 	private JLabel lblPhone,lblUsername, lblPassword, lblConfirmPassword, lblName, lblEmail, lblType; 
 	private JRadioButton rdbtnMaster;
 	private Boolean updateFlag;
-	private String userToUpdate;
+	private String[] userToUpdate;
 	
-	public CreateUser( Controller controller, boolean admin, boolean update, String userNameToUpdate) {
+	public CreateUser( Controller controller, boolean admin, boolean update, String[] userNameToUpdate) {
 		this.controller = controller;
 		setMinimumSize(new Dimension(500, 360));
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MainWindow.class.getResource("/Resources/Icon.png")));
@@ -67,7 +67,7 @@ public class CreateUser extends JFrame {
 		if(update){
 			userToUpdate = userNameToUpdate;
 			setUpdateValues();
-			setTitle("MOLABS Update User: "  + userNameToUpdate);
+			setTitle("MOLABS Update User: "  + userNameToUpdate[0]);
 		}
 	}
 	
@@ -148,10 +148,11 @@ public class CreateUser extends JFrame {
 						}
 					}
 					else{ // update user
-						String[] data = {user, pass, type, name, email, phone, userToUpdate};
+						String[] data = {user, pass, type, name, email, phone, userToUpdate[0]};
 						result = DB.getInstance().updateUser(data);
 						if(result == null){
 							sucessMessage = "User: " + userToUpdate + " updated.";
+							
 						}
 					}
 					if(result == null){
@@ -313,7 +314,20 @@ public class CreateUser extends JFrame {
 	}
 	private void setUpdateValues(){
 		btnCreate.setText("Update");
-		
+		txtUsername.setText(userToUpdate[0]);
+		txtName.setText(userToUpdate[1]);
+		txtEmail.setText(userToUpdate[2]);
+		txtPhone.setText(userToUpdate[3]);
+		rdbtnMaster.setVisible(false);
+		if(userToUpdate[0].equals(DB.getInstance().user())){
+			rdbtnAdmin.setVisible(false);
+			rdbtnUser.setVisible(false);
+		}
+		else{
+			if(userToUpdate[4].equals("admin")){
+				rdbtnAdmin.setSelected(true);
+			}
+		}
 	}
 	private void setAdminValues(){
 		rdbtnAdmin.setVisible(false);
