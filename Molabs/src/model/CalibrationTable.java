@@ -6,10 +6,10 @@ import java.util.Hashtable;
 
 public class CalibrationTable extends JSON_Exportable{
 
-	private Hashtable<Date,Calibration> calibrations;
+	private Hashtable<String,Calibration> calibrations;
 	
 	public CalibrationTable() {
-		this.calibrations = new Hashtable<Date,Calibration>();
+		this.calibrations = new Hashtable<String,Calibration>();
 	}
 	
 	public Calibration addCalibration(ArrayList<Date> fileKeys,
@@ -18,7 +18,7 @@ public class CalibrationTable extends JSON_Exportable{
 		Calibration cal = new Calibration(fileKeys, absorbances, concentrations, wavelength);
 		
 		if (cal.getWavelength() != null && !Double.isNaN(cal.getPearson())) {
-			this.calibrations.put(cal.getDate(), cal);
+			this.calibrations.put(cal.getDate().toString(), cal);
 			return cal;
 		}
 		
@@ -26,18 +26,18 @@ public class CalibrationTable extends JSON_Exportable{
 	}
 	
 	public boolean removeCalibration(Date index){
-		if(this.calibrations.containsKey(index)) {
-			this.calibrations.remove(index);
+		if(this.calibrations.containsKey(index.toString())) {
+			this.calibrations.remove(index.toString());
 			return true;
 		}
 		return false;
 	}
 	
 	public Calibration getCalibration(Date index) {
-		return this.calibrations.get(index);	
+		return this.calibrations.get(index.toString());	
 	}
 	
-	public Hashtable<Date,Calibration> getAllCalibration() {
+	public Hashtable<String,Calibration> getAllCalibration() {
 		return this.calibrations;
 	}
 	

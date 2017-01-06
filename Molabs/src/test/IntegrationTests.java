@@ -65,7 +65,7 @@ public class IntegrationTests {
 		concentrations.add(1.5);
 		
 		cTable.addCalibration(dates, absorbances, concentrations, "223.7");
-		
+		Date key = new Date(cTable.getAllCalibration().keys().nextElement());
 		
 		Gson gson = new GsonBuilder()
 				.registerTypeAdapter(Date.class, new DateTimeDeserializer())
@@ -75,6 +75,9 @@ public class IntegrationTests {
 		String json = cTable.getAsJSON();
 		cTable2 = gson.fromJson(json, CalibrationTable.class);
 		
-		assertTrue(cTable.getCalibration(date).equals(cTable.getCalibration(date)));
+		System.out.println(cTable2.getAsJSON());
+		System.out.println(cTable.getAsJSON());
+		
+		assertTrue(cTable.getCalibration(key).getIntercept() == cTable2.getCalibration(key).getIntercept());
 	}
 }

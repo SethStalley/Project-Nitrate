@@ -1,5 +1,7 @@
 package model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.google.gson.JsonDeserializationContext;
@@ -12,6 +14,11 @@ public class DateTimeDeserializer implements JsonDeserializer<Date> {
 	@Override
 	public Date deserialize(JsonElement json, java.lang.reflect.Type typeOfT, JsonDeserializationContext context)
 			throws JsonParseException {
-		return new Date(json.getAsJsonPrimitive().getAsString());
+		try {
+			return new SimpleDateFormat("EEE MMM dd kk:mm:ss z yyyy").parse(json.getAsString());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			return null;
+		}
 	}
 }
