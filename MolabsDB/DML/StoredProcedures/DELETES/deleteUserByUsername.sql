@@ -7,7 +7,7 @@ BEGIN
     -- deletes an user (and its graphs). Only if pUserName created that pUserNameToDelete
     SET @type = (SELECT type
 					FROM molabsdb.users
-						WHERE userName = pUserName AND password = pPassword);
+						WHERE userName = pUserName AND password = (CAST(SHA2(pPassword, 512) AS BINARY)));
 
 	IF (@type = 'user' OR @type IS NULL) THEN -- only owner and admin can perform this action
 		SIGNAL SQLSTATE '45000'

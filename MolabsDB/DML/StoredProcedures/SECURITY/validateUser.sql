@@ -1,6 +1,6 @@
 DELIMITER $$
 DROP PROCEDURE IF EXISTS molabsdb.validateUser;$$
-CREATE PROCEDURE molabsdb.validateUser(pUserName VARCHAR(45), pPassword VARBINARY(512))
+CREATE PROCEDURE molabsdb.validateUser(pUserName VARCHAR(45), pPassword VARCHAR(45))
 BEGIN
 
 	-- returns the type of the user if it´s valid
@@ -8,7 +8,7 @@ BEGIN
     
     SELECT type
 		FROM molabsdb.users
-			WHERE userName = pUserName AND password = pPassword;
+			WHERE userName = pUserName AND password = (CAST(SHA2(pPassword, 512) AS BINARY));
     
 END$$
 

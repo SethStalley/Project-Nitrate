@@ -48,29 +48,23 @@ public class DB {
 	}
 	
 	public String validateUser(){//returns the type of the user if it is correct. Null otherwise
-		/*HttpClient httpClient = HttpClientBuilder.create().build(); 
+		HttpClient httpClient = HttpClientBuilder.create().build(); 
 		try {
 			// molabsdb.validateUser(pUserName VARCHAR(45), pPassword VARBINARY(512))
 			JSONObject json = new JSONObject();
-		    json.put("pUserName", username);
+		    json.put("pUserName", username);// maybe need quotation ??
 		    json.put("pPassword", password);
-
-
-		    HttpPost request = new HttpPost(url + "validateUser");
-		    StringEntity params =new StringEntity(json.toString());
-		    request.addHeader("content-type", "application/x-www-form-urlencoded");
-		    request.setEntity(params);
-		    HttpResponse response = httpClient.execute(request);
 		    
-		    String jsonn = EntityUtils.toString(response.getEntity());
-		    JOptionPane.showMessageDialog(null, jsonn);
+		    
+		    JOptionPane.showMessageDialog(null, json.toString());
+		    this.postRequest("validateUser", json);
 		    
 
 		}catch (Exception ex) {
 
 		    JOptionPane.showMessageDialog(null, ex.toString());
 
-		}*/
+		}
 		return "owner";
 	}
 	
@@ -168,6 +162,29 @@ public class DB {
 		}
 		
 		
+		return null;
+	}
+	
+	private JSONObject postRequest(String procedure, JSONObject parameters){
+		HttpClient httpClient = HttpClientBuilder.create().build(); 
+		try {
+			
+
+		    HttpPost request = new HttpPost(url + procedure);
+		    StringEntity params = new StringEntity(parameters.toString());
+		    request.addHeader("content-type", "application/x-www-form-urlencoded");
+		    request.setEntity(params);
+		    HttpResponse response = httpClient.execute(request);
+		    
+		    String jsonn = EntityUtils.toString(response.getEntity());
+		    JOptionPane.showMessageDialog(null, jsonn);
+		    
+
+		}catch (Exception ex) {
+
+		    JOptionPane.showMessageDialog(null, ex.toString());
+
+		}
 		return null;
 	}
 

@@ -2,7 +2,7 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS molabsdb.insertUser;$$
 CREATE PROCEDURE molabsdb.insertUser(pNewUserName VARCHAR(45), pNewPassword VARBINARY(512), pType VARCHAR(10),
 					pCompleteName VARCHAR(85), pTelephoneNumber VARCHAR(20), pEmail VARCHAR(45),
-					pUserName VARCHAR(45), pPassword VARBINARY(512)) -- these 2 is for user validation
+					pUserName VARCHAR(45), pPassword VARCHAR(45)) -- these 2 is for user validation
 BEGIN
 
     
@@ -16,7 +16,7 @@ BEGIN
     
     SET @type = (SELECT type
 					FROM molabsdb.users
-						WHERE userName = pUserName AND password = pPassword);
+						WHERE userName = pUserName AND password = (CAST(SHA2(pPassword, 512) AS BINARY)));
 
 	IF (@type = 'user' OR @type IS NULL) THEN -- only owner and admin can perform this action
 		SIGNAL SQLSTATE '45000'
@@ -36,7 +36,7 @@ BEGIN
     
     
 	INSERT INTO molabsdb.users(username, password, type, date, createdBy,completeName, telephoneNumber, email)
-		VALUES(pNewUserName, pNewPassword, pType, NOW(), pUserName,pCompleteName,pTelephoneNumber, pEmail);
+		VALUES(pNewUserName, (CAST(SHA2(pNewPassword, 512) AS BINARY)), pType, NOW(), pUserName,pCompleteName,pTelephoneNumber, pEmail);
             
 	SET @idUser = (SELECT MAX(idUser) FROM molabsdb.users);
         

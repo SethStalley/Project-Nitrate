@@ -1,7 +1,8 @@
-call molabsdb.selectAllUsersForOwner('root' , CAST(SHA2('root', 512) AS BINARY));
-call molabsdb.selectAllAdministratorsForOwner('root' , CAST(SHA2('root', 512) AS BINARY));
-call molabsdb.selectAllUsersForAdministrator('root' , CAST(SHA2('root', 512) AS BINARY));
-call molabsdb.selectUserByUsername('adrian','root' , CAST(SHA2('root', 512) AS BINARY));
+-- call molabsdb.selectAllUsersForOwner('root' , CAST(SHA2('root', 512) AS BINARY));
+-- call molabsdb.selectAllAdministratorsForOwner('root' , CAST(SHA2('root', 512) AS BINARY));
+call molabsdb.selectAllUsersForAdministrator('root' , 'root');
+call molabsdb.validateUser('root' , 'root');
+-- call molabsdb.selectUserByUsername('adrian','root' , CAST(SHA2('root', 512) AS BINARY));
 
 
 /*call molabsdb.updateGraphForUser('ABSvsConce','Jcaca','admin' , CAST(SHA2('admin', 512) AS BINARY));
