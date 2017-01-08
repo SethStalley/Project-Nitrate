@@ -23,7 +23,7 @@ public class WorkingWavelength {
 		return this.workingConcentrationColumns.get(index);
 	}
 	
-	public ArrayList<Calibration> getWokringConcentrationColumns() {
+	public ArrayList<Calibration> getWorkingConcentrationColumns() {
 		return this.workingConcentrationColumns;
 	}
 	

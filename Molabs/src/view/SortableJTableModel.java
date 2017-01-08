@@ -23,9 +23,8 @@ public class SortableJTableModel extends DefaultTableModel{
 	public void sortAddedRowByDate(int columnIndex) {
 		int rowCount = this.getRowCount();
 		
-		Date newDate = (Date) this.getValueAt(rowCount-1, columnIndex);
-		
 		for (int i=0; i<rowCount; i++) {
+			Date newDate = (Date) this.getValueAt(rowCount-1, columnIndex);
 			Date date = (Date) this.getValueAt(i, columnIndex);
 
 			if (date.before(newDate)) {

@@ -53,6 +53,46 @@ public class MainTable extends CustomTable {
 	}
 	
 	/**
+	 * Updates this view from the current model.
+	 * This is called after loading a save file into the model.
+	 */
+	public void updateFromModel() {
+		//clear the table
+		model.getDataVector().removeAllElements();
+		model.fireTableDataChanged();
+		
+		//add columns
+		addHeadersFromModel();
+		
+		Enumeration<Date> keys = controller.getAllFileKeys();
+		
+		while(keys.hasMoreElements()) {
+			Date key = keys.nextElement();
+			renderNewFile(key);
+		}
+	}
+	
+	private void addHeadersFromModel() {
+		ArrayList<WorkingWavelength> wavelengths = controller.getMainTableWavelengths();
+		for (WorkingWavelength ww : wavelengths) {
+			addColumn(formattedAbsorbanceHeader(ww.getWavelength()), null);
+			
+			ArrayList<Calibration> calibrations = ww.getWorkingConcentrationColumns();
+			for (Calibration cal : calibrations) {
+				addColumn(formattedConcentrationHeader(cal.getWavelength()), null);
+			}
+		}
+	}
+	
+	private String formattedAbsorbanceHeader(String wavelength) {
+		return "Absorbance("+wavelength+")";
+	}
+	
+	private String formattedConcentrationHeader(String wavelength) {
+		return "Concentration("+wavelength+")";
+	}
+	
+	/**
 	 * Overrides JTable's edit cell method. When a edits a cell with existing
 	 * data, the data is overwritten instead of being appended.
 	 */
@@ -89,7 +129,7 @@ public class MainTable extends CustomTable {
 				column++;
 			
 				//add concentration columns
-				for (Calibration cal : ww.getWokringConcentrationColumns()) {
+				for (Calibration cal : ww.getWorkingConcentrationColumns()) {
 					Double concentrationValue = cal.getConcentration( Double.parseDouble(absorbance));
 					this.setValueAt(new DecimalFormat("#.######").format(concentrationValue), getRowCount()-1, column);
 					column++;

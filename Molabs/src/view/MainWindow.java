@@ -1,6 +1,7 @@
 package view;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.JFrame;
@@ -30,6 +31,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -177,9 +179,19 @@ public class MainWindow extends JFrame {
 		
 		mntmOpenProject = new JMenuItem("Open Project");
 		setMenuItemProperties(mntmOpenProject, mnFile);
+		mntmOpenProject.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				openProgram();
+			}
+		});
 		
 		mntmSaveProject = new JMenuItem("Save Project");
 		setMenuItemProperties(mntmSaveProject, mnFile);
+		mntmSaveProject.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				saveProgram();
+			}
+		});
 		
 		mntmOpenData = new JMenuItem("Open Data File");
 		setMenuItemProperties(mntmOpenData, mnFile);
@@ -792,6 +804,35 @@ public class MainWindow extends JFrame {
 	}
 	
 // ----------------------------------------- Actions ------------------------------------------
+	private void saveProgram() {
+		 JFileChooser chooser = new JFileChooser();
+         FileNameExtensionFilter filter = new FileNameExtensionFilter(Strings.LABEL_MOLABS_FILE, "molabs");
+         chooser.setFileFilter(filter);
+         chooser.setDialogTitle(Strings.LABEL_SAVE_FILE);
+         chooser.setAcceptAllFileFilterUsed(false);
+         
+         if (chooser.showSaveDialog(null) != 0) return;
+         
+         String file = chooser.getSelectedFile().toString();
+         if (!file.contains(".molabs") )
+         	file = file.concat(".molabs");
+         
+         controller.saveProgram(file);
+	}
+	
+	private void openProgram() {
+		JFileChooser fileChooser = new JFileChooser();
+		FileNameExtensionFilter filter = new FileNameExtensionFilter(Strings.LABEL_MOLABS_FILE, "molabs");
+		fileChooser.setFileFilter(filter);
+		fileChooser.setMultiSelectionEnabled(false);
+		
+		if (fileChooser.showOpenDialog(null) != 0) return;
+		
+		String file = fileChooser.getSelectedFile().toString();
+		
+		controller.loadProgram(file);
+	}
+	
 	private void OpenFile(ActionEvent evt) {
 		
 			JFileChooser fileChooser = new JFileChooser();
@@ -805,6 +846,7 @@ public class MainWindow extends JFrame {
 	            return;
 	        }
 	        
+			
 	        File[] arrfile = this.files = fileChooser.getSelectedFiles();  
 	
 	        for(int i=0; i< arrfile.length; i++) {

@@ -11,6 +11,7 @@ import model.Calibration;
 import model.CalibrationTable;
 import model.FileObserver;
 import model.MainTable;
+import model.Save;
 import model.TextFile;
 import model.WorkingWavelength;
 import view.MainWindow;
@@ -193,6 +194,10 @@ public class Controller {
 	public Double getConcentration(Date index, double absorbance){
 		return calibrationTable.getCalibration(index).getConcentration(absorbance);
 	}
+	
+	public Enumeration<Date> getAllFileKeys() {
+		return this.mainTable.getAllFiles().keys();
+	}
 
 	public ArrayList<WorkingWavelength> getMainTableWavelengths() {
 		return mainTable.getWorkingWaveLengths();
@@ -202,8 +207,18 @@ public class Controller {
 		return mainTable.checkForWorkingWavelength(wavelength);
 	}
 	
-	public void removeAbsorbance(int key){
+
+	public void saveProgram(String file) {
+		Save save = new Save(this.mainTable,this.calibrationTable);
+		save.saveState(file);
+	}
+
+	public void loadProgram(String file) {
+		Save save = Save.getSave(file);
+		this.mainTable = save.getStateMainTable();
+		this.calibrationTable = save.getCalibrationTable();
 		
+		((view.MainTable) this.graphicInterface.mainTable).updateFromModel();
 	}
 
 }

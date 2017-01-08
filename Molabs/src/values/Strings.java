@@ -23,6 +23,7 @@ public class Strings {
 	 */
 	public static final String LABEL_SAVE_FILE = "Save File";
 	public static final String LABEL_EXCEL_FILE = "Excel file type";
+	public static final String LABEL_MOLABS_FILE = "Molabs file type";
 	public static final String STD = "STD";
 	public static final String SAMPLE = "Sample";
 	public static final String CALIBRATE = "Calibrate";
