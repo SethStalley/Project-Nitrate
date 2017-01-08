@@ -147,14 +147,19 @@ public class LoginScreen extends JFrame {
 		if(result != null){
 			if(result.equals("owner")){
 				new MainWindow(username + " (owner)").setVisible(true);
+				dispose();
 			}
 			else if(result.equals("admin")){
 				new MainWindow(username + " (admin)").setVisible(true);
+				dispose();
 			}
 			else if(result.equals("user")){
 				new MainWindow(username + " (user)").setVisible(true);
+				dispose();
 			}
-			dispose();
+			else{
+				//JOptionPane.showMessageDialog(null, result);
+			}
 		}
 		else{
 			JOptionPane.showMessageDialog(null, "Combination of username and password incorrect.");

@@ -118,7 +118,7 @@ public class DB {
 		    
 		}
 		catch(Exception e){
-			
+			return null;
 		}
 		return users;
 	}
@@ -169,7 +169,7 @@ public class DB {
 		catch (Exception e){
 			//JOptionPane.showMessageDialog(null, e.getMessage());
 		}
-		return "Error. Please make sure you have internet connection.";
+		return Strings.ERROR_NO_INTERNET;
 	}
 	
 	public String updateUser(String[] userData){
@@ -219,7 +219,7 @@ public class DB {
 			//JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 		
-		return "Error. Please make sure you have internet connection.";
+		return Strings.ERROR_NO_INTERNET;
 	}
 	
 	public String deleteUser(String pUsername){
@@ -238,7 +238,7 @@ public class DB {
 		}
 		
 		
-		return "Error. Please make sure you have internet connection.";
+		return Strings.ERROR_NO_INTERNET;
 	}
 	
 	private String postRequest(String procedure, JSONObject parameters) throws HttpHostConnectException{
@@ -265,12 +265,13 @@ public class DB {
 
 		}
 		catch (HttpHostConnectException e){
+			//JOptionPane.showMessageDialog(null, Strings.ERROR_NO_INTERNET);
 			throw e;
 		}
 		
 		catch (Exception ex) {
 
-		    //JOptionPane.showMessageDialog(null, ex.toString());
+		    JOptionPane.showMessageDialog(null, ex.toString());
 
 		}
 		return null;

@@ -151,7 +151,7 @@ public class CreateUser extends JFrame {
 						String[] data = {user, pass, type, name, email, phone, userToUpdate[0]};
 						result = DB.getInstance().updateUser(data);
 						if(result == null){
-							sucessMessage = "User: " + userToUpdate + " updated.";
+							sucessMessage = "User: " + userToUpdate[0] + " updated.";
 							
 						}
 					}

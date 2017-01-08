@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -57,8 +58,15 @@ public class ListUsers extends JFrame {
 		isAdmin = false; /// por ahorta por que no hay users.
 		getContentPane().setBackground(new Color(Preferences.WINDOW_NORMAL_RGB));
 		initComponents();
+		
+		ArrayList<String[]> users = DB.getInstance().getUsersForUsername();
 
-		((view.userTable) userTable).loadUsers(DB.getInstance().getUsersForUsername());
+		if (users == null){
+			JOptionPane.showMessageDialog(null, Strings.ERROR_NO_INTERNET);
+		}
+		else{
+			((view.userTable) userTable).loadUsers(users);
+		}
 	}
 	
 	private void initComponents(){
@@ -72,7 +80,7 @@ public class ListUsers extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// search for user to udpate
 				String[] userToUpdate = ((view.userTable) userTable).getSelectedUser();
-				if (userToUpdate[0] != null){
+				if (userToUpdate != null){
 					
 					new CreateUser(controller,isAdmin,true,userToUpdate).setVisible(true);
 					dispose();
