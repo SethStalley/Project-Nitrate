@@ -19,6 +19,7 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -336,6 +337,7 @@ public class MainTable extends CustomTable {
     	comboBox.setFocusable(false);
     	
     	typeColumn.setCellEditor(new DefaultCellEditor(comboBox));
+    	this.getColumnModel().getColumn(values.Strings.CONCENTRATION_COLUMN_INDEX).setCellEditor(new CellNumberEditor());
 	}
 	private void resizeColumns(){
 		getColumnModel().getColumn(0).setMinWidth(Strings.DATE_COLUMN_WIDTH);
@@ -440,10 +442,10 @@ public class MainTable extends CustomTable {
 	
 	private void changeTypeFromInput(Object aValue, int row, int column) {
 		if (column == Strings.CONCENTRATION_COLUMN_INDEX) {
-			if (!aValue.toString().equals("")) {
-				setValueAt(Strings.STD, row, Strings.TYPE_COLUMN_INDEX);
-			} else {
+			if (aValue == null) {
 				setValueAt(Strings.SAMPLE, row, Strings.TYPE_COLUMN_INDEX);
+			} else {
+				setValueAt(Strings.STD, row, Strings.TYPE_COLUMN_INDEX);
 			}
 		}
 	}

@@ -15,7 +15,8 @@ public class Strings {
 	public static final String ALERT_DELETE_ROW = "Are you sure you want to delete this row (s)?";
 	public static final String ALERT_DELETE_COLUMN_CONCENTRATION = "Are you sure you want to delete this concentration?";
 	public static final String ALERT_DELETE_COLUMN_ABSORBANCE = "Are you sure you want to delete this absorbance, it will delete all concentrations that used this absorbance for calibration?";
-	
+	public static final String ERROR_CONCENTRATION_COLUMN = "The current value is invalid, it should be a number and can include floating point decimals with a '.'";
+
 	
 	/*
 	 * GUI Labels
