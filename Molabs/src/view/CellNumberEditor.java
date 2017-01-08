@@ -38,16 +38,15 @@ public class CellNumberEditor extends DefaultCellEditor {
     public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
         JFormattedTextField editor = (JFormattedTextField) super.getTableCellEditorComponent(table, value, isSelected, row, column);
 
-        if (value instanceof Number){
-
-
+        if (value instanceof String){
+        	float newValue = Float.parseFloat((String)value);
             NumberFormat numberFormatB = NumberFormat.getInstance();
 
             editor.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(
                             new NumberFormatter(numberFormatB)));
 
             editor.setHorizontalAlignment(SwingConstants.RIGHT);
-            editor.setValue(value);
+            editor.setValue(newValue);
         }
         else if(value == null){
         	editor.setValue(null);
@@ -92,7 +91,7 @@ public class CellNumberEditor extends DefaultCellEditor {
             }
 
             // return an instance of column class
-            return new Float(n.floatValue());
+            return new String(n.toString());
 
         } catch (ParseException pex) {
             return null;

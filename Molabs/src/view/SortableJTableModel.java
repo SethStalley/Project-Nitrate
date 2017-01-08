@@ -49,13 +49,12 @@ public class SortableJTableModel extends DefaultTableModel{
         }else if(column == Strings.CONCENTRATION_COLUMN_INDEX){
         	return true;
         }
-        else if(column >= Strings.CONCENTRATION_COLUMN_INDEX){
+        else if(column >= Strings.CONCENTRATION_COLUMN_INDEX && getColumnName(column).startsWith("A")){
         	Object valueCustom = this.getValueAt(row, 0);
         	if(valueCustom.toString().startsWith("Custom")){
         		return true;
         	}
         	return false;
-        	
         }else return false;
         
     }

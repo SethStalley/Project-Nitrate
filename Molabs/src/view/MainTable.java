@@ -337,7 +337,10 @@ public class MainTable extends CustomTable {
     	comboBox.setFocusable(false);
     	
     	typeColumn.setCellEditor(new DefaultCellEditor(comboBox));
-    	this.getColumnModel().getColumn(values.Strings.CONCENTRATION_COLUMN_INDEX).setCellEditor(new CellNumberEditor());
+
+    	for(int i = Strings.CONCENTRATION_COLUMN_INDEX; i<this.model.getColumnCount(); i++){
+    		this.getColumnModel().getColumn(i).setCellEditor(new CellNumberEditor());
+    	}
 	}
 	private void resizeColumns(){
 		getColumnModel().getColumn(0).setMinWidth(Strings.DATE_COLUMN_WIDTH);
