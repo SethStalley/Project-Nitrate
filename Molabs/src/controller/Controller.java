@@ -220,5 +220,19 @@ public class Controller {
 		
 		((view.MainTable) this.graphicInterface.mainTable).updateFromModel();
 	}
+	
+	/*
+	 * for custom rows
+	 */
+	public Boolean addManualAbsorbance(Date key,String wavelength, String absorbance){
+		return mainTable.getFile(key).addManualAbsorbance(wavelength, absorbance);
+	}
+	public void removeManualAbosrbance(Date key,String wavelength){
+		mainTable.getFile(key).removeManualAbsorbance(wavelength);
+	}
+	
+	public WorkingWavelength getAbsorbanceColumn(int absorbanceIndex) {
+		return mainTable.getAbsorbanceColumn(absorbanceIndex);
+	}
 
 }

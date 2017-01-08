@@ -534,6 +534,8 @@ public class MainWindow extends JFrame {
 		        }
 		    });
 		
+
+		
 		mainTablePane.setViewportView(mainTable);		
 		
 	}

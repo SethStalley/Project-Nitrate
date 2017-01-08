@@ -261,6 +261,8 @@ public class MainTable extends CustomTable {
 			for (Date key : keys) {
 				String absorbance = controller.getAbsorbance(wavelength, key);
 				
+				
+				
 				if (absorbance == null && !controller.getFileName(key).contains("Custom")) {
 					absorbance = "";
 					JOptionPane.showMessageDialog(null, "No absorbance value was found for that wavelength. Please choose different wavelength.");
@@ -491,8 +493,37 @@ public class MainTable extends CustomTable {
 				setValueAt(Strings.STD, row, Strings.TYPE_COLUMN_INDEX);
 			}
 		}
+		// check absrobances for custom rows
+		if(this.getColumnName(column).substring(0, 1).equals("A")){
+			Date key = (Date) this.getValueAt(this.getSelectedRow(), Strings.MAINTABLE_COLUMN_DATE);
+			WorkingWavelength absorbance = controller.getAbsorbanceColumn(column);
+			String wavelength = absorbance.getWavelength();
+			if (!aValue.toString().equals("")) {
+				controller.addManualAbsorbance(key, wavelength, (String) aValue);
+				this.addConcentrationsForAbsorbance(column, absorbance.getWokringConcentrationColumns(), this.getSelectedRow(),
+						Double.parseDouble((String) aValue));
+			}
+			else{
+				controller.removeManualAbosrbance(key, wavelength);
+				this.removeConcentrationsForAbsorbance(column, absorbance.getNumOfConcentrations(), this.getSelectedRow());
+			}
+		}
 	}
-
+	
+	// for custom rows
+	private void removeConcentrationsForAbsorbance(int column, int numberOfConcentrations, int row){
+		for (int i = 0; i < numberOfConcentrations; i++){
+			this.setValueAt("", row, column + i + 1);
+		}
+	}
+	// for custom rows
+	private void addConcentrationsForAbsorbance(int column, ArrayList<Calibration> concentrations, int row, double absorbance){
+		for(int i = 0; i < concentrations.size() ; i ++){
+			Double concentration = concentrations.get(i).getConcentration(absorbance);
+			concentration = (double)Math.round(concentration * 100000d) / 100000d;
+			this.setValueAt(concentration, row, column + i + 1);
+		}
+	}
 	
 	private DefaultTableCellRenderer getSelectedHeaderRenderer(){
 		DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();

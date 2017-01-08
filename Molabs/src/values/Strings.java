@@ -9,7 +9,7 @@ public class Strings {
 	public static final String ERROR_SELECT_COLUMN = "No column selected.";
 	public static final String ERROR_SELECT_ABSORBANCE_COLUMN = "Select an Absorbance Column.";
 	public static final String ERROR_NEW_CALIBRATION = "Select more than one concentrations for the new calibration.";
-	public static final String ERROR_CALIBRATE = "Error on the new calibration.";
+	public static final String ERROR_CALIBRATE = "There is an error with the calibration values.";
 	public static final String ERROR_NO_ACTIVE_CALIBRATION = "Please select one calibration as type Active."; //unkown
 	public static final String ERROR_NO_ABSORBANCE_SELECTED = "Please select one absorbance column";
 	public static final String ALERT_DELETE_ROW = "Are you sure you want to delete this row (s)?";
@@ -31,7 +31,7 @@ public class Strings {
 	/*
 	 * Events
 	 */
-	public static final String SUCCESS_TABLE_EXPORT = "Table exported successfully";
+	public static final String SUCCESS_TABLE_EXPORT = "Table exported successfully.";
 	
 	/*
 	 * Table 

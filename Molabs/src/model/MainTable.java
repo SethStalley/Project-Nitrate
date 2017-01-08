@@ -150,4 +150,5 @@ public class MainTable extends JSON_Exportable{
 	public WorkingWavelength getAbsorbanceColumn(int absorbanceIndex) {
 		return getWorkingWavelengthFromViewIndex(absorbanceIndex);
 	}
+	
 }
