@@ -39,6 +39,7 @@ import values.rightclickIdentifier;
 public class MainTable extends CustomTable {
 	
 	private int lastBlankRow = 1;
+	private boolean pasteEditable;
 	
 	public MainTable(SortableJTableModel model, Controller controller){
 		super(model, controller);
@@ -481,8 +482,15 @@ public class MainTable extends CustomTable {
 	 */
 	@Override
 	public void setValueAt(Object aValue, int row, int column) {
-		super.setValueAt(aValue, row, column);
-		changeTypeFromInput(aValue, row, column);
+		if(pasteEditable){
+			if(model.isCellEditable(row, column)){
+				super.setValueAt(aValue, row, column);
+				changeTypeFromInput(aValue, row, column);
+			}
+		}else{
+			super.setValueAt(aValue, row, column);
+			changeTypeFromInput(aValue, row, column);
+		}
 	}
 	
 	private void changeTypeFromInput(Object aValue, int row, int column) {
@@ -539,6 +547,9 @@ public class MainTable extends CustomTable {
 		super.model.removeColumn(index);
 		resizeColumns();
 		addDropdowns();
+	}
+	public void setPasteEditable(boolean state){
+		this.pasteEditable = state;
 	}
 
 

@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
 import controller.Controller;
+import values.OptionErrorMessage;
 import values.Strings;
 import values.rightclickIdentifier;
 
@@ -51,7 +52,9 @@ public class PopUpMenu extends JPopupMenu {
         add(anItem);
     }
 	private boolean confirmDelete(String alert){
-		int dialogResult = JOptionPane.showConfirmDialog (null, alert);
+		int dialogResult = JOptionPane.showOptionDialog(null, alert, "Warning",
+				JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
+				null, OptionErrorMessage.YES_NO_ENGLISH, OptionErrorMessage.YES_NO_ENGLISH[0]);
 		if(dialogResult == JOptionPane.YES_OPTION){
 		  return true;
 		}

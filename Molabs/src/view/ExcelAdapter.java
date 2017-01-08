@@ -99,6 +99,7 @@ public class ExcelAdapter implements ActionListener {
 	public void pasteFromClipboard() {
 	       int startRow=(jTable1.getSelectedRows())[0];
 	       int startCol=(jTable1.getSelectedColumns())[0];
+	       ((MainTable)jTable1).setPasteEditable(true);
 	       try
 	       {
 	          String trstring= (String)(system.getContents(this).getTransferData(DataFlavor.stringFlavor));
@@ -117,6 +118,7 @@ public class ExcelAdapter implements ActionListener {
 	           
 	            }
 	         }
+	         ((MainTable)jTable1).setPasteEditable(false);
 	      }
 	      catch(Exception ex){ex.printStackTrace();}
 	}
