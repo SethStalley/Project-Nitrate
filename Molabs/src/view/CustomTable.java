@@ -40,6 +40,7 @@ public abstract class CustomTable extends JTable {
 		this.model = model;
 		this.controller = controller;
 		selectedColumn = -1;
+		resizeColumns();
 	}
 	
 	private void createTableHeaders() {
@@ -121,5 +122,7 @@ public abstract class CustomTable extends JTable {
 	public SortableJTableModel getAlternModel(){
 		return this.model;
 	}
+	
+	public abstract void resizeColumns();
 	
 }

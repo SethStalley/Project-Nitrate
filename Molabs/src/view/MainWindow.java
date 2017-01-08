@@ -560,6 +560,7 @@ public class MainWindow extends JFrame {
         	}
         });
 		calibrationTable.getTableHeader().setReorderingAllowed(false);
+		calibrationTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		
 		calibrationTable.addMouseListener(new java.awt.event.MouseAdapter() {
 		    @Override

@@ -44,9 +44,6 @@ public class Strings {
 	public static final String NO_ROW_SELECTED = "No row selected";
 	public static final String ACTIVE = "Active";
 	public static final String ERROR_STARTING_OBSERVER = "Could not start observer.\nSpecified path is probably incorrect";
-	public static final int DATE_COLUMN_WIDTH = 200;
-	public static final int DEFAULT_COLUMN_WIDTH = 80;
-	public static final int ADDED_COLUMN_WIDTH = 115;
 	public static final int NUMBER_DEFAULT_COLUMNS = 5;
 	public static final String ERROR_ABSORBANCE_COLUMN_MISSING = "The absorbance column for that wavelength does not exist";
 	public static final String ERROR_COCENTRATION_EXISTS = "That concentration column already exists.";
