@@ -498,9 +498,9 @@ public class MainTable extends CustomTable {
 			Date key = (Date) this.getValueAt(this.getSelectedRow(), Strings.MAINTABLE_COLUMN_DATE);
 			WorkingWavelength absorbance = controller.getAbsorbanceColumn(column);
 			String wavelength = absorbance.getWavelength();
-			if (!aValue.toString().equals("")) {
+			if (aValue != null) {
 				controller.addManualAbsorbance(key, wavelength, (String) aValue);
-				this.addConcentrationsForAbsorbance(column, absorbance.getWokringConcentrationColumns(), this.getSelectedRow(),
+				this.addConcentrationsForAbsorbance(column, absorbance.getWorkingConcentrationColumns(), this.getSelectedRow(),
 						Double.parseDouble((String) aValue));
 			}
 			else{
