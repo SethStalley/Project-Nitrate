@@ -242,10 +242,11 @@ public class DB {
 		return Strings.ERROR_NO_INTERNET;
 	}
 	
-	public String updateGraph(ArrayList<Double[]> points, String graphType){
+	public String updateGraph(ArrayList<Double[]> points, String graphType, String slope, String intercept){
 		// points must be like : [{1,2},{2,4}]
 		// graphType: ABSvsConce , ConcenVsTime, CalibrationGraph
 		// updateGraphForUser(graphType VARCHAR(45), newJson VARCHAR(1000), pUserName VARCHAR(45), pPassword VARBINARY(512))
+		// slop and intercept is for calibration graphic. Send empty string "" if not needed
 		JSONObject pointsJson = new JSONObject();
 		JSONObject bigJson = new JSONObject();
 		
@@ -259,17 +260,15 @@ public class DB {
 			}
 			pointsJson.put("x", Arrays.toString(xValues));
 			pointsJson.put("y", Arrays.toString(yValues));
+			pointsJson.put("slope", slope);
+			pointsJson.put("intercept", intercept);
 			
 			bigJson.put("graphType", graphType);
 			bigJson.put("newJson", pointsJson.toString());
 			bigJson.put("pUserName", username);
 		    bigJson.put("pPassword", password);
 		    
-		    JOptionPane.showMessageDialog(null, bigJson.toString());
-		    
 		    JSONObject resultJson = new JSONObject(this.postRequest("updateGraphForUser", bigJson));
-		    
-		    JOptionPane.showMessageDialog(null, resultJson.toString());
 		    
 		}
 		catch(Exception e){

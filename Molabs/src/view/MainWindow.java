@@ -645,6 +645,8 @@ public class MainWindow extends JFrame {
 		scrollPaneCalibrationGraph.setOpaque(false);
 		scrollPaneCalibrationGraph.setBackground(Color.WHITE);
 		
+		scrollPaneCalibrationGraph.getViewport().setView(new CalibrationGraph(null));
+		
 		
 //----------------------------------------layout tab 1 ------------------------------------
 		
@@ -660,8 +662,8 @@ public class MainWindow extends JFrame {
 						.addComponent(lblSlopeValue)
 						.addComponent(lblPearson)
 						.addComponent(lblSlope, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
-					.addComponent(scrollPaneCalibrationGraph, GroupLayout.PREFERRED_SIZE, 487, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+					.addComponent(scrollPaneCalibrationGraph, GroupLayout.PREFERRED_SIZE, 488, GroupLayout.PREFERRED_SIZE))
 		);
 		gl_calibrationGraph.setVerticalGroup(
 			gl_calibrationGraph.createParallelGroup(Alignment.LEADING)
@@ -708,7 +710,7 @@ public class MainWindow extends JFrame {
 		concentrationGraphR = new JScrollPane();
 		concentrationGraphR.setBackground(Color.WHITE);
 		tabbedPane.addTab("ConcentrationGraph (Real Time)", null, concentrationGraphR, null);
-		concentrationGraphR.getViewport().setView(new CalibrationGraph(null));
+
 		
 	    //-----------------------Labels primer iteracion-------------------------------------
 	    JLabel lblNewLabel2 = new JLabel("Grafico calibracion"); //Label para tests
@@ -916,9 +918,10 @@ public class MainWindow extends JFrame {
 		Double tr = calibration.getIntercept();
 		lblSlopeValue.setText(Double.toString(calibration.getSlope()));
 		
-		concentrationGraphR.getViewport().setView(new CalibrationGraph(calibration.getXYValues()));
+		scrollPaneCalibrationGraph.getViewport().setView(new CalibrationGraph(calibration));
 		
-		DB.getInstance().updateGraph(calibration.getXYValues(), "CalibrationGraph");
+		DB.getInstance().updateGraph(calibration.getXYValues(), "CalibrationGraph", String.valueOf(calibration.getSlope()),
+				String.valueOf(calibration.getIntercept()));
 		
 		//highlight rows
 		((MainTable) mainTable).highlightLightRowsRelatedToConcentration(calibration.getWavelength(),calibration.getFileKeys());
