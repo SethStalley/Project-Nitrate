@@ -12,16 +12,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.EventObject;
-import java.util.Hashtable;
 import java.util.Vector;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -58,9 +54,7 @@ public class MainTable extends CustomTable {
 	 * This is called after loading a save file into the model.
 	 */
 	public void updateFromModel() {
-		//clear the table
-		model.getDataVector().removeAllElements();
-		model.fireTableDataChanged();
+		clearTable();
 		
 		//add columns
 		addHeadersFromModel();
@@ -153,8 +147,9 @@ public class MainTable extends CustomTable {
 		String name = controller.getFileName(key);
 		String type = controller.getFileType(key);
 		Date date = key;
+		String stdConcentration = controller.getStdConcentration(key);
 		
-		this.addRow(new Object[]{name,date, date, type});
+		this.addRow(new Object[]{name,date, date, type, stdConcentration});
 	}
 
 	public void addBlankRow() {
@@ -495,15 +490,22 @@ public class MainTable extends CustomTable {
 	
 	private void changeTypeFromInput(Object aValue, int row, int column) {
 		if (column == Strings.CONCENTRATION_COLUMN_INDEX) {
+			Date key = (Date) this.getValueAt(row, DATE_INDEX);
 			if (aValue == null) {
 				setValueAt(Strings.SAMPLE, row, Strings.TYPE_COLUMN_INDEX);
+				controller.setFileType(key, Strings.SAMPLE);
 			} else {
 				setValueAt(Strings.STD, row, Strings.TYPE_COLUMN_INDEX);
+				controller.setFileType(key, Strings.STD);
+				controller.setStdConcentration(key, aValue.toString());
 			}
 		}
+		
 		// check absrobances for custom rows
-		if(this.getColumnName(column).substring(0, 1).equals("A")){
-			Date key = (Date) this.getValueAt(this.getSelectedRow(), Strings.MAINTABLE_COLUMN_DATE);
+		int selectedRow = this.getSelectedRow();
+		if(this.controller.getAbsorbanceColumn(column) != null  &&
+				selectedRow != -1){
+			Date key = (Date) this.getValueAt(selectedRow, Strings.MAINTABLE_COLUMN_DATE);
 			WorkingWavelength absorbance = controller.getAbsorbanceColumn(column);
 			String wavelength = absorbance.getWavelength();
 			if (aValue != null) {

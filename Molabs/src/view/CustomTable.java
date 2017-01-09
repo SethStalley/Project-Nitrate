@@ -22,6 +22,7 @@ import javax.swing.table.TableModel;
 
 import controller.Controller;
 import model.Calibration;
+import values.Strings;
 import values.rightclickIdentifier;
 import model.WorkingWavelength;
 
@@ -42,6 +43,19 @@ public abstract class CustomTable extends JTable {
 		this.controller = controller;
 		selectedColumn = -1;
 		resizeColumns();
+	}
+	
+	protected void clearTable() {
+		//clear the table
+		model.getDataVector().removeAllElements();
+		
+		int numOfColumns = model.getColumnCount();
+		
+		for (int i=numOfColumns-1; i > Strings.CONCENTRATION_COLUMN_INDEX; i--) {
+			model.removeColumn(i);
+		}
+		
+		model.fireTableDataChanged();
 	}
 	
 	private void createTableHeaders() {
@@ -128,5 +142,6 @@ public abstract class CustomTable extends JTable {
 	}
 	
 	public abstract void resizeColumns();
+	public abstract void updateFromModel();
 	
 }

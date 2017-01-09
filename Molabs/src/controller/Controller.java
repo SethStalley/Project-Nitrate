@@ -100,6 +100,10 @@ public class Controller {
 		return file.getType();
 	}
 	
+	public void setFileType(Date key, String type) {
+		this.mainTable.getFile(key).setType(type);
+	}
+	
 	/** 
 	 * @param String wavelength of absorbance column
 	 * @return int which is column index of the absorbance column 
@@ -204,8 +208,20 @@ public class Controller {
 		return calibrationTable.getCalibration(index).getConcentration(absorbance);
 	}
 	
+	public void setStdConcentration(Date index, String concentration) {
+		this.mainTable.getFile(index).saveConcentration(concentration);
+	}
+	
+	public String getStdConcentration(Date index) {
+		return this.mainTable.getFile(index).getConcentration();
+	}
+	
 	public Enumeration<Date> getAllFileKeys() {
 		return this.mainTable.getAllFiles().keys();
+	}
+	
+	public ArrayList<Calibration> getAllCalibrations() {
+		return calibrationTable.getAllCalibrations();
 	}
 
 	public ArrayList<WorkingWavelength> getMainTableWavelengths() {
@@ -227,7 +243,8 @@ public class Controller {
 		this.mainTable = save.getStateMainTable();
 		this.calibrationTable = save.getCalibrationTable();
 		
-		((view.MainTable) this.graphicInterface.mainTable).updateFromModel();
+		this.graphicInterface.mainTable.updateFromModel();
+		this.graphicInterface.calibrationTable.updateFromModel();
 	}
 	
 	/*

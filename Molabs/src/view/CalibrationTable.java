@@ -6,7 +6,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultCellEditor;
@@ -52,6 +54,8 @@ public class CalibrationTable extends CustomTable {
 	    
 	    addDropdowns();
 	}
+	
+	
 
 	@Override
 	public void actionButton() {
@@ -114,6 +118,18 @@ public class CalibrationTable extends CustomTable {
 		getColumnModel().getColumn(0).setMinWidth(Preferences.CALIBRATION_STATUS_WIDTH);
 		getColumnModel().getColumn(1).setMinWidth(Preferences.CALIBRATION_DATE_WIDTH);
 		getColumnModel().getColumn(2).setMinWidth(Preferences.CALIBRATION_WAVE_WIDTH);
+	}
+
+	@Override
+	public void updateFromModel() {
+		clearTable();
+		
+		ArrayList<Calibration> calibrations = controller.getAllCalibrations();
+		
+		for (Calibration cal : calibrations) {
+			System.out.println("adding" + cal.getDate().toString());
+			addRow(cal);
+		}
 	}
 	
 	
