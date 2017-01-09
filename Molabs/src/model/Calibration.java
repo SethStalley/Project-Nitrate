@@ -61,4 +61,13 @@ public class Calibration {
 	public ArrayList<Date> getFileKeys() {
 		return this.fileKeys;
 	}
+	
+	public ArrayList<Double[]> getXYValues(){
+		ArrayList<Double[]> results = new ArrayList<Double[]>();
+		for(int i=0; i<absorbances.size();i++) {
+			Double[] actual = {concentrations.get(i),absorbances.get(i)};
+			results.add(actual);
+		}
+		return results;
+	}
 }

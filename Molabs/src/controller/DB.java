@@ -2,6 +2,7 @@ package controller;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 
@@ -231,7 +232,7 @@ public class DB {
 		    json.put("pUserName", username);
 		    json.put("pPassword", password);
 		    
-		    JSONObject resultJson =   new JSONObject(this.postRequest("deleteUserByUsername", json));
+		    JSONObject resultJson = new JSONObject(this.postRequest("deleteUserByUsername", json));
 		}
 		catch(Exception e){
 			
@@ -239,6 +240,45 @@ public class DB {
 		
 		
 		return Strings.ERROR_NO_INTERNET;
+	}
+	
+	public String updateGraph(ArrayList<Double[]> points, String graphType){
+		// points must be like : [{1,2},{2,4}]
+		// graphType: ABSvsConce , ConcenVsTime, CalibrationGraph
+		// updateGraphForUser(graphType VARCHAR(45), newJson VARCHAR(1000), pUserName VARCHAR(45), pPassword VARBINARY(512))
+		JSONObject pointsJson = new JSONObject();
+		JSONObject bigJson = new JSONObject();
+		
+		String[] xValues = new String[points.size()];
+		String[] yValues  =new String[points.size()];
+		try{
+			for (int i = 0; i < points.size() ; i++){
+				Double[] currentPoint = points.get(i);
+				xValues[i] = currentPoint[0].toString();
+				yValues[i] = currentPoint[1].toString();
+			}
+			pointsJson.put("x", Arrays.toString(xValues));
+			pointsJson.put("y", Arrays.toString(yValues));
+			
+			bigJson.put("graphType", graphType);
+			bigJson.put("newJson", pointsJson);
+			bigJson.put("pUserName", username);
+		    bigJson.put("pPassword", password);
+		    
+		    JOptionPane.showMessageDialog(null, bigJson.toString());
+		    
+		    JSONObject resultJson = new JSONObject(this.postRequest("updateGraphForUser", bigJson));
+		    
+		    JOptionPane.showMessageDialog(null, resultJson.toString());
+		    
+		}
+		catch(Exception e){
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+		
+		
+		
+		return null;
 	}
 	
 	private String postRequest(String procedure, JSONObject parameters) throws HttpHostConnectException{

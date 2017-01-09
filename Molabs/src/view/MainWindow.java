@@ -48,6 +48,7 @@ import java.awt.GridLayout;
 import javax.swing.JTable;
 
 import controller.Controller;
+import controller.DB;
 import de.erichseifert.gral.io.plots.DrawableWriter;
 import de.erichseifert.gral.io.plots.DrawableWriterFactory;
 import de.erichseifert.gral.ui.InteractivePanel;
@@ -88,8 +89,8 @@ public class MainWindow extends JFrame {
 	public JTextField txtWavelength; //single textfield
 	private JPanel pnFirstRow, pnSecondRow; // Container panels
 	public CustomTable mainTable, calibrationTable; // Tables
-	private JScrollPane mainTablePane, scrollPaneCalibration,concentrationGraph; //scrollpane for tables
-	private JPanel calibrationGraph, concentrationGraphR; //panel tabs
+	private JScrollPane mainTablePane, scrollPaneCalibration,concentrationGraph, concentrationGraphR; //scrollpane for tables
+	private JPanel calibrationGraph; //panel tabs
 	private JLabel lblPearson, lblIntercept, lblSlope; //labels tab 1
 	private JLabel lblPearsonValue;
 	private JLabel lblInterceptValue;
@@ -702,9 +703,10 @@ public class MainWindow extends JFrame {
 		
 		// Tab 3
 		
-		concentrationGraphR = new JPanel();
+		concentrationGraphR = new JScrollPane();
 		concentrationGraphR.setBackground(Color.WHITE);
 		tabbedPane.addTab("ConcentrationGraph (Real Time)", null, concentrationGraphR, null);
+		concentrationGraphR.getViewport().setView(new CalibrationGraph(null));
 		
 	    //-----------------------Labels primer iteracion-------------------------------------
 	    JLabel lblNewLabel2 = new JLabel("Grafico calibracion"); //Label para tests
@@ -886,6 +888,10 @@ public class MainWindow extends JFrame {
 		lblPearsonValue.setText(Double.toString(calibration.getPearson()));
 		Double tr = calibration.getIntercept();
 		lblSlopeValue.setText(Double.toString(calibration.getSlope()));
+		
+		concentrationGraphR.getViewport().setView(new CalibrationGraph(calibration.getXYValues()));
+		
+		DB.getInstance().updateGraph(calibration.getXYValues(), "CalibrationGraph");
 		
 		//highlight rows
 		((MainTable) mainTable).highlightLightRowsRelatedToConcentration(calibration.getWavelength(),calibration.getFileKeys());
