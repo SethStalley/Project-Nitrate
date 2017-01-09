@@ -63,6 +63,15 @@ public class MainTable extends JSON_Exportable{
 		return false;
 	}
 	
+	public WorkingWavelength getWavelengthWithWavelength(String wavelength){
+		for(WorkingWavelength ww : workingWavelength){
+			if(ww.getWavelength().equals(wavelength)){
+				return ww;
+			}
+		}
+		return null; // should not happen
+	}
+	
 	public boolean removeWorkingWavelength(int index) {
 		WorkingWavelength ww = getWorkingWavelengthFromViewIndex(index);
 		

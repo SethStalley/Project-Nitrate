@@ -23,6 +23,7 @@ import javax.swing.table.TableModel;
 import controller.Controller;
 import model.Calibration;
 import values.rightclickIdentifier;
+import model.WorkingWavelength;
 
 public abstract class CustomTable extends JTable {
 	
@@ -79,7 +80,10 @@ public abstract class CustomTable extends JTable {
 	}
 	
 	private void deleteCalibration(int index) {
-		this.controller.removeCalibration(getDateFromRow(index));
+		Date date = getDateFromRow(index);
+		Calibration calibration = controller.getCalibrationData(date);
+		controller.removeWorkingConcentration(date.toString(), calibration.getWavelength());
+		this.controller.removeCalibration(date);
 		((DefaultTableModel) this.getModel()).removeRow(index);
 
 	}

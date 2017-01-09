@@ -7,6 +7,8 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 
+import javax.swing.JOptionPane;
+
 import model.Calibration;
 import model.CalibrationTable;
 import model.FileObserver;
@@ -106,6 +108,10 @@ public class Controller {
 		return mainTable.getAbsorbanceColumnIndex(wavelength);
 	}
 	
+	public WorkingWavelength getWavelengthWithWavelength(String wavelength){
+		return mainTable.getWavelengthWithWavelength(wavelength);
+	}
+	
 	/**
 	 * Checks if a active concentration column already exists.
 	 * @param Date of the calibration
@@ -122,6 +128,7 @@ public class Controller {
 	public boolean removeCalibration(Date key){
 		return this.calibrationTable.removeCalibration(key);
 	}
+	
 	
 	public void removeAbsorbanceColumn(int key) {
 		WorkingWavelength ww = this.mainTable.getAbsorbanceColumn(key);
@@ -158,6 +165,8 @@ public class Controller {
 	public Calibration getCalibrationData(Date index){
 		return calibrationTable.getCalibration(index);
 	}
+	
+	
 	
 	/**
 	 * calculates all concentration on maintable, according to a absorbance and calibration
@@ -233,6 +242,19 @@ public class Controller {
 	
 	public WorkingWavelength getAbsorbanceColumn(int absorbanceIndex) {
 		return mainTable.getAbsorbanceColumn(absorbanceIndex);
+	}
+	
+	public Boolean removeWorkingConcentration(String calibrationDate, String wavelength){
+		WorkingWavelength ww = getWavelengthWithWavelength(wavelength);
+		Integer offset =  ww.removeWorkingConcentration(calibrationDate);
+		if (offset > 0){
+			Integer absorbanceColumn = getAbsorbanceColumnIndex(wavelength);
+			graphicInterface.deleteColumnMainTable(offset + absorbanceColumn);
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 
 }

@@ -924,7 +924,9 @@ public class MainWindow extends JFrame {
 	public void deleteColumnMainTable(int index){
 		((MainTable) mainTable).deleteColumn(index);
 	}
-
+	public void deleteExactColumnMainTable(int column){
+		((MainTable) mainTable).deleteExactColumn(column);
+	}
 	public void delteAbsorbanceMainTable(int key, int numOfConcentrations) {
 		for (int i=key+numOfConcentrations; i>=key; i--) {
 			((MainTable) mainTable).deleteColumn(i);	

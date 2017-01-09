@@ -1,6 +1,9 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Date;
+
+import javax.swing.JOptionPane;
 
 public class WorkingWavelength {
 	private String wavelength;
@@ -33,6 +36,20 @@ public class WorkingWavelength {
 			return true;
 		}
 		return false;
+	}
+	
+	public Integer removeWorkingConcentration(String date){
+		//returns an offset from the biggining of the concentration
+		Integer offset = 0;
+		for (Calibration c: workingConcentrationColumns){
+			offset++;
+			if (c.getDate().toString().equals(date)){
+				JOptionPane.showMessageDialog(null, "Estoy en working wavelength. eliminada!");
+				workingConcentrationColumns.remove(c);
+				return offset;
+			}
+		}
+		return -1;//should not happen
 	}
 	
 	public String getWavelength() {

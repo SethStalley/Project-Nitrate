@@ -127,7 +127,7 @@ public class TextFile extends JSON_Exportable{
 	public Boolean addManualAbsorbance(String wavelength, String absorbance){
 		//for custom rows.
 		if (absorbances.containsKey(wavelength)){
-			absorbances.remove(wavelength);//always remove it	
+			removeManualAbsorbance(wavelength);//always remove it	
 		}
 		absorbances.put(wavelength, absorbance);
 		return true;

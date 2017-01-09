@@ -540,6 +540,12 @@ public class MainTable extends CustomTable {
 		resizeColumns();
 		addDropdowns();
 	}
+	
+	public void deleteExactColumn(int column){
+		super.model.removeColumn(column);
+		resizeColumns();
+		addDropdowns();
+	}
 
 
 }
