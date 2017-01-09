@@ -217,6 +217,7 @@ public class MainWindow extends JFrame {
 		mntmPrint = new JMenuItem("Export Graph");
 		setMenuItemProperties(mntmPrint, mnFile);
 		
+		
 		mntmExit = new JMenuItem("Exit");
 		setMenuItemProperties(mntmExit, mnFile);
 		mntmExit.addActionListener(new ActionListener() {
@@ -304,6 +305,12 @@ public class MainWindow extends JFrame {
 		
 		mntmExportExcel = new JMenuItem("Export Excel");
 		setMenuItemProperties(mntmExportExcel, mnTools);
+		mntmExportExcel.addActionListener(new java.awt.event.ActionListener() {
+	        @Override
+	        public void actionPerformed(java.awt.event.ActionEvent evt) {
+	        	export2Excel();
+	        }
+	    });
 		
 		//Users
 		mntmAddUser = new JMenuItem("Add User");
@@ -673,7 +680,7 @@ public class MainWindow extends JFrame {
 		
 //----------------------------------------Ends layout tab 1 ------------------------------------
 		
-		JLabel lab = new JLabel(); //Label para modificar tamaño tabs
+		JLabel lab = new JLabel(); //Label para modificar tamaï¿½o tabs
 		lab.setText("Calibration Graph");
 		lab.setFont(new Font("Roboto Medium", Font.PLAIN, 11));
 		lab.setForeground(Color.white);
@@ -854,6 +861,31 @@ public class MainWindow extends JFrame {
 	            this.mainTable.addRow(file);
 	        } 
 	       
+	}
+	
+	private void export2Excel() {
+		try {
+            if (this.mainTable.getRowCount() <= 0) return;
+            JFileChooser chooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(Strings.LABEL_EXCEL_FILE, "xls");
+            chooser.setFileFilter(filter);
+            chooser.setDialogTitle(Strings.LABEL_SAVE_FILE);
+            chooser.setAcceptAllFileFilterUsed(false);
+            if (chooser.showSaveDialog(null) != 0) return;
+            ArrayList<JTable> tb = new ArrayList<JTable>();
+            tb.add(this.mainTable);
+            String file = chooser.getSelectedFile().toString();
+            
+            if (!file.contains(".xls") )
+            	file = file.concat(".xls");
+            ExcelExport excelExporter = new ExcelExport(tb, new File(file));
+            if (!excelExporter.export()) return;
+            JOptionPane.showMessageDialog(null, Strings.SUCCESS_TABLE_EXPORT);
+            return;
+        }
+        catch (Exception chooser) {
+            chooser.printStackTrace();
+        }
 	}
 	
 	
