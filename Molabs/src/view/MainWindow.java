@@ -88,7 +88,7 @@ public class MainWindow extends JFrame {
 	public JTextField txtWavelength; //single textfield
 	private JPanel pnFirstRow, pnSecondRow; // Container panels
 	public CustomTable mainTable, calibrationTable; // Tables
-	private JScrollPane mainTablePane, scrollPaneCalibration,concentrationGraph; //scrollpane for tables
+	private JScrollPane mainTablePane, scrollPaneCalibration,concentrationGraph, scrollPaneCalibrationGraph; //scrollpane for tables
 	private JPanel calibrationGraph, concentrationGraphR; //panel tabs
 	private JLabel lblPearson, lblIntercept, lblSlope; //labels tab 1
 	private JLabel lblPearsonValue;
@@ -617,8 +617,6 @@ public class MainWindow extends JFrame {
 		calibrationGraph.setBackground(Color.WHITE);
 		tabbedPane.addTab("Calibration Graph", null, calibrationGraph, null);
 		
-		JLabel lblNewLabel_2 = new JLabel("Grafico calibracion"); //label para tests
-		
 		lblPearson = new JLabel("Pearson (R^2): ");
 		
 		lblIntercept = new JLabel("Intercept: ");
@@ -631,6 +629,11 @@ public class MainWindow extends JFrame {
 		
 		lblSlopeValue = new JLabel("");
 		
+		scrollPaneCalibrationGraph = new JScrollPane();
+		scrollPaneCalibrationGraph.setOpaque(false);
+		scrollPaneCalibrationGraph.setBackground(Color.WHITE);
+		
+		
 //----------------------------------------layout tab 1 ------------------------------------
 		
 		GroupLayout gl_calibrationGraph = new GroupLayout(calibrationGraph);
@@ -639,45 +642,32 @@ public class MainWindow extends JFrame {
 				.addGroup(gl_calibrationGraph.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_calibrationGraph.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_calibrationGraph.createSequentialGroup()
-							.addComponent(lblIntercept, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, 274, Short.MAX_VALUE)
-							.addComponent(lblNewLabel_2)
-							.addGap(178))
-						.addGroup(gl_calibrationGraph.createSequentialGroup()
-							.addComponent(lblPearsonValue)
-							.addContainerGap(610, Short.MAX_VALUE))
-						.addGroup(gl_calibrationGraph.createSequentialGroup()
-							.addComponent(lblInterceptValue)
-							.addContainerGap(610, Short.MAX_VALUE))
-						.addGroup(gl_calibrationGraph.createSequentialGroup()
-							.addComponent(lblSlopeValue)
-							.addContainerGap(610, Short.MAX_VALUE))
-						.addGroup(gl_calibrationGraph.createSequentialGroup()
-							.addComponent(lblPearson)
-							.addContainerGap(532, Short.MAX_VALUE))
-						.addGroup(gl_calibrationGraph.createSequentialGroup()
-							.addComponent(lblSlope, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap(539, Short.MAX_VALUE))))
+						.addComponent(lblIntercept, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblPearsonValue)
+						.addComponent(lblInterceptValue)
+						.addComponent(lblSlopeValue)
+						.addComponent(lblPearson)
+						.addComponent(lblSlope, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+					.addComponent(scrollPaneCalibrationGraph, GroupLayout.PREFERRED_SIZE, 487, GroupLayout.PREFERRED_SIZE))
 		);
 		gl_calibrationGraph.setVerticalGroup(
 			gl_calibrationGraph.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_calibrationGraph.createSequentialGroup()
-					.addGap(51)
+					.addGap(54)
 					.addComponent(lblPearson)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblPearsonValue)
 					.addGap(18)
-					.addGroup(gl_calibrationGraph.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNewLabel_2)
-						.addComponent(lblIntercept))
+					.addComponent(lblIntercept)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblInterceptValue)
 					.addGap(18)
 					.addComponent(lblSlope)
 					.addGap(11)
 					.addComponent(lblSlopeValue)
-					.addContainerGap(109, Short.MAX_VALUE))
+					.addContainerGap(106, Short.MAX_VALUE))
+				.addComponent(scrollPaneCalibrationGraph, GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
 		);
 		calibrationGraph.setLayout(gl_calibrationGraph);
 		
@@ -699,6 +689,7 @@ public class MainWindow extends JFrame {
 		concentrationGraph.setBackground(Color.WHITE);
 		tabbedPane.addTab("Concentration Graph", null, concentrationGraph, null);
 		concentrationGraph.getViewport().setView(new StackedPlots());
+		
 		
 		// Tab 3
 		
@@ -939,22 +930,4 @@ public class MainWindow extends JFrame {
 			((MainTable) mainTable).deleteColumn(i);	
 		}	
 	}
-	
-	
-	
-	/* Function to export as an image
-	 * public void save() {
-		JFileChooser chooser = new JFileChooser();
-		int option = chooser.showSaveDialog(null);
-		if (option == JFileChooser.APPROVE_OPTION) {
-			File file = chooser.getSelectedFile();
-			try {
-				DrawableWriter writer = DrawableWriterFactory.getInstance().get("image/png");
-				writer.write(plot, new FileOutputStream(file), 800, 600);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	 */
 }
