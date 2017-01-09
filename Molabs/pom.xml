@@ -48,5 +48,10 @@
 	    <artifactId>json</artifactId>
 	    <version>20090211</version>
 	</dependency>
+	<dependency>
+    	<groupId>de.erichseifert.gral</groupId>
+    	<artifactId>gral-core</artifactId>
+    	<version>0.11</version>
+	</dependency>
   </dependencies>
 </project>

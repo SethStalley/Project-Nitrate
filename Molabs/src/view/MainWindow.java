@@ -1,6 +1,8 @@
 package view;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -46,6 +48,9 @@ import java.awt.GridLayout;
 import javax.swing.JTable;
 
 import controller.Controller;
+import de.erichseifert.gral.io.plots.DrawableWriter;
+import de.erichseifert.gral.io.plots.DrawableWriterFactory;
+import de.erichseifert.gral.ui.InteractivePanel;
 import model.Calibration;
 import values.Preferences;
 import values.Strings;
@@ -83,8 +88,8 @@ public class MainWindow extends JFrame {
 	public JTextField txtWavelength; //single textfield
 	private JPanel pnFirstRow, pnSecondRow; // Container panels
 	public CustomTable mainTable, calibrationTable; // Tables
-	private JScrollPane mainTablePane, scrollPaneCalibration; //scrollpane for tables
-	private JPanel calibrationGraph, concentrationGraph, concentrationGraphR; //panel tabs
+	private JScrollPane mainTablePane, scrollPaneCalibration,concentrationGraph; //scrollpane for tables
+	private JPanel calibrationGraph, concentrationGraphR; //panel tabs
 	private JLabel lblPearson, lblIntercept, lblSlope; //labels tab 1
 	private JLabel lblPearsonValue;
 	private JLabel lblInterceptValue;
@@ -690,9 +695,10 @@ public class MainWindow extends JFrame {
 	    
 	    // Tab 2
 		
-		concentrationGraph = new JPanel();
+		concentrationGraph = new JScrollPane();
 		concentrationGraph.setBackground(Color.WHITE);
 		tabbedPane.addTab("Concentration Graph", null, concentrationGraph, null);
+		concentrationGraph.getViewport().setView(new StackedPlots());
 		
 		// Tab 3
 		
@@ -933,4 +939,22 @@ public class MainWindow extends JFrame {
 			((MainTable) mainTable).deleteColumn(i);	
 		}	
 	}
+	
+	
+	
+	/* Function to export as an image
+	 * public void save() {
+		JFileChooser chooser = new JFileChooser();
+		int option = chooser.showSaveDialog(null);
+		if (option == JFileChooser.APPROVE_OPTION) {
+			File file = chooser.getSelectedFile();
+			try {
+				DrawableWriter writer = DrawableWriterFactory.getInstance().get("image/png");
+				writer.write(plot, new FileOutputStream(file), 800, 600);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	 */
 }
