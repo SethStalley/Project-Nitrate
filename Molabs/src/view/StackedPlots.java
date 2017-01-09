@@ -46,37 +46,26 @@ public class StackedPlots extends JPanel {
 			data.add(x, Math.abs(y));
 		}
 
-		// Create and format upper plot
-		XYPlot plotUpper = new XYPlot(data);
-		Color colorUpper = new Color( 55, 170, 200);
-		plotUpper.setPointRenderers(data, null);
-		LineRenderer lineUpper = new DefaultLineRenderer2D();
-		lineUpper.setColor(colorUpper);
-		plotUpper.setLineRenderers(data, lineUpper);
-		AreaRenderer areaUpper = new DefaultAreaRenderer2D();
-		areaUpper.setColor(GraphicsUtils.deriveWithAlpha(colorUpper, 64));
-		plotUpper.setAreaRenderers(data, areaUpper);
-		plotUpper.setInsets(new Insets2D.Double(20.0, 50.0, 40.0, 20.0));
+
 
 		// Create and format lower plot
-		XYPlot plotLower = new XYPlot(data);
-		Color colorLower = new Color( 55, 170, 200);
-		PointRenderer pointsLower = plotLower.getPointRenderers(data).get(0);
-		pointsLower.setColor(colorLower);
-		pointsLower.setShape(new Ellipse2D.Double(-3, -3, 6, 6));
+		XYPlot plot = new XYPlot(data);
+		Color color = new Color( 55, 170, 200);
+		PointRenderer points = plot.getPointRenderers(data).get(0);
+		points.setColor(color);
+		points.setShape(new Ellipse2D.Double(-3, -3, 6, 6));
 		LineRenderer lineLower = new DefaultLineRenderer2D();
 		lineLower.setStroke(new BasicStroke(2f));
 		lineLower.setGap(1.0);
-		lineLower.setColor(colorLower);
-		plotLower.setLineRenderers(data, lineLower);
-		plotLower.setInsets(new Insets2D.Double(20.0, 50.0, 40.0, 20.0));
+		lineLower.setColor(color);
+		plot.setLineRenderers(data, lineLower);
+		AreaRenderer areaUpper = new DefaultAreaRenderer2D();
+		areaUpper.setColor(GraphicsUtils.deriveWithAlpha(color, 64));
+		plot.setAreaRenderers(data, areaUpper);
+		plot.setInsets(new Insets2D.Double(20.0, 50.0, 40.0, 20.0));
 
 		DrawableContainer plots = new DrawableContainer(new TableLayout(1));
-		plots.add(plotUpper);
-		plots.add(plotLower);
-
-		// Connect the two plots, i.e. user (mouse) actions affect both plots
-		plotUpper.getNavigator().connect(plotLower.getNavigator());
+		plots.add(plot);
 
 		InteractivePanel panel = new InteractivePanel(plots);
 		add(panel);
