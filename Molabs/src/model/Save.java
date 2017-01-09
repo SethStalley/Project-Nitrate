@@ -38,7 +38,6 @@ public class Save extends JSON_Exportable{
 	
 	public void saveState(String completePath) {
 		String data = this.getAsJSON();
-		System.out.println(data);
 		
 		try (FileWriter file = new FileWriter(completePath)) {
 			file.write(data);

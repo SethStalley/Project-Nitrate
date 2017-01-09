@@ -119,6 +119,10 @@ public class TextFile extends JSON_Exportable{
 	public String getConcentration() {
 		return concentration;
 	}
+	
+	public void saveConcentration(String concentration) {
+		this.concentration = concentration;
+	}
 
 	public String getType() {
 		return type;
@@ -136,5 +140,9 @@ public class TextFile extends JSON_Exportable{
 	
 	public void removeManualAbsorbance(String wavelength){
 		absorbances.remove(wavelength); // always remove it
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 }

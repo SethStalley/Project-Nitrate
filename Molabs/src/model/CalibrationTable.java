@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.Hashtable;
 
 public class CalibrationTable extends JSON_Exportable{
@@ -39,6 +40,18 @@ public class CalibrationTable extends JSON_Exportable{
 	
 	public Hashtable<String,Calibration> getAllCalibration() {
 		return this.calibrations;
+	}
+	
+	public ArrayList<Calibration> getAllCalibrations() {
+		Enumeration<String> keys = this.calibrations.keys();
+		ArrayList<Calibration> calibrations = new ArrayList<Calibration>();
+		
+		while (keys.hasMoreElements()) {
+			String key = keys.nextElement();
+			calibrations.add(this.calibrations.get(key));
+		}
+		
+		return calibrations;
 	}
 	
 }
