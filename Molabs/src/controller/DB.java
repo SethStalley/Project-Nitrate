@@ -261,7 +261,7 @@ public class DB {
 			pointsJson.put("y", Arrays.toString(yValues));
 			
 			bigJson.put("graphType", graphType);
-			bigJson.put("newJson", pointsJson);
+			bigJson.put("newJson", pointsJson.toString());
 			bigJson.put("pUserName", username);
 		    bigJson.put("pPassword", password);
 		    
