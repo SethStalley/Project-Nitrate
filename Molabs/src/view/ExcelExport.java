@@ -124,10 +124,10 @@ public class ExcelExport {
     	Label label;
     	
     	//check if double cell
-    	if(column >= sheet.getColumns()-2) {
-    		//is double
-    		s = s.replace('.', ',');
-    	}
+//    	if(column >= sheet.getColumns()-2) {
+//    		//is double
+//    		s = s.replace('.', ',');
+//    	}
     	
     	label = new Label(column, row, s, format);
         sheet.addCell(label);

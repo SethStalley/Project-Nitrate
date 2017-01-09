@@ -48,9 +48,6 @@ import java.awt.GridLayout;
 import javax.swing.JTable;
 
 import controller.Controller;
-import de.erichseifert.gral.io.plots.DrawableWriter;
-import de.erichseifert.gral.io.plots.DrawableWriterFactory;
-import de.erichseifert.gral.ui.InteractivePanel;
 import model.Calibration;
 import values.Preferences;
 import values.Strings;
