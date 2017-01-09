@@ -32,16 +32,17 @@ import controller.Controller;
 import model.Calibration;
 import model.WorkingWavelength;
 import validation.Validation;
+import values.Preferences;
 import values.Strings;
 import values.rightclickIdentifier;
 
 public class MainTable extends CustomTable {
 	
 	private int lastBlankRow = 1;
+	private boolean pasteEditable;
 	
 	public MainTable(SortableJTableModel model, Controller controller){
 		super(model, controller);
-		resizeColumns();
 	}
 
 	@Override
@@ -384,16 +385,16 @@ public class MainTable extends CustomTable {
     		this.getColumnModel().getColumn(i).setCellEditor(new CellNumberEditor());
     	}
 	}
-	private void resizeColumns(){
-		getColumnModel().getColumn(0).setMinWidth(Strings.DATE_COLUMN_WIDTH);
+	public void resizeColumns(){
+		getColumnModel().getColumn(0).setMinWidth(Preferences.DATE_COLUMN_WIDTH);
 		
 		for(int i = 1; i<Strings.NUMBER_DEFAULT_COLUMNS; i++){
-			getColumnModel().getColumn(i).setMinWidth(Strings.DEFAULT_COLUMN_WIDTH);
+			getColumnModel().getColumn(i).setMinWidth(Preferences.DEFAULT_COLUMN_WIDTH);
 		}
 
 		int contColumns = getModel().getColumnCount();
 		for(int i = Strings.NUMBER_DEFAULT_COLUMNS; i<contColumns; i++){
-			getColumnModel().getColumn(i).setPreferredWidth(Strings.ADDED_COLUMN_WIDTH);
+			getColumnModel().getColumn(i).setPreferredWidth(Preferences.ADDED_COLUMN_WIDTH);
 		}
 
 		this.getTableHeader().setPreferredSize(new Dimension(10000,32)); //no tengo idea... pero si lo quito los headers no se mueven
@@ -481,8 +482,15 @@ public class MainTable extends CustomTable {
 	 */
 	@Override
 	public void setValueAt(Object aValue, int row, int column) {
-		super.setValueAt(aValue, row, column);
-		changeTypeFromInput(aValue, row, column);
+		if(pasteEditable){
+			if(model.isCellEditable(row, column)){
+				super.setValueAt(aValue, row, column);
+				changeTypeFromInput(aValue, row, column);
+			}
+		}else{
+			super.setValueAt(aValue, row, column);
+			changeTypeFromInput(aValue, row, column);
+		}
 	}
 	
 	private void changeTypeFromInput(Object aValue, int row, int column) {
@@ -540,11 +548,17 @@ public class MainTable extends CustomTable {
 		resizeColumns();
 		addDropdowns();
 	}
+
 	
 	public void deleteExactColumn(int column){
 		super.model.removeColumn(column);
 		resizeColumns();
 		addDropdowns();
+	}
+
+	public void setPasteEditable(boolean state){
+		this.pasteEditable = state;
+
 	}
 
 

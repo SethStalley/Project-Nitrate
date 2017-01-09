@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -21,6 +22,7 @@ import javax.swing.table.TableColumn;
 
 import controller.Controller;
 import model.Calibration;
+import values.Preferences;
 import values.Strings;
 import values.rightclickIdentifier;
 
@@ -75,6 +77,8 @@ public class CalibrationTable extends CustomTable {
 		TableColumn typeColumn = getColumnModel().getColumn(Strings.STATUS_COLUMN_INDEX);
 		typeColumn.setCellRenderer(new RadioButtonRenderer());
     	typeColumn.setCellEditor(new RadioButtonEditor(new JCheckBox()));
+    	resizeColumns();
+    	centerCells();
     	this.getColumnModel().getColumn(DATE_INDEX).setCellRenderer(new CellRenderDateAsYYMMDD_TIME());
     	
     	
@@ -105,6 +109,13 @@ public class CalibrationTable extends CustomTable {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void resizeColumns(){
+		getColumnModel().getColumn(0).setMinWidth(Preferences.CALIBRATION_STATUS_WIDTH);
+		getColumnModel().getColumn(1).setMinWidth(Preferences.CALIBRATION_DATE_WIDTH);
+		getColumnModel().getColumn(2).setMinWidth(Preferences.CALIBRATION_WAVE_WIDTH);
+	}
+	
 	
 	
 }
