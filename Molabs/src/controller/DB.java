@@ -1,18 +1,29 @@
 package controller;
 
-import java.io.InputStream;
+import java.security.GeneralSecurityException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
 import javax.swing.JOptionPane;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.HttpHostConnectException;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -28,14 +39,15 @@ public class DB {
 	private String url;
 
 	private DB() {
-		url = "http://54.144.112.150/api/";
+		url = "https://54.144.112.150/api/";
 	}
 	
 	private DB(String username, String password){
 		this.username = username;
 		this.password = password;
-		url = "http://54.144.112.150/api/";
+		url = "https://54.144.112.150/api/";
 	}
+	
 	
 	public static DB getInstance(String username, String password) {
 		if (instance == null) {
@@ -282,9 +294,17 @@ public class DB {
 	}
 	
 	private String postRequest(String procedure, JSONObject parameters) throws HttpHostConnectException{
-		HttpClient httpClient = HttpClientBuilder.create().build(); 
+		
+		//HttpClient httpClient = HttpClientBuilder.create().build(); 
 		try {
+			SSLContextBuilder builder = new SSLContextBuilder();
+	
+			builder.loadTrustMaterial(null, new TrustSelfSignedStrategy());
+			SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
+		            builder.build(),SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
 			
+			CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(
+		            sslsf).build();
 
 		    HttpPost request = new HttpPost(url + procedure);
 		    StringEntity params = new StringEntity(parameters.toString());
