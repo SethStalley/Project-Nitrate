@@ -48,10 +48,12 @@ import java.awt.GridLayout;
 import javax.swing.JTable;
 
 import controller.Controller;
+
 import controller.DB;
 import de.erichseifert.gral.io.plots.DrawableWriter;
 import de.erichseifert.gral.io.plots.DrawableWriterFactory;
 import de.erichseifert.gral.ui.InteractivePanel;
+
 import model.Calibration;
 import values.Preferences;
 import values.Strings;
@@ -89,8 +91,10 @@ public class MainWindow extends JFrame {
 	public JTextField txtWavelength; //single textfield
 	private JPanel pnFirstRow, pnSecondRow; // Container panels
 	public CustomTable mainTable, calibrationTable; // Tables
-	private JScrollPane mainTablePane, scrollPaneCalibration,concentrationGraph, concentrationGraphR; //scrollpane for tables
+
+	private JScrollPane mainTablePane, scrollPaneCalibration,concentrationGraph, concentrationGraphR, scrollPaneCalibrationGraph; //scrollpane for tables
 	private JPanel calibrationGraph; //panel tabs
+
 	private JLabel lblPearson, lblIntercept, lblSlope; //labels tab 1
 	private JLabel lblPearsonValue;
 	private JLabel lblInterceptValue;
@@ -218,6 +222,7 @@ public class MainWindow extends JFrame {
 		mntmPrint = new JMenuItem("Export Graph");
 		setMenuItemProperties(mntmPrint, mnFile);
 		
+		
 		mntmExit = new JMenuItem("Exit");
 		setMenuItemProperties(mntmExit, mnFile);
 		mntmExit.addActionListener(new ActionListener() {
@@ -305,6 +310,12 @@ public class MainWindow extends JFrame {
 		
 		mntmExportExcel = new JMenuItem("Export Excel");
 		setMenuItemProperties(mntmExportExcel, mnTools);
+		mntmExportExcel.addActionListener(new java.awt.event.ActionListener() {
+	        @Override
+	        public void actionPerformed(java.awt.event.ActionEvent evt) {
+	        	export2Excel();
+	        }
+	    });
 		
 		//Users
 		mntmAddUser = new JMenuItem("Add User");
@@ -618,8 +629,6 @@ public class MainWindow extends JFrame {
 		calibrationGraph.setBackground(Color.WHITE);
 		tabbedPane.addTab("Calibration Graph", null, calibrationGraph, null);
 		
-		JLabel lblNewLabel_2 = new JLabel("Grafico calibracion"); //label para tests
-		
 		lblPearson = new JLabel("Pearson (R^2): ");
 		
 		lblIntercept = new JLabel("Intercept: ");
@@ -632,6 +641,11 @@ public class MainWindow extends JFrame {
 		
 		lblSlopeValue = new JLabel("");
 		
+		scrollPaneCalibrationGraph = new JScrollPane();
+		scrollPaneCalibrationGraph.setOpaque(false);
+		scrollPaneCalibrationGraph.setBackground(Color.WHITE);
+		
+		
 //----------------------------------------layout tab 1 ------------------------------------
 		
 		GroupLayout gl_calibrationGraph = new GroupLayout(calibrationGraph);
@@ -640,51 +654,38 @@ public class MainWindow extends JFrame {
 				.addGroup(gl_calibrationGraph.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_calibrationGraph.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_calibrationGraph.createSequentialGroup()
-							.addComponent(lblIntercept, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, 274, Short.MAX_VALUE)
-							.addComponent(lblNewLabel_2)
-							.addGap(178))
-						.addGroup(gl_calibrationGraph.createSequentialGroup()
-							.addComponent(lblPearsonValue)
-							.addContainerGap(610, Short.MAX_VALUE))
-						.addGroup(gl_calibrationGraph.createSequentialGroup()
-							.addComponent(lblInterceptValue)
-							.addContainerGap(610, Short.MAX_VALUE))
-						.addGroup(gl_calibrationGraph.createSequentialGroup()
-							.addComponent(lblSlopeValue)
-							.addContainerGap(610, Short.MAX_VALUE))
-						.addGroup(gl_calibrationGraph.createSequentialGroup()
-							.addComponent(lblPearson)
-							.addContainerGap(532, Short.MAX_VALUE))
-						.addGroup(gl_calibrationGraph.createSequentialGroup()
-							.addComponent(lblSlope, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap(539, Short.MAX_VALUE))))
+						.addComponent(lblIntercept, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblPearsonValue)
+						.addComponent(lblInterceptValue)
+						.addComponent(lblSlopeValue)
+						.addComponent(lblPearson)
+						.addComponent(lblSlope, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+					.addComponent(scrollPaneCalibrationGraph, GroupLayout.PREFERRED_SIZE, 487, GroupLayout.PREFERRED_SIZE))
 		);
 		gl_calibrationGraph.setVerticalGroup(
 			gl_calibrationGraph.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_calibrationGraph.createSequentialGroup()
-					.addGap(51)
+					.addGap(54)
 					.addComponent(lblPearson)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblPearsonValue)
 					.addGap(18)
-					.addGroup(gl_calibrationGraph.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNewLabel_2)
-						.addComponent(lblIntercept))
+					.addComponent(lblIntercept)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblInterceptValue)
 					.addGap(18)
 					.addComponent(lblSlope)
 					.addGap(11)
 					.addComponent(lblSlopeValue)
-					.addContainerGap(109, Short.MAX_VALUE))
+					.addContainerGap(106, Short.MAX_VALUE))
+				.addComponent(scrollPaneCalibrationGraph, GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
 		);
 		calibrationGraph.setLayout(gl_calibrationGraph);
 		
 //----------------------------------------Ends layout tab 1 ------------------------------------
 		
-		JLabel lab = new JLabel(); //Label para modificar tamaño tabs
+		JLabel lab = new JLabel(); //Label para modificar tamaï¿½o tabs
 		lab.setText("Calibration Graph");
 		lab.setFont(new Font("Roboto Medium", Font.PLAIN, 11));
 		lab.setForeground(Color.white);
@@ -700,6 +701,7 @@ public class MainWindow extends JFrame {
 		concentrationGraph.setBackground(Color.WHITE);
 		tabbedPane.addTab("Concentration Graph", null, concentrationGraph, null);
 		concentrationGraph.getViewport().setView(new StackedPlots());
+		
 		
 		// Tab 3
 		
@@ -867,6 +869,31 @@ public class MainWindow extends JFrame {
 	       
 	}
 	
+	private void export2Excel() {
+		try {
+            if (this.mainTable.getRowCount() <= 0) return;
+            JFileChooser chooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(Strings.LABEL_EXCEL_FILE, "xls");
+            chooser.setFileFilter(filter);
+            chooser.setDialogTitle(Strings.LABEL_SAVE_FILE);
+            chooser.setAcceptAllFileFilterUsed(false);
+            if (chooser.showSaveDialog(null) != 0) return;
+            ArrayList<JTable> tb = new ArrayList<JTable>();
+            tb.add(this.mainTable);
+            String file = chooser.getSelectedFile().toString();
+            
+            if (!file.contains(".xls") )
+            	file = file.concat(".xls");
+            ExcelExport excelExporter = new ExcelExport(tb, new File(file));
+            if (!excelExporter.export()) return;
+            JOptionPane.showMessageDialog(null, Strings.SUCCESS_TABLE_EXPORT);
+            return;
+        }
+        catch (Exception chooser) {
+            chooser.printStackTrace();
+        }
+	}
+	
 	
 	private void tableHeaderClicked(MouseEvent evt){
 		if(SwingUtilities.isLeftMouseButton(evt)){
@@ -945,22 +972,4 @@ public class MainWindow extends JFrame {
 			((MainTable) mainTable).deleteColumn(i);	
 		}	
 	}
-	
-	
-	
-	/* Function to export as an image
-	 * public void save() {
-		JFileChooser chooser = new JFileChooser();
-		int option = chooser.showSaveDialog(null);
-		if (option == JFileChooser.APPROVE_OPTION) {
-			File file = chooser.getSelectedFile();
-			try {
-				DrawableWriter writer = DrawableWriterFactory.getInstance().get("image/png");
-				writer.write(plot, new FileOutputStream(file), 800, 600);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	 */
 }

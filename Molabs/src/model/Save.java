@@ -23,6 +23,9 @@ public class Save extends JSON_Exportable{
 		  String data;
 		try {
 			data = new String(Files.readAllBytes(Paths.get(filePath)));
+			//unencrypt
+			data = Encrypt.unencrypt(data);
+			
 			Gson gson = new GsonBuilder()
 					.registerTypeAdapter(Date.class, new DateTimeDeserializer())
 					.registerTypeAdapter(Date.class, new DateTimeSerializer())
@@ -38,6 +41,8 @@ public class Save extends JSON_Exportable{
 	
 	public void saveState(String completePath) {
 		String data = this.getAsJSON();
+		//encrypt data
+		data = Encrypt.encrypt(data);
 		
 		try (FileWriter file = new FileWriter(completePath)) {
 			file.write(data);
