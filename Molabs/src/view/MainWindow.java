@@ -272,10 +272,10 @@ public class MainWindow extends JFrame {
 		mntmCalibrate = new JMenuItem("Calibrate");
 		setMenuItemProperties(mntmCalibrate, mnTools);
 		
-		mntmCalibrationGraph = new JMenuItem("Calibration Graph");
+		mntmCalibrationGraph = new JMenuItem("Calibration");
 		setMenuItemProperties(mntmCalibrationGraph, mnTools);
 		
-		mntmConcentrationGraph = new JMenuItem("Concentration Graph");
+		mntmConcentrationGraph = new JMenuItem("Concentration");
 		setMenuItemProperties(mntmConcentrationGraph, mnTools);
 		
 		mntmObserver = new JMenuItem("Observer");
@@ -627,7 +627,7 @@ public class MainWindow extends JFrame {
 		
 		calibrationGraph = new JPanel();
 		calibrationGraph.setBackground(Color.WHITE);
-		tabbedPane.addTab("Calibration Graph", null, calibrationGraph, null);
+		tabbedPane.addTab("Calibration", null, calibrationGraph, null);
 		
 		lblPearson = new JLabel("Pearson (R^2): ");
 		
@@ -688,7 +688,7 @@ public class MainWindow extends JFrame {
 //----------------------------------------Ends layout tab 1 ------------------------------------
 		
 		JLabel lab = new JLabel(); //Label para modificar tama�o tabs
-		lab.setText("Calibration Graph");
+		lab.setText("Calibration");
 		lab.setFont(new Font("Roboto Medium", Font.PLAIN, 11));
 		lab.setForeground(Color.white);
 	    lab.setPreferredSize(new Dimension(lab.getPreferredSize().width,HEIGTH_TABS)); //30 el height actual
@@ -701,7 +701,7 @@ public class MainWindow extends JFrame {
 		
 		concentrationGraph = new JScrollPane();
 		concentrationGraph.setBackground(Color.WHITE);
-		tabbedPane.addTab("Concentration Graph", null, concentrationGraph, null);
+		tabbedPane.addTab("Concentration", null, concentrationGraph, null);
 		concentrationGraph.getViewport().setView(new StackedPlots());
 		
 		
@@ -709,7 +709,8 @@ public class MainWindow extends JFrame {
 		
 		concentrationGraphR = new JScrollPane();
 		concentrationGraphR.setBackground(Color.WHITE);
-		tabbedPane.addTab("ConcentrationGraph (Real Time)", null, concentrationGraphR, null);
+		tabbedPane.addTab("Concentration (Real Time)", null, concentrationGraphR, null);
+		concentrationGraphR.getViewport().setView(new CalibrationGraph(null));
 
 		
 	    //-----------------------Labels primer iteracion-------------------------------------
