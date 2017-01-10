@@ -48,12 +48,8 @@ import java.awt.GridLayout;
 import javax.swing.JTable;
 
 import controller.Controller;
-<<<<<<< HEAD
 import de.erichseifert.gral.data.DataTable;
-=======
-
 import controller.DB;
->>>>>>> origin/master
 import de.erichseifert.gral.io.plots.DrawableWriter;
 import de.erichseifert.gral.io.plots.DrawableWriterFactory;
 import de.erichseifert.gral.ui.InteractivePanel;
