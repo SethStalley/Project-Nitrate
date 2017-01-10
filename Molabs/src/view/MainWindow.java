@@ -588,6 +588,8 @@ public class MainWindow extends JFrame {
 		
 		scrollPaneCalibration.setViewportView(calibrationTable);
 		
+		controller.startPushGraph((CalibrationTable) calibrationTable);
+		
 		//Remove Calibration Button
 		
 		btnRemoveCalibration = new GenericRoundedButton("Remove Calibration");
@@ -602,6 +604,7 @@ public class MainWindow extends JFrame {
 		//Calibrate Button
 		
 		btnCalibrate = new GenericRoundedButton("Calibrate");
+
 		setButtonProperties(btnCalibrate, pnSecondRow);
 		btnCalibrate.addMouseListener(setButtonsListeners(btnCalibrate));
 		btnCalibrate.addMouseListener(new MouseAdapter() {
@@ -920,9 +923,7 @@ public class MainWindow extends JFrame {
 		lblSlopeValue.setText(Double.toString(calibration.getSlope()));
 		
 		scrollPaneCalibrationGraph.getViewport().setView(new CalibrationGraph(calibration));
-		
-		DB.getInstance().updateGraph(calibration.getXYValues(), "CalibrationGraph", String.valueOf(calibration.getSlope()),
-				String.valueOf(calibration.getIntercept()));
+	
 		
 		//highlight rows
 		((MainTable) mainTable).highlightLightRowsRelatedToConcentration(calibration.getWavelength(),calibration.getFileKeys());

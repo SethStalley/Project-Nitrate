@@ -59,7 +59,6 @@ public class CalibrationTable extends CustomTable {
 
 	@Override
 	public void actionButton() {
-	    DefaultTableModel model = (DefaultTableModel) getModel();
 	    Boolean control = true;
 	    for(int row = 0; row < this.model.getRowCount(); row++){
 			JRadioButton status = (JRadioButton) this.model.getValueAt(row, Strings.STATUS_COLUMN_INDEX);
@@ -73,6 +72,18 @@ public class CalibrationTable extends CustomTable {
 	    if(control){
 	    	JOptionPane.showMessageDialog(null, Strings.ERROR_NO_ACTIVE_CALIBRATION);
 	    }
+	}
+	
+	public Date getActiveCalibration(){
+		//refactor from top in future
+	    for(int row = 0; row < this.model.getRowCount(); row++){
+			JRadioButton status = (JRadioButton) this.model.getValueAt(row, Strings.STATUS_COLUMN_INDEX);
+	    	if(status.isSelected()){
+	    		Date key = (Date) getValueAt(row, Strings.CALIBRATIONTABLE_COLUMN_DATE);
+	    		return key;
+	    	}
+	    }
+	    return null;
 	}
 
 	@Override

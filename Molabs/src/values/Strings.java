@@ -63,6 +63,7 @@ public class Strings {
 	
 	public static final double XVALUEMAX = 100;
 	public static final double XVALUEMIN = -100;
+	public static final int PUSH_GRAPH_SLEEP = 3; //3 seconds
 	
 	
 
