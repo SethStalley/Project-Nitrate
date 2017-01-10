@@ -61,8 +61,8 @@ public class Strings {
 	 * graphs 
 	 */
 	
-	public static final double XVALUEMAX = 10;
-	public static final double XVALUEMIN = -10;
+	public static final double XVALUEMAX = 100;
+	public static final double XVALUEMIN = -100;
 	
 	
 

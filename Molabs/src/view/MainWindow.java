@@ -564,7 +564,7 @@ public class MainWindow extends JFrame {
 		
 		calibrationTable = new CalibrationTable(new SortableCalibrateModel( //has to be changed to calibrateTable
 				new String[] {
-						"Status", "Date", "Wavelength"
+						"Status", "Date", "Wavelength(nm)"
 				},0), controller); // number of rows, should be 0 but for testing uses its 3
 		calibrationTable.setRowHeight(24);
 		
