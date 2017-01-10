@@ -72,7 +72,7 @@ public class CalibrationGraph extends JPanel{
 
 		// Create and format upper plot
 		XYPlot plot = new XYPlot(data,data2);
-		plot.setInsets(new Insets2D.Double(10.0, 60.0, 88.0, 30.0));
+		plot.setInsets(new Insets2D.Double(10.0, 65.0, 88.0, 30.0));
 		
 		if (calibration != null){
 

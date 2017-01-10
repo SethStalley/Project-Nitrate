@@ -158,7 +158,7 @@ public class LoginScreen extends JFrame {
 				dispose();
 			}
 			else{
-				//JOptionPane.showMessageDialog(null, result);
+				JOptionPane.showMessageDialog(null, result);
 			}
 		}
 		else{

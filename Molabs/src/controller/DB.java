@@ -1,5 +1,6 @@
 package controller;
 
+import java.net.NoRouteToHostException;
 import java.security.GeneralSecurityException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
@@ -48,6 +49,10 @@ public class DB {
 		url = "https://54.144.112.150/api/";
 	}
 	
+	public String getUser(){
+		return this.username;
+	}
+	
 	
 	public static DB getInstance(String username, String password) {
 		if (instance == null) {
@@ -87,6 +92,9 @@ public class DB {
 
 		}
 		catch (HttpHostConnectException e){ //not working
+			return Strings.ERROR_NO_INTERNET;
+		}
+		catch (java.net.NoRouteToHostException e){
 			return Strings.ERROR_NO_INTERNET;
 		}
 		catch (Exception ex) {
@@ -245,13 +253,15 @@ public class DB {
 		    json.put("pPassword", password);
 		    
 		    JSONObject resultJson = new JSONObject(this.postRequest("deleteUserByUsername", json));
+		    JOptionPane.showMessageDialog(null, json);
+		    JOptionPane.showMessageDialog(null, resultJson);
 		}
 		catch(Exception e){
-			
+			return Strings.ERROR_NO_INTERNET;
 		}
 		
 		
-		return Strings.ERROR_NO_INTERNET;
+		return null;
 	}
 	
 	public String updateGraph(ArrayList<Double[]> points, String graphType, String slope, String intercept){
@@ -284,7 +294,7 @@ public class DB {
 		    
 		}
 		catch(Exception e){
-			JOptionPane.showMessageDialog(null, e.getMessage());
+			//JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 		
 		
@@ -292,7 +302,7 @@ public class DB {
 		return null;
 	}
 	
-	private String postRequest(String procedure, JSONObject parameters) throws HttpHostConnectException{
+	private String postRequest(String procedure, JSONObject parameters) throws HttpHostConnectException, NoRouteToHostException{
 		
 		//HttpClient httpClient = HttpClientBuilder.create().build(); 
 		try {
@@ -325,6 +335,9 @@ public class DB {
 		}
 		catch (HttpHostConnectException e){
 			//JOptionPane.showMessageDialog(null, Strings.ERROR_NO_INTERNET);
+			throw e;
+		}
+		catch (java.net.NoRouteToHostException e){
 			throw e;
 		}
 		

@@ -107,7 +107,7 @@ public class ListUsers extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				String userToUpdate[] = ((view.userTable) userTable).getSelectedUser();
 				if (userToUpdate != null){
-					if (!userToUpdate.equals(DB.getInstance().user())){
+					if (!userToUpdate[0].equals(DB.getInstance().getUser())){
 						String result = DB.getInstance().deleteUser(userToUpdate[0]);
 						if(result == null){
 							((view.userTable) userTable).deleteUser();
