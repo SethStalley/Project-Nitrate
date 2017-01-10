@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.sql.Time;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,6 +26,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.text.JTextComponent;
 
 import controller.Controller;
+import de.erichseifert.gral.data.DataTable;
 import model.Calibration;
 import model.WorkingWavelength;
 import validation.Validation;
@@ -561,6 +563,21 @@ public class MainTable extends CustomTable {
 	public void setPasteEditable(boolean state){
 		this.pasteEditable = state;
 
+	}
+	
+	public DataTable getConcentrationsGraph(int index){
+		DataTable data = new DataTable(Long.class, Double.class);
+		
+		for(int i = 0; i<this.getModel().getRowCount(); i++){
+			
+			if(!((String)this.getValueAt(i, index)).isEmpty())
+				System.out.println(((String)this.getValueAt(i, index)).isEmpty());
+				System.out.println(((Date)this.getValueAt(i, Strings.MAINTABLE_COLUMN_DATE+1)).getTime());
+				System.out.println(Double.parseDouble((String)this.getValueAt(i, index)));
+				data.add(((Date)this.getValueAt(i, Strings.MAINTABLE_COLUMN_DATE+1)).getTime(),Double.parseDouble((String)this.getValueAt(i, index)));
+		}
+		System.out.println(data);
+		return data;
 	}
 
 

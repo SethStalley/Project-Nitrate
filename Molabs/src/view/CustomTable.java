@@ -103,7 +103,7 @@ public abstract class CustomTable extends JTable {
 
 	}
 	
-	private Date getDateFromRow(int rowIndex) {
+	protected Date getDateFromRow(int rowIndex) {
 		return (Date) this.getValueAt(rowIndex, DATE_INDEX);
 	}
 	

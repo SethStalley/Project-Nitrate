@@ -2,6 +2,8 @@ package view;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
@@ -9,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultCellEditor;
@@ -18,6 +21,8 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -31,19 +36,21 @@ import values.rightclickIdentifier;
 public class CalibrationTable extends CustomTable {
 	
 	ButtonGroup activeGroup;
+	boolean canGraph;
 
 	public CalibrationTable(SortableJTableModel model, Controller controller) {
 		super(model, controller);
 		activeGroup = new ButtonGroup();
 		TableColumn typeColumn = getColumnModel().getColumn(Strings.STATUS_COLUMN_INDEX);
 		typeColumn.setCellRenderer(new RadioButtonRenderer());
-    	typeColumn.setCellEditor(new RadioButtonEditor(new JCheckBox()));
+    	typeColumn.setCellEditor(new RadioButtonEditor(new JCheckBox(), this));
+    	canGraph = true;
 	}
 
 	@Override
 	public void addRow(Object pCalibration) {
 		Calibration calibration = (Calibration) pCalibration;
-		JRadioButton radio = new JRadioButton("");
+		JRadioButton radio = new JRadioButton("");		
 		radio.setHorizontalAlignment(JRadioButton.CENTER);
 		activeGroup.add(radio);
 	    ((DefaultTableModel) getModel()).addRow(
@@ -59,28 +66,42 @@ public class CalibrationTable extends CustomTable {
 
 	@Override
 	public void actionButton() {
-	    DefaultTableModel model = (DefaultTableModel) getModel();
-	    Boolean control = true;
-	    for(int row = 0; row < this.model.getRowCount(); row++){
-			JRadioButton status = (JRadioButton) this.model.getValueAt(row, Strings.STATUS_COLUMN_INDEX);
-	    	if(status.isSelected()){
-	    		Date key = (Date) getValueAt(row, Strings.CALIBRATIONTABLE_COLUMN_DATE);
-	    		controller.calculateConcentrations(key);
-	    		control = false;
-	    		break;
-	    	}
-	    }
-	    if(control){
+	    Date key = getSelectedCalibration();
+	    if(key != null){
+	    	controller.calculateConcentrations(key);
+	    }else{
 	    	JOptionPane.showMessageDialog(null, Strings.ERROR_NO_ACTIVE_CALIBRATION);
 	    }
 	}
+	
+	public Date getSelectedCalibration(){
+		DefaultTableModel model = (DefaultTableModel) getModel();
+	    for(int row = 0; row < this.model.getRowCount(); row++){
+			JRadioButton status = (JRadioButton) this.model.getValueAt(row, Strings.STATUS_COLUMN_INDEX);
+			System.out.println(status.isSelected());
+	    	if(status.isSelected()){
+	    		Date key = (Date) getValueAt(row, Strings.CALIBRATIONTABLE_COLUMN_DATE);
+	    		return key;
+	    	}
+	    }
+	    return null;
+	}
+	
+	public void graphCalibration() {
+		Date date = getSelectedCalibration();
+		if(date != null){
+			Calibration calibration = controller.getCalibrationData(date);
+			controller.setConcentrationGraph(date.toString(), calibration.getWavelength());
+		}
+	}
+	
 
 	@Override
 	public void addDropdowns() {
 		
 		TableColumn typeColumn = getColumnModel().getColumn(Strings.STATUS_COLUMN_INDEX);
 		typeColumn.setCellRenderer(new RadioButtonRenderer());
-    	typeColumn.setCellEditor(new RadioButtonEditor(new JCheckBox()));
+    	typeColumn.setCellEditor(new RadioButtonEditor(new JCheckBox(),this));
     	resizeColumns();
     	centerCells();
     	this.getColumnModel().getColumn(DATE_INDEX).setCellRenderer(new CellRenderDateAsYYMMDD_TIME());
@@ -131,6 +152,10 @@ public class CalibrationTable extends CustomTable {
 			addRow(cal);
 		}
 	}
+	
+	
+	
+	
 	
 	
 	

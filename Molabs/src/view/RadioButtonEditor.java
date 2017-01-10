@@ -12,9 +12,11 @@ import javax.swing.JTable;
 class RadioButtonEditor extends DefaultCellEditor implements ItemListener {
 	
 	private JRadioButton button;
+	private CalibrationTable table;
 
-	  public RadioButtonEditor(JCheckBox checkBox) {
+	  public RadioButtonEditor(JCheckBox checkBox, CalibrationTable table) {
 	    super(checkBox);
+	    this.table = table;
 	  }
 
 	  public Component getTableCellEditorComponent(JTable table, Object value,
@@ -32,6 +34,8 @@ class RadioButtonEditor extends DefaultCellEditor implements ItemListener {
 	  }
 
 	  public void itemStateChanged(ItemEvent e) {
+		if(button.isSelected())
+			table.graphCalibration();
 	    super.fireEditingStopped();
 	    
 	  }

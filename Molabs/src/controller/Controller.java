@@ -273,5 +273,18 @@ public class Controller {
 			return false;
 		}
 	}
+	public Boolean setConcentrationGraph(String calibrationDate, String wavelength){
+		WorkingWavelength ww = getWavelengthWithWavelength(wavelength);
+		Integer offset =  ww.removeWorkingConcentration(calibrationDate);
+		if (offset > 0){
+			Integer absorbanceColumn = getAbsorbanceColumnIndex(wavelength);
+			graphicInterface.graphConcentration(offset + absorbanceColumn);
+			return true;
+		}
+		else{
+			return false;
+		}
+		
+	}
 
 }

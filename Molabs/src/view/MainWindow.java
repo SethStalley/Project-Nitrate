@@ -48,6 +48,7 @@ import java.awt.GridLayout;
 import javax.swing.JTable;
 
 import controller.Controller;
+import de.erichseifert.gral.data.DataTable;
 import de.erichseifert.gral.io.plots.DrawableWriter;
 import de.erichseifert.gral.io.plots.DrawableWriterFactory;
 import de.erichseifert.gral.ui.InteractivePanel;
@@ -82,7 +83,7 @@ public class MainWindow extends JFrame {
 					  mntmAlertValues, mntmExportExcel; //Tools
 	
 	private JMenuItem mntmAddUser, mntmListUser; //Users
-	private JPanel pnMain;
+	private JPanel pnMain, graphConc;
 	private JButton btnOpenFile, btnAddRow, btnDeleteRow, btnSaveProject, btnConcentration, btnAbsorbance; // first row buttons
 	private JButton btnRemoveCalibration, btnCalibrate; //buttons second row panel
 	public JTextField txtWavelength; //single textfield
@@ -458,6 +459,7 @@ public class MainWindow extends JFrame {
 		btnConcentration.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				calibrationTable.actionButton();
+				((CalibrationTable)calibrationTable).graphCalibration();
 			}
 		});
 		setButtonProperties(btnConcentration, pnMain);
@@ -688,7 +690,7 @@ public class MainWindow extends JFrame {
 		concentrationGraph = new JScrollPane();
 		concentrationGraph.setBackground(Color.WHITE);
 		tabbedPane.addTab("Concentration Graph", null, concentrationGraph, null);
-		concentrationGraph.getViewport().setView(new StackedPlots());
+		concentrationGraph.getViewport().setView(new StackedPlots(new DataTable(Long.class, Double.class)));
 		
 		
 		// Tab 3
@@ -930,4 +932,12 @@ public class MainWindow extends JFrame {
 			((MainTable) mainTable).deleteColumn(i);	
 		}	
 	}
+	
+	public void graphConcentration(int index){
+		DataTable data = ((MainTable)mainTable).getConcentrationsGraph(index);
+		concentrationGraph.getViewport().setView(new StackedPlots(data));
+	}
+	
+	
+	
 }

@@ -44,13 +44,25 @@ public class WorkingWavelength {
 		for (Calibration c: workingConcentrationColumns){
 			offset++;
 			if (c.getDate().toString().equals(date)){
-				JOptionPane.showMessageDialog(null, "Estoy en working wavelength. eliminada!");
 				workingConcentrationColumns.remove(c);
 				return offset;
 			}
 		}
 		return -1;//should not happen
 	}
+	
+	public Integer getIndexConcentration(String date){
+		//returns an offset from the biggining of the concentration
+		Integer offset = 0;
+		for (Calibration c: workingConcentrationColumns){
+			offset++;
+			if (c.getDate().toString().equals(date)){
+				return offset;
+			}
+		}
+		return -1;//should not happen
+	}
+	
 	
 	public String getWavelength() {
 		return this.wavelength;

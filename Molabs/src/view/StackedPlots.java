@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.geom.Ellipse2D;
+import java.text.DateFormat;
 import java.util.Random;
 
 import javax.swing.JFrame;
@@ -25,27 +26,16 @@ import de.erichseifert.gral.ui.InteractivePanel;
 import de.erichseifert.gral.util.GraphicsUtils;
 
 public class StackedPlots extends JPanel {
-	/** Version id for serialization. */
-	private static final long serialVersionUID = 6832343098989019088L;
-
-	/** Instance to generate random data values. */
-	private static final Random random = new Random();
 
 	@SuppressWarnings("unchecked")
-	public StackedPlots() {
+	public StackedPlots(DataTable data) {
 		
 		super(new BorderLayout());
-		setPreferredSize(new Dimension(800, 600));
+		setPreferredSize(new Dimension(200, 180));
 		setBackground(Color.WHITE);
 		
-		// Generate data
-		DataTable data = new DataTable(Double.class, Double.class);
-		double x=0.0, y=0.0;
-		for (x=0.0; x<100.0; x+=2.0) {
-			y += 10.0*random.nextGaussian();
-			data.add(x, Math.abs(y));
-		}
-
+		
+		
 
 
 		// Create and format lower plot
@@ -62,8 +52,18 @@ public class StackedPlots extends JPanel {
 		AreaRenderer areaUpper = new DefaultAreaRenderer2D();
 		areaUpper.setColor(GraphicsUtils.deriveWithAlpha(color, 64));
 		plot.setAreaRenderers(data, areaUpper);
-		plot.setInsets(new Insets2D.Double(20.0, 50.0, 40.0, 20.0));
-
+		plot.setInsets(new Insets2D.Double(20.0, 50.0, 45.0, 20.0));
+		
+		
+		plot.getAxisRenderer(XYPlot.AXIS_X).setLabelDistance(0);
+		plot.getAxisRenderer(XYPlot.AXIS_X).setTickLabelDistance(0);
+		plot.getAxisRenderer(XYPlot.AXIS_X).getLabel().setText("Time");
+		plot.getAxisRenderer(XYPlot.AXIS_Y).setLabelDistance(1);
+		plot.getAxisRenderer(XYPlot.AXIS_Y).setTickLabelDistance(0.5);
+		plot.getAxisRenderer(XYPlot.AXIS_Y).getLabel().setText("Concentration (mg/L)");
+		DateFormat dateFormat = DateFormat.getTimeInstance(DateFormat.MEDIUM);
+		plot.getAxisRenderer(XYPlot.AXIS_X).setTickLabelFormat(dateFormat);
+		
 		DrawableContainer plots = new DrawableContainer(new TableLayout(1));
 		plots.add(plot);
 
