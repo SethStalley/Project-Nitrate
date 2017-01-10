@@ -282,7 +282,9 @@ public class Controller {
 	}
 	public Boolean setConcentrationGraph(String calibrationDate, String wavelength){
 		WorkingWavelength ww = getWavelengthWithWavelength(wavelength);
-		Integer offset =  ww.removeWorkingConcentration(calibrationDate);
+		Integer offset =  ww.getIndexConcentration(calibrationDate);
+		System.out.println("offset");
+		System.out.println(offset);
 		if (offset > 0){
 			Integer absorbanceColumn = getAbsorbanceColumnIndex(wavelength);
 			graphicInterface.graphConcentration(offset + absorbanceColumn);
@@ -292,6 +294,14 @@ public class Controller {
 			return false;
 		}
 		
+	}
+	
+	public void initiateConcentrationGraph(){
+		graphicInterface.initiateGraphConcentration();
+	}
+	
+	public void cleanGraph(){
+		graphicInterface.cleanGraph();
 	}
 
 }

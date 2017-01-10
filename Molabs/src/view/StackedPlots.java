@@ -33,25 +33,37 @@ public class StackedPlots extends JPanel {
 		super(new BorderLayout());
 		setPreferredSize(new Dimension(200, 180));
 		setBackground(Color.WHITE);
+		boolean init = false;
 		
-		
+		if(data == null){
+			data = new DataTable(Long.class, Double.class);
+			data.add(System.currentTimeMillis(),new Double(0));
+			data.add(System.currentTimeMillis()-10000,new Double(1));
+			init = true;
+		}
 		
 
 
 		// Create and format lower plot
 		XYPlot plot = new XYPlot(data);
-		Color color = new Color( 55, 170, 200);
-		PointRenderer points = plot.getPointRenderers(data).get(0);
-		points.setColor(color);
-		points.setShape(new Ellipse2D.Double(-3, -3, 6, 6));
-		LineRenderer lineLower = new DefaultLineRenderer2D();
-		lineLower.setStroke(new BasicStroke(2f));
-		lineLower.setGap(1.0);
-		lineLower.setColor(color);
-		plot.setLineRenderers(data, lineLower);
-		AreaRenderer areaUpper = new DefaultAreaRenderer2D();
-		areaUpper.setColor(GraphicsUtils.deriveWithAlpha(color, 64));
-		plot.setAreaRenderers(data, areaUpper);
+		if(!init){
+			Color color = new Color( 55, 170, 200);
+			PointRenderer points = plot.getPointRenderers(data).get(0);
+			points.setColor(color);
+			points.setShape(new Ellipse2D.Double(-3, -3, 6, 6));
+			LineRenderer lineLower = new DefaultLineRenderer2D();
+			lineLower.setStroke(new BasicStroke(2f));
+			lineLower.setGap(1.0);
+			lineLower.setColor(color);
+			plot.setLineRenderers(data, lineLower);
+			AreaRenderer areaUpper = new DefaultAreaRenderer2D();
+			areaUpper.setColor(GraphicsUtils.deriveWithAlpha(color, 64));
+			plot.setAreaRenderers(data, areaUpper);
+		}else{
+			plot.setLineRenderers(data, null);
+			plot.setAreaRenderers(data, null);
+		}
+		
 		plot.setInsets(new Insets2D.Double(20.0, 50.0, 45.0, 20.0));
 		
 		

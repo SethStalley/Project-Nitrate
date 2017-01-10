@@ -470,7 +470,7 @@ public class MainWindow extends JFrame {
 		btnConcentration.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				calibrationTable.actionButton();
-				((CalibrationTable)calibrationTable).graphCalibration();
+				initiateGraphConcentration();
 			}
 		});
 		setButtonProperties(btnConcentration, pnMain);
@@ -706,7 +706,7 @@ public class MainWindow extends JFrame {
 		concentrationGraph = new JScrollPane();
 		concentrationGraph.setBackground(Color.WHITE);
 		tabbedPane.addTab("Concentration", null, concentrationGraph, null);
-		concentrationGraph.getViewport().setView(new StackedPlots(new DataTable(Long.class, Double.class)));
+		cleanGraph();
 		
 		
 		// Tab 3
@@ -929,6 +929,7 @@ public class MainWindow extends JFrame {
 		//highlight rows
 		((MainTable) mainTable).highlightLightRowsRelatedToConcentration(calibration.getWavelength(),calibration.getFileKeys());
 		mainTablePane.repaint();
+		System.out.println("en labels");
 	}
 
 
@@ -982,6 +983,13 @@ public class MainWindow extends JFrame {
 	public void graphConcentration(int index){
 		DataTable data = ((MainTable)mainTable).getConcentrationsGraph(index);
 		concentrationGraph.getViewport().setView(new StackedPlots(data));
+	}
+	
+	public void initiateGraphConcentration(){
+		((CalibrationTable)calibrationTable).graphCalibration();
+	}
+	public void cleanGraph(){
+		concentrationGraph.getViewport().setView(new StackedPlots(null));
 	}
 	
 	

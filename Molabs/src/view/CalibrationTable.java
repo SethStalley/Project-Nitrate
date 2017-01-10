@@ -2,6 +2,8 @@ package view;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
@@ -50,7 +52,19 @@ public class CalibrationTable extends CustomTable {
 	@Override
 	public void addRow(Object pCalibration) {
 		Calibration calibration = (Calibration) pCalibration;
-		JRadioButton radio = new JRadioButton("");		
+		JRadioButton radio = new JRadioButton("");
+		radio.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				addDropdowns();
+				System.out.println(activeGroup.getSelection().isSelected());
+				System.out.println("del action");
+				graphCalibration();
+				
+				
+			}
+		});
 		radio.setHorizontalAlignment(JRadioButton.CENTER);
 		activeGroup.add(radio);
 	    ((DefaultTableModel) getModel()).addRow(
@@ -78,7 +92,6 @@ public class CalibrationTable extends CustomTable {
 		DefaultTableModel model = (DefaultTableModel) getModel();
 	    for(int row = 0; row < this.model.getRowCount(); row++){
 			JRadioButton status = (JRadioButton) this.model.getValueAt(row, Strings.STATUS_COLUMN_INDEX);
-			System.out.println(status.isSelected());
 	    	if(status.isSelected()){
 	    		Date key = (Date) getValueAt(row, Strings.CALIBRATIONTABLE_COLUMN_DATE);
 	    		return key;
@@ -92,6 +105,9 @@ public class CalibrationTable extends CustomTable {
 		if(date != null){
 			Calibration calibration = controller.getCalibrationData(date);
 			controller.setConcentrationGraph(date.toString(), calibration.getWavelength());
+		}
+		else{
+			controller.cleanGraph();
 		}
 	}
 	

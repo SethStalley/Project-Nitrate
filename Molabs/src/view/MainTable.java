@@ -139,6 +139,7 @@ public class MainTable extends CustomTable {
 		
 		//add our dropdown options
 		addDropdowns();
+		controller.initiateConcentrationGraph();
 	}
 
 	
@@ -159,6 +160,8 @@ public class MainTable extends CustomTable {
 		String name = "Custom Row " + this.lastBlankRow++;
 		this.addRow(new Object[]{name,date, date, Strings.SAMPLE});;
 		controller.addCustomRow(name, date);
+		addDropdowns();
+		controller.initiateConcentrationGraph();
 	}
 
 	public void addColumn(Object header, Object[] columns) {
@@ -178,7 +181,6 @@ public class MainTable extends CustomTable {
 	        Vector obj2 = (Vector) obj;
 	        obj2.add(index, obj2.get(obj2.size()-1));
 	        obj2.remove(obj2.size()-1);
-	        System.out.println(obj2.get(index));
 	        
 	    }
 		int columns = model.getColumnCount();
@@ -380,6 +382,7 @@ public class MainTable extends CustomTable {
 
     	for(int i = Strings.CONCENTRATION_COLUMN_INDEX; i<this.model.getColumnCount(); i++){
     		this.getColumnModel().getColumn(i).setCellEditor(new CellNumberEditor());
+    		System.out.println("aca");
     	}
 	}
 	public void resizeColumns(){
@@ -527,6 +530,8 @@ public class MainTable extends CustomTable {
 		for (int i = 0; i < numberOfConcentrations; i++){
 			this.setValueAt("", row, column + i + 1);
 		}
+		addDropdowns();
+		controller.initiateConcentrationGraph();
 	}
 	// for custom rows
 	private void addConcentrationsForAbsorbance(int column, ArrayList<Calibration> concentrations, int row, double absorbance){
@@ -535,6 +540,8 @@ public class MainTable extends CustomTable {
 			concentration = (double)Math.round(concentration * 100000d) / 100000d;
 			this.setValueAt(concentration, row, column + i + 1);
 		}
+		addDropdowns();
+		controller.initiateConcentrationGraph();
 	}
 	
 	private DefaultTableCellRenderer getSelectedHeaderRenderer(){
@@ -551,6 +558,7 @@ public class MainTable extends CustomTable {
 		super.model.removeColumn(index);
 		resizeColumns();
 		addDropdowns();
+		controller.initiateConcentrationGraph();
 	}
 
 	
@@ -558,6 +566,7 @@ public class MainTable extends CustomTable {
 		super.model.removeColumn(column);
 		resizeColumns();
 		addDropdowns();
+		controller.initiateConcentrationGraph();
 	}
 
 	public void setPasteEditable(boolean state){
@@ -566,17 +575,22 @@ public class MainTable extends CustomTable {
 	}
 	
 	public DataTable getConcentrationsGraph(int index){
-		DataTable data = new DataTable(Long.class, Double.class);
-		
-		for(int i = 0; i<this.getModel().getRowCount(); i++){
-			
-			if(!((String)this.getValueAt(i, index)).isEmpty())
-				System.out.println(((String)this.getValueAt(i, index)).isEmpty());
-				System.out.println(((Date)this.getValueAt(i, Strings.MAINTABLE_COLUMN_DATE+1)).getTime());
-				System.out.println(Double.parseDouble((String)this.getValueAt(i, index)));
-				data.add(((Date)this.getValueAt(i, Strings.MAINTABLE_COLUMN_DATE+1)).getTime(),Double.parseDouble((String)this.getValueAt(i, index)));
+		DataTable data;
+		if(index == -1){
+			data = null;
+		}else{
+			data = new DataTable(Long.class, Double.class);
+			for(int i = 0; i<this.getModel().getRowCount(); i++){
+				if(this.getValueAt(i, index) != null){
+					if(this.getValueAt(i, index).getClass() == String.class && !((String)this.getValueAt(i, index)).isEmpty())
+						data.add(((Date)this.getValueAt(i, Strings.MAINTABLE_COLUMN_DATE+1)).getTime(),Double.parseDouble((String)this.getValueAt(i, index)));
+					else if(this.getValueAt(i, index).getClass() == Double.class)
+						data.add(((Date)this.getValueAt(i, Strings.MAINTABLE_COLUMN_DATE+1)).getTime(),(Double)this.getValueAt(i, index));
+				}
+					
+			}
 		}
-		System.out.println(data);
+		
 		return data;
 	}
 

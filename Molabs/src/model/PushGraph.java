@@ -30,7 +30,7 @@ public class PushGraph extends Thread{
 				Date key = calibrationTable.getActiveCalibration();
 				if (key != null){
 					currentCalibration = controller.getCalibrationData(key);
-					System.out.println("Push graph calibration with : " + currentCalibration.getDate());
+					//System.out.println("Push graph calibration with : " + currentCalibration.getDate());
 					
 					DB.getInstance().updateGraph(currentCalibration.getXYValues(), "CalibrationGraph", String.valueOf(currentCalibration.getSlope()),
 							String.valueOf(currentCalibration.getIntercept()));

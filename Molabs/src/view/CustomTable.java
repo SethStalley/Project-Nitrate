@@ -84,6 +84,7 @@ public abstract class CustomTable extends JTable {
 		Date key = getDateFromRow(index);
 		this.controller.removeFile(key);
 		((DefaultTableModel) this.getModel()).removeRow(index);
+		this.controller.initiateConcentrationGraph();
 	}
 	
 	public void deleteSelectedCalibrations() {
@@ -92,6 +93,7 @@ public abstract class CustomTable extends JTable {
 		for (int index : rows) {
 			deleteCalibration(index);
 		}
+		this.controller.initiateConcentrationGraph();
 	}
 	
 	private void deleteCalibration(int index) {
@@ -100,6 +102,7 @@ public abstract class CustomTable extends JTable {
 		controller.removeWorkingConcentration(date.toString(), calibration.getWavelength());
 		this.controller.removeCalibration(date);
 		((DefaultTableModel) this.getModel()).removeRow(index);
+		this.controller.initiateConcentrationGraph();
 
 	}
 	

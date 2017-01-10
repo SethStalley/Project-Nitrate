@@ -34,8 +34,6 @@ class RadioButtonEditor extends DefaultCellEditor implements ItemListener {
 	  }
 
 	  public void itemStateChanged(ItemEvent e) {
-		if(button.isSelected())
-			table.graphCalibration();
 	    super.fireEditingStopped();
 	    
 	  }
