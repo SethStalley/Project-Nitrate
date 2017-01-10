@@ -12,11 +12,12 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 
+import controller.DB;
+
 public class Encrypt {
 	
-	private final static String key = "CF2A4B8982469C2D";
-	
 	public static String encrypt(String unencryptedText) {
+		String key = DB.getAesKey();
 		SecretKey myDesKey;
 		
 		try {
@@ -54,6 +55,7 @@ public class Encrypt {
 	}
 	
 	public static String unencrypt(String encryptedText) {
+		String key = DB.getAesKey();
 		SecretKey myDesKey;
 		
 		try {

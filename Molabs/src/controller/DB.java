@@ -41,6 +41,7 @@ public class DB {
 	private String username;
 	private String password; // current username and password
 	private String url;
+	private static String AesKey;
 
 	private DB() {
 		url = "https://54.144.112.150/api/";
@@ -50,10 +51,42 @@ public class DB {
 		this.username = username;
 		this.password = password;
 		url = "https://54.144.112.150/api/";
+		AesKey = loadAesKey();
+	}
+	
+	public static String getAesKey() {
+		return AesKey;
 	}
 	
 	public String getUser(){
 		return this.username;
+	}
+	
+	private String loadAesKey() {
+		try {
+			JSONObject json = new JSONObject();
+		    json.put("pUserName", username);// maybe need quotation ??
+		    json.put("pPassword", password);
+		    
+		   
+		    JSONArray jsonA = new JSONArray(this.postRequest("selectAesKey", json));
+		    JSONObject resultJson =   (JSONObject) (((JSONArray) jsonA.get(0)).get(0));
+		    
+		    return resultJson.getString("key");
+
+		}
+		catch (HttpHostConnectException e){ //not working
+			return Strings.ERROR_NO_INTERNET;
+		}
+		catch (java.net.NoRouteToHostException e){
+			return Strings.ERROR_NO_INTERNET;
+		}
+		catch (Exception ex) {
+
+		    //JOptionPane.showMessageDialog(null, ex.toString());
+
+		}
+		return null;
 	}
 	
 	
@@ -86,9 +119,8 @@ public class DB {
 		    json.put("pUserName", username);// maybe need quotation ??
 		    json.put("pPassword", password);
 		    
-		   
+
 		    JSONArray jsonA = new JSONArray(this.postRequest("validateUser", json));
-		    
 		    JSONObject resultJson =   (JSONObject) (((JSONArray) jsonA.get(0)).get(0));
 		    
 		    return resultJson.getString("type");
@@ -325,6 +357,7 @@ public class DB {
 		    HttpResponse response = httpClient.execute(request);
 		    
 		    String jsonString = EntityUtils.toString(response.getEntity());
+		    
 		    
 		    //JOptionPane.showMessageDialog(null, jsonString);
 		    
