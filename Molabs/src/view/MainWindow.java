@@ -3,6 +3,7 @@ package view;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -917,11 +918,14 @@ public class MainWindow extends JFrame {
 		Date key = (Date) calibrationTable.getValueAt(row, Strings.CALIBRATIONTABLE_COLUMN_DATE);
 		
 		Calibration calibration = controller.getCalibrationData(key);
-		
-		lblInterceptValue.setText(Double.toString(calibration.getIntercept()));
-		lblPearsonValue.setText(Double.toString(calibration.getPearson()));
-		Double tr = calibration.getIntercept();
-		lblSlopeValue.setText(Double.toString(calibration.getSlope()));
+
+
+		String intercept = new DecimalFormat("#.##########").format(calibration.getIntercept());
+		String pearson = new DecimalFormat("#.##########").format(calibration.getPearson());
+		String slope = new DecimalFormat("#.##########").format(calibration.getSlope());
+		lblInterceptValue.setText(intercept);
+		lblPearsonValue.setText(pearson);
+		lblSlopeValue.setText(slope);
 		
 		scrollPaneCalibrationGraph.getViewport().setView(new CalibrationGraph(calibration));
 	
