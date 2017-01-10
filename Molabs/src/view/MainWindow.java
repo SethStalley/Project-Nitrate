@@ -48,10 +48,16 @@ import java.awt.GridLayout;
 import javax.swing.JTable;
 
 import controller.Controller;
+<<<<<<< HEAD
 import de.erichseifert.gral.data.DataTable;
+=======
+
+import controller.DB;
+>>>>>>> origin/master
 import de.erichseifert.gral.io.plots.DrawableWriter;
 import de.erichseifert.gral.io.plots.DrawableWriterFactory;
 import de.erichseifert.gral.ui.InteractivePanel;
+
 import model.Calibration;
 import values.Preferences;
 import values.Strings;
@@ -89,8 +95,10 @@ public class MainWindow extends JFrame {
 	public JTextField txtWavelength; //single textfield
 	private JPanel pnFirstRow, pnSecondRow; // Container panels
 	public CustomTable mainTable, calibrationTable; // Tables
-	private JScrollPane mainTablePane, scrollPaneCalibration,concentrationGraph, scrollPaneCalibrationGraph; //scrollpane for tables
-	private JPanel calibrationGraph, concentrationGraphR; //panel tabs
+
+	private JScrollPane mainTablePane, scrollPaneCalibration,concentrationGraph, concentrationGraphR, scrollPaneCalibrationGraph; //scrollpane for tables
+	private JPanel calibrationGraph; //panel tabs
+
 	private JLabel lblPearson, lblIntercept, lblSlope; //labels tab 1
 	private JLabel lblPearsonValue;
 	private JLabel lblInterceptValue;
@@ -218,6 +226,7 @@ public class MainWindow extends JFrame {
 		mntmPrint = new JMenuItem("Export Graph");
 		setMenuItemProperties(mntmPrint, mnFile);
 		
+		
 		mntmExit = new JMenuItem("Exit");
 		setMenuItemProperties(mntmExit, mnFile);
 		mntmExit.addActionListener(new ActionListener() {
@@ -267,10 +276,10 @@ public class MainWindow extends JFrame {
 		mntmCalibrate = new JMenuItem("Calibrate");
 		setMenuItemProperties(mntmCalibrate, mnTools);
 		
-		mntmCalibrationGraph = new JMenuItem("Calibration Graph");
+		mntmCalibrationGraph = new JMenuItem("Calibration");
 		setMenuItemProperties(mntmCalibrationGraph, mnTools);
 		
-		mntmConcentrationGraph = new JMenuItem("Concentration Graph");
+		mntmConcentrationGraph = new JMenuItem("Concentration");
 		setMenuItemProperties(mntmConcentrationGraph, mnTools);
 		
 		mntmObserver = new JMenuItem("Observer");
@@ -305,6 +314,12 @@ public class MainWindow extends JFrame {
 		
 		mntmExportExcel = new JMenuItem("Export Excel");
 		setMenuItemProperties(mntmExportExcel, mnTools);
+		mntmExportExcel.addActionListener(new java.awt.event.ActionListener() {
+	        @Override
+	        public void actionPerformed(java.awt.event.ActionEvent evt) {
+	        	export2Excel();
+	        }
+	    });
 		
 		//Users
 		mntmAddUser = new JMenuItem("Add User");
@@ -554,7 +569,7 @@ public class MainWindow extends JFrame {
 		
 		calibrationTable = new CalibrationTable(new SortableCalibrateModel( //has to be changed to calibrateTable
 				new String[] {
-						"Status", "Date", "Wavelength"
+						"Status", "Date", "Wavelength(nm)"
 				},0), controller); // number of rows, should be 0 but for testing uses its 3
 		calibrationTable.setRowHeight(24);
 		
@@ -578,6 +593,8 @@ public class MainWindow extends JFrame {
 		
 		scrollPaneCalibration.setViewportView(calibrationTable);
 		
+		controller.startPushGraph((CalibrationTable) calibrationTable);
+		
 		//Remove Calibration Button
 		
 		btnRemoveCalibration = new GenericRoundedButton("Remove Calibration");
@@ -592,6 +609,7 @@ public class MainWindow extends JFrame {
 		//Calibrate Button
 		
 		btnCalibrate = new GenericRoundedButton("Calibrate");
+
 		setButtonProperties(btnCalibrate, pnSecondRow);
 		btnCalibrate.addMouseListener(setButtonsListeners(btnCalibrate));
 		btnCalibrate.addMouseListener(new MouseAdapter() {
@@ -617,7 +635,7 @@ public class MainWindow extends JFrame {
 		
 		calibrationGraph = new JPanel();
 		calibrationGraph.setBackground(Color.WHITE);
-		tabbedPane.addTab("Calibration Graph", null, calibrationGraph, null);
+		tabbedPane.addTab("Calibration", null, calibrationGraph, null);
 		
 		lblPearson = new JLabel("Pearson (R^2): ");
 		
@@ -635,6 +653,8 @@ public class MainWindow extends JFrame {
 		scrollPaneCalibrationGraph.setOpaque(false);
 		scrollPaneCalibrationGraph.setBackground(Color.WHITE);
 		
+		scrollPaneCalibrationGraph.getViewport().setView(new CalibrationGraph(null));
+		
 		
 //----------------------------------------layout tab 1 ------------------------------------
 		
@@ -650,8 +670,8 @@ public class MainWindow extends JFrame {
 						.addComponent(lblSlopeValue)
 						.addComponent(lblPearson)
 						.addComponent(lblSlope, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
-					.addComponent(scrollPaneCalibrationGraph, GroupLayout.PREFERRED_SIZE, 487, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+					.addComponent(scrollPaneCalibrationGraph, GroupLayout.PREFERRED_SIZE, 488, GroupLayout.PREFERRED_SIZE))
 		);
 		gl_calibrationGraph.setVerticalGroup(
 			gl_calibrationGraph.createParallelGroup(Alignment.LEADING)
@@ -675,8 +695,8 @@ public class MainWindow extends JFrame {
 		
 //----------------------------------------Ends layout tab 1 ------------------------------------
 		
-		JLabel lab = new JLabel(); //Label para modificar tamaño tabs
-		lab.setText("Calibration Graph");
+		JLabel lab = new JLabel(); //Label para modificar tamaï¿½o tabs
+		lab.setText("Calibration");
 		lab.setFont(new Font("Roboto Medium", Font.PLAIN, 11));
 		lab.setForeground(Color.white);
 	    lab.setPreferredSize(new Dimension(lab.getPreferredSize().width,HEIGTH_TABS)); //30 el height actual
@@ -689,15 +709,17 @@ public class MainWindow extends JFrame {
 		
 		concentrationGraph = new JScrollPane();
 		concentrationGraph.setBackground(Color.WHITE);
-		tabbedPane.addTab("Concentration Graph", null, concentrationGraph, null);
+		tabbedPane.addTab("Concentration", null, concentrationGraph, null);
 		concentrationGraph.getViewport().setView(new StackedPlots(new DataTable(Long.class, Double.class)));
 		
 		
 		// Tab 3
 		
-		concentrationGraphR = new JPanel();
+		concentrationGraphR = new JScrollPane();
 		concentrationGraphR.setBackground(Color.WHITE);
-		tabbedPane.addTab("ConcentrationGraph (Real Time)", null, concentrationGraphR, null);
+		tabbedPane.addTab("Concentration (Real Time)", null, concentrationGraphR, null);
+		concentrationGraphR.getViewport().setView(new CalibrationGraph(null));
+
 		
 	    //-----------------------Labels primer iteracion-------------------------------------
 	    JLabel lblNewLabel2 = new JLabel("Grafico calibracion"); //Label para tests
@@ -858,6 +880,31 @@ public class MainWindow extends JFrame {
 	       
 	}
 	
+	private void export2Excel() {
+		try {
+            if (this.mainTable.getRowCount() <= 0) return;
+            JFileChooser chooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(Strings.LABEL_EXCEL_FILE, "xls");
+            chooser.setFileFilter(filter);
+            chooser.setDialogTitle(Strings.LABEL_SAVE_FILE);
+            chooser.setAcceptAllFileFilterUsed(false);
+            if (chooser.showSaveDialog(null) != 0) return;
+            ArrayList<JTable> tb = new ArrayList<JTable>();
+            tb.add(this.mainTable);
+            String file = chooser.getSelectedFile().toString();
+            
+            if (!file.contains(".xls") )
+            	file = file.concat(".xls");
+            ExcelExport excelExporter = new ExcelExport(tb, new File(file));
+            if (!excelExporter.export()) return;
+            JOptionPane.showMessageDialog(null, Strings.SUCCESS_TABLE_EXPORT);
+            return;
+        }
+        catch (Exception chooser) {
+            chooser.printStackTrace();
+        }
+	}
+	
 	
 	private void tableHeaderClicked(MouseEvent evt){
 		if(SwingUtilities.isLeftMouseButton(evt)){
@@ -879,6 +926,9 @@ public class MainWindow extends JFrame {
 		lblPearsonValue.setText(Double.toString(calibration.getPearson()));
 		Double tr = calibration.getIntercept();
 		lblSlopeValue.setText(Double.toString(calibration.getSlope()));
+		
+		scrollPaneCalibrationGraph.getViewport().setView(new CalibrationGraph(calibration));
+	
 		
 		//highlight rows
 		((MainTable) mainTable).highlightLightRowsRelatedToConcentration(calibration.getWavelength(),calibration.getFileKeys());

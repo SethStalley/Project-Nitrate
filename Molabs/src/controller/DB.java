@@ -1,17 +1,29 @@
 package controller;
 
-import java.io.InputStream;
+import java.security.GeneralSecurityException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Arrays;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
 import javax.swing.JOptionPane;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.HttpHostConnectException;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -27,14 +39,15 @@ public class DB {
 	private String url;
 
 	private DB() {
-		url = "http://54.144.112.150/api/";
+		url = "https://54.144.112.150/api/";
 	}
 	
 	private DB(String username, String password){
 		this.username = username;
 		this.password = password;
-		url = "http://54.144.112.150/api/";
+		url = "https://54.144.112.150/api/";
 	}
+	
 	
 	public static DB getInstance(String username, String password) {
 		if (instance == null) {
@@ -231,7 +244,7 @@ public class DB {
 		    json.put("pUserName", username);
 		    json.put("pPassword", password);
 		    
-		    JSONObject resultJson =   new JSONObject(this.postRequest("deleteUserByUsername", json));
+		    JSONObject resultJson = new JSONObject(this.postRequest("deleteUserByUsername", json));
 		}
 		catch(Exception e){
 			
@@ -241,10 +254,56 @@ public class DB {
 		return Strings.ERROR_NO_INTERNET;
 	}
 	
-	private String postRequest(String procedure, JSONObject parameters) throws HttpHostConnectException{
-		HttpClient httpClient = HttpClientBuilder.create().build(); 
-		try {
+	public String updateGraph(ArrayList<Double[]> points, String graphType, String slope, String intercept){
+		// points must be like : [{1,2},{2,4}]
+		// graphType: ABSvsConce , ConcenVsTime, CalibrationGraph
+		// updateGraphForUser(graphType VARCHAR(45), newJson VARCHAR(1000), pUserName VARCHAR(45), pPassword VARBINARY(512))
+		// slop and intercept is for calibration graphic. Send empty string "" if not needed
+		JSONObject pointsJson = new JSONObject();
+		JSONObject bigJson = new JSONObject();
+		
+		String[] xValues = new String[points.size()];
+		String[] yValues  =new String[points.size()];
+		try{
+			for (int i = 0; i < points.size() ; i++){
+				Double[] currentPoint = points.get(i);
+				xValues[i] = currentPoint[0].toString();
+				yValues[i] = currentPoint[1].toString();
+			}
+			pointsJson.put("x", Arrays.toString(xValues));
+			pointsJson.put("y", Arrays.toString(yValues));
+			pointsJson.put("slope", slope);
+			pointsJson.put("intercept", intercept);
 			
+			bigJson.put("graphType", graphType);
+			bigJson.put("newJson", pointsJson.toString());
+			bigJson.put("pUserName", username);
+		    bigJson.put("pPassword", password);
+		    
+		    JSONObject resultJson = new JSONObject(this.postRequest("updateGraphForUser", bigJson));
+		    
+		}
+		catch(Exception e){
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+		
+		
+		
+		return null;
+	}
+	
+	private String postRequest(String procedure, JSONObject parameters) throws HttpHostConnectException{
+		
+		//HttpClient httpClient = HttpClientBuilder.create().build(); 
+		try {
+			SSLContextBuilder builder = new SSLContextBuilder();
+	
+			builder.loadTrustMaterial(null, new TrustSelfSignedStrategy());
+			SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
+		            builder.build(),SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+			
+			CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(
+		            sslsf).build();
 
 		    HttpPost request = new HttpPost(url + procedure);
 		    StringEntity params = new StringEntity(parameters.toString());

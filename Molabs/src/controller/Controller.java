@@ -13,6 +13,7 @@ import model.Calibration;
 import model.CalibrationTable;
 import model.FileObserver;
 import model.MainTable;
+import model.PushGraph;
 import model.Save;
 import model.TextFile;
 import model.WorkingWavelength;
@@ -24,6 +25,7 @@ public class Controller {
 	private CalibrationTable calibrationTable;
 	private MainWindow graphicInterface;
 	private FileObserver fileObserver;
+	private PushGraph pushGraph;
 	
 	public Controller(MainWindow GUI) {
 		instanceComponents();
@@ -50,6 +52,11 @@ public class Controller {
 		    graphicInterface.errorStartingObserver();
 		}
 		
+	}
+	
+	public void startPushGraph(view.CalibrationTable calibrationTable){
+		this.pushGraph = new PushGraph(this, calibrationTable);
+		this.pushGraph.start();
 	}
 	
 	public void stopObserver() {

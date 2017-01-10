@@ -96,6 +96,18 @@ public class CalibrationTable extends CustomTable {
 	}
 	
 
+	public Date getActiveCalibration(){
+		//refactor from top in future
+	    for(int row = 0; row < this.model.getRowCount(); row++){
+			JRadioButton status = (JRadioButton) this.model.getValueAt(row, Strings.STATUS_COLUMN_INDEX);
+	    	if(status.isSelected()){
+	    		Date key = (Date) getValueAt(row, Strings.CALIBRATIONTABLE_COLUMN_DATE);
+	    		return key;
+	    	}
+	    }
+	    return null;
+	}
+
 	@Override
 	public void addDropdowns() {
 		

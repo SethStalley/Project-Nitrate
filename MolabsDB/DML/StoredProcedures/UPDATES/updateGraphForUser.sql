@@ -1,7 +1,7 @@
 DELIMITER $$
 DROP PROCEDURE IF EXISTS molabsdb.updateGraphForUser;$$
 CREATE PROCEDURE molabsdb.updateGraphForUser(graphType VARCHAR(45), newJson VARCHAR(1000),
-	pUserName VARCHAR(45), pPassword VARBINARY(512))
+	pUserName VARCHAR(45), pPassword VARCHAR(45))
 BEGIN
 
 	-- receives an pUserName to update it´s graph
@@ -9,7 +9,7 @@ BEGIN
     
     SET @type = (SELECT type
 					FROM molabsdb.users
-						WHERE userName = pUserName AND password = pPassword);
+						WHERE userName = pUserName AND password = (CAST(SHA2(pPassword, 512) AS BINARY)));
 
 	IF (@type = 'user' OR @type IS NULL) THEN -- only owner and admin can perform this action
 		SIGNAL SQLSTATE '45000'

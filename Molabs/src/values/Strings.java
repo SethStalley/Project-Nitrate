@@ -57,6 +57,13 @@ public class Strings {
 	public static final String ERROR_NO_INTERNET = "Error. Please make sure you have Internet connection.";
 	public static final String ERROR_USER_REPEATED = "There is already an user with that username. Please select an other one.";
 	
+	/*
+	 * graphs 
+	 */
+	
+	public static final double XVALUEMAX = 100;
+	public static final double XVALUEMIN = -100;
+	public static final int PUSH_GRAPH_SLEEP = 3; //3 seconds
 	
 	
 
