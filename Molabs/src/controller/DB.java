@@ -32,7 +32,10 @@ import org.json.JSONObject;
 import values.Strings;
 
 public class DB {
-	// controls access to database
+
+	static {
+		System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.Jdk14Logger");
+	}
 	
 	private static DB instance = null;
 	private String username;
@@ -304,11 +307,11 @@ public class DB {
 	
 	private String postRequest(String procedure, JSONObject parameters) throws HttpHostConnectException, NoRouteToHostException{
 		
-		//HttpClient httpClient = HttpClientBuilder.create().build(); 
 		try {
 			SSLContextBuilder builder = new SSLContextBuilder();
 	
 			builder.loadTrustMaterial(null, new TrustSelfSignedStrategy());
+			@SuppressWarnings("deprecation")
 			SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
 		            builder.build(),SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
 			
