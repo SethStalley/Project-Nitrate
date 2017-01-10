@@ -142,8 +142,7 @@ public class LoginScreen extends JFrame {
 	public void validateEntry() {
 		String username = txtUsername.getText();
 		String password = txtPassword.getText();
-		new MainWindow(username + " (owner)").setVisible(true);
-		/*DB db = DB.getInstance(username, password);
+		DB db = DB.getInstance(username, password);
 		String result = db.validateUser();
 		if(result != null){
 			if(result.equals("owner")){
@@ -164,6 +163,6 @@ public class LoginScreen extends JFrame {
 		}
 		else{
 			JOptionPane.showMessageDialog(null, "Combination of username and password incorrect.");
-		}*/
+		}
 	}
 }

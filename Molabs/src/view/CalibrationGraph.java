@@ -56,10 +56,12 @@ public class CalibrationGraph extends JPanel{
 				data.add(c[0],c[1]);
 			}
 			
-			Double y1 = (calibration.getSlope() * Strings.XVALUEMIN) + calibration.getIntercept();
-			Double y2 = (calibration.getSlope() * Strings.XVALUEMAX) + calibration.getIntercept();
-			data2.add(Strings.XVALUEMIN, y1);// first point of linear ecuation
-			data2.add(Strings.XVALUEMAX, y2);// second point of linear ecuation
+			Double[] xLimitValues = this.getXLimitValues(calibration.getXYValues());
+			
+			Double y1 = (calibration.getSlope() * xLimitValues[0]) + calibration.getIntercept();
+			Double y2 = (calibration.getSlope() * xLimitValues[1]) + calibration.getIntercept();
+			data2.add(xLimitValues[0], y1);// first point of linear ecuation
+			data2.add( xLimitValues[1], y2);// second point of linear ecuation
 			
 		}
 		else{
@@ -70,7 +72,7 @@ public class CalibrationGraph extends JPanel{
 
 		// Create and format upper plot
 		XYPlot plot = new XYPlot(data,data2);
-		plot.setInsets(new Insets2D.Double(40.0, 40.0, 40.0, 40.0));
+		plot.setInsets(new Insets2D.Double(10.0, 60.0, 88.0, 30.0));
 		
 		if (calibration != null){
 
@@ -78,6 +80,7 @@ public class CalibrationGraph extends JPanel{
 	        Color color = new Color(1.0f, 0.3f, 0.0f);
 	        lines.setColor(color); 
 	        plot.setLineRenderers(data2, lines);
+	        plot.setPointRenderers(data2, null);
 		}
 		else{
 			plot.setPointRenderers(data, null);
@@ -97,6 +100,25 @@ public class CalibrationGraph extends JPanel{
 		add(panel);
 	}
 	
+	private Double[] getXLimitValues(ArrayList<Double[]> points){
+		Double xMin = Strings.XVALUEMIN;
+		Double xMax = Strings.XVALUEMAX;
+		Double[] currentPoint;
+		
+		for (int i = 0 ; i < points.size() ; i++){
+			currentPoint = points.get(i);
+			if(currentPoint[0] <= xMin){
+				xMin = currentPoint[0];
+			}
+			if(currentPoint[0] >= xMax){
+				xMax = currentPoint[0];
+			}
+		}
+		
+		
+		Double[] result = {xMin + (xMin * Strings.EXTRA_PORCENTAGE), xMax + (xMax * Strings.EXTRA_PORCENTAGE)};
+		return result;
+	}
 
 
 }
