@@ -382,7 +382,6 @@ public class MainTable extends CustomTable {
 
     	for(int i = Strings.CONCENTRATION_COLUMN_INDEX; i<this.model.getColumnCount(); i++){
     		this.getColumnModel().getColumn(i).setCellEditor(new CellNumberEditor());
-    		System.out.println("aca");
     	}
 	}
 	public void resizeColumns(){
