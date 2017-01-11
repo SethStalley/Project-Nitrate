@@ -933,7 +933,6 @@ public class MainWindow extends JFrame {
 		//highlight rows
 		((MainTable) mainTable).highlightLightRowsRelatedToConcentration(calibration.getWavelength(),calibration.getFileKeys());
 		mainTablePane.repaint();
-		System.out.println("en labels");
 	}
 
 
@@ -994,6 +993,10 @@ public class MainWindow extends JFrame {
 	}
 	public void cleanGraph(){
 		concentrationGraph.getViewport().setView(new StackedPlots(null));
+	}
+	
+	public ArrayList<String[]> getConcentrationPoints(){
+		return ((MainTable)mainTable).getConcentrationPoints();
 	}
 	
 	

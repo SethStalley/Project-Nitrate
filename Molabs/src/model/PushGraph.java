@@ -35,7 +35,7 @@ public class PushGraph extends Thread{
 					DB.getInstance().updateGraph(currentCalibration.getXYValues(), "CalibrationGraph", String.valueOf(currentCalibration.getSlope()),
 							String.valueOf(currentCalibration.getIntercept()));
 					
-					// missing adrian´s graph push 
+					DB.getInstance().updateGraph(controller.getConcentrationGraphData(), "ConcenVsTime", "", ""); 
 				}
 			}
 			catch (Exception e){

@@ -38,9 +38,12 @@ public class MainTable extends CustomTable {
 	
 	private int lastBlankRow = 1;
 	private boolean pasteEditable;
+	private ArrayList<String[]> graphPoints;
 	
 	public MainTable(SortableJTableModel model, Controller controller){
 		super(model, controller);
+		graphPoints = new ArrayList<String[]>();
+		
 	}
 
 	@Override
@@ -578,19 +581,32 @@ public class MainTable extends CustomTable {
 		if(index == -1){
 			data = null;
 		}else{
+			graphPoints.clear();
 			data = new DataTable(Long.class, Double.class);
 			for(int i = 0; i<this.getModel().getRowCount(); i++){
 				if(this.getValueAt(i, index) != null){
-					if(this.getValueAt(i, index).getClass() == String.class && !((String)this.getValueAt(i, index)).isEmpty())
-						data.add(((Date)this.getValueAt(i, Strings.MAINTABLE_COLUMN_DATE+1)).getTime(),Double.parseDouble((String)this.getValueAt(i, index)));
-					else if(this.getValueAt(i, index).getClass() == Double.class)
-						data.add(((Date)this.getValueAt(i, Strings.MAINTABLE_COLUMN_DATE+1)).getTime(),(Double)this.getValueAt(i, index));
+					if(this.getValueAt(i, index).getClass() == String.class && !((String)this.getValueAt(i, index)).isEmpty()){
+						long time = ((Date)this.getValueAt(i, Strings.MAINTABLE_COLUMN_DATE+1)).getTime();
+						data.add(time,Double.parseDouble((String)this.getValueAt(i, index)));
+						String[] actual = {Long.toString(time),(String)this.getValueAt(i, index)};
+						graphPoints.add(actual);
+					}
+					else if(this.getValueAt(i, index).getClass() == Double.class){
+						long time = ((Date)this.getValueAt(i, Strings.MAINTABLE_COLUMN_DATE+1)).getTime();
+						data.add(time,(Double)this.getValueAt(i, index));
+						String[] actual = {Long.toString(time),((Double)this.getValueAt(i, index)).toString()};
+						graphPoints.add(actual);
+					}
 				}
 					
 			}
 		}
 		
 		return data;
+	}
+	
+	public ArrayList<String[]> getConcentrationPoints(){
+		return graphPoints;
 	}
 
 

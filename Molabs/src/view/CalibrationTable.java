@@ -58,8 +58,6 @@ public class CalibrationTable extends CustomTable {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				addDropdowns();
-				System.out.println(activeGroup.getSelection().isSelected());
-				System.out.println("del action");
 				graphCalibration();
 				
 				

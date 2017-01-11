@@ -299,7 +299,7 @@ public class DB {
 		return null;
 	}
 	
-	public String updateGraph(ArrayList<Double[]> points, String graphType, String slope, String intercept){
+	public String updateGraph(ArrayList<?> points, String graphType, String slope, String intercept){
 		// points must be like : [{1,2},{2,4}]
 		// graphType: ABSvsConce , ConcenVsTime, CalibrationGraph
 		// updateGraphForUser(graphType VARCHAR(45), newJson VARCHAR(1000), pUserName VARCHAR(45), pPassword VARBINARY(512))
@@ -311,9 +311,16 @@ public class DB {
 		String[] yValues  =new String[points.size()];
 		try{
 			for (int i = 0; i < points.size() ; i++){
-				Double[] currentPoint = points.get(i);
-				xValues[i] = currentPoint[0].toString();
-				yValues[i] = currentPoint[1].toString();
+				if(graphType.equals("CalibrationGraph")){
+					Double[] currentPoint = (Double[]) points.get(i);
+					xValues[i] = currentPoint[0].toString();
+					yValues[i] = currentPoint[1].toString();
+				}else if(graphType.equals("ConcenVsTime")){
+					String[] currentPoint = (String[]) points.get(i);
+					xValues[i] = currentPoint[0];
+					yValues[i] = currentPoint[1];
+				}
+				
 			}
 			pointsJson.put("x", Arrays.toString(xValues));
 			pointsJson.put("y", Arrays.toString(yValues));
