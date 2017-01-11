@@ -238,10 +238,10 @@ public class MainTable extends CustomTable {
 				addDropdowns();
 				
 			} else { 
-				JOptionPane.showMessageDialog(null, Strings.ERROR_COCENTRATION_EXISTS);
+				JOptionPane.showMessageDialog(null, Strings.ERROR_COCENTRATION_EXISTS,"Error",JOptionPane.INFORMATION_MESSAGE);
 			}
 		} else {
-			JOptionPane.showMessageDialog(null, Strings.ERROR_ABSORBANCE_COLUMN_MISSING);
+			JOptionPane.showMessageDialog(null, Strings.ERROR_ABSORBANCE_COLUMN_MISSING,"Error",JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 	
@@ -268,7 +268,7 @@ public class MainTable extends CustomTable {
 				
 				if (absorbance == null && !controller.getFileName(key).contains("Custom")) {
 					absorbance = "";
-					JOptionPane.showMessageDialog(null, "No absorbance value was found for that wavelength. Please choose different wavelength.");
+					JOptionPane.showMessageDialog(null, Strings.ERROR_NO_ABSORBANCE,"Error",JOptionPane.INFORMATION_MESSAGE);
 					return;
 				}
 				absorbances.add(absorbance);
@@ -280,7 +280,7 @@ public class MainTable extends CustomTable {
 			controller.addWorkingWavelength(wavelength);
 		}
 		else{
-			JOptionPane.showMessageDialog(null, message);
+			JOptionPane.showMessageDialog(null, message,"Error",JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 	
@@ -288,7 +288,7 @@ public class MainTable extends CustomTable {
 	public void actionButton(){
 
 		if(selectedColumn == -1)
-			JOptionPane.showMessageDialog(null, Strings.ERROR_NO_ABSORBANCE_SELECTED);
+			JOptionPane.showMessageDialog(null, Strings.ERROR_NO_ABSORBANCE_SELECTED,"Error",JOptionPane.INFORMATION_MESSAGE);
 		else{
 		
 			ArrayList<Double> listAbsorbance = getStdValuesFromColumn(selectedColumn);
@@ -299,7 +299,7 @@ public class MainTable extends CustomTable {
 	    	if(listConcentration.size() > 1) {
 	    		controller.addCalibration(fileKeys, listAbsorbance, listConcentration, getWaveLength(selectedColumn));
 	    	}else{
-	    		JOptionPane.showMessageDialog(null, Strings.ERROR_NEW_CALIBRATION);
+	    		JOptionPane.showMessageDialog(null, Strings.ERROR_NEW_CALIBRATION,"Error",JOptionPane.INFORMATION_MESSAGE);
 	    	}
 		}
 
@@ -319,7 +319,7 @@ public class MainTable extends CustomTable {
 				}
 				else {
 					//error value no inserted
-					JOptionPane.showMessageDialog(null, "No value at row #" + i + " column #" + index);
+					JOptionPane.showMessageDialog(null, "No value at row #" + i + " column #" + index,"Error",JOptionPane.INFORMATION_MESSAGE);
 					break;
 				}
 			}
@@ -347,7 +347,7 @@ public class MainTable extends CustomTable {
 				}
 				else {
 					//error value no inserted
-					JOptionPane.showMessageDialog(null, "No value at row #" + i + " column #" + index);
+					JOptionPane.showMessageDialog(null, "No value at row #" + i + " column #" + index,"Error",JOptionPane.INFORMATION_MESSAGE);
 					break;
 				}
 			}

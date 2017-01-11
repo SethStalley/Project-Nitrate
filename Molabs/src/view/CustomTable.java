@@ -100,7 +100,7 @@ public abstract class CustomTable extends JTable {
 		for(int row = 0; row < this.model.getRowCount(); row++){
 			if (this.model.getValueAt(row, Strings.CALIBRATIONTABLE_COLUMN_WAVELENGTH).equals(wavelength)){
 				deleteCalibration(row);
-				JOptionPane.showMessageDialog(null, "Borre una!");
+				JOptionPane.showMessageDialog(null, "Borre una!","Error",JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 	}

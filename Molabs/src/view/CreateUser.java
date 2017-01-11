@@ -156,11 +156,11 @@ public class CreateUser extends JFrame {
 						}
 					}
 					if(result == null){
-						JOptionPane.showMessageDialog(null, sucessMessage);
+						JOptionPane.showMessageDialog(null, sucessMessage,"Error",JOptionPane.INFORMATION_MESSAGE);
 						dispose();
 					}
 					else{
-						JOptionPane.showMessageDialog(null, result);
+						JOptionPane.showMessageDialog(null, result,"Error",JOptionPane.INFORMATION_MESSAGE);
 					}
 				}
 			}
@@ -292,14 +292,14 @@ public class CreateUser extends JFrame {
 		String pass2 = new String(txtConfirmPassword.getPassword());
 		if(pass.equals(pass2)){
 			if(pass.length() <=4){
-				JOptionPane.showMessageDialog(null, Strings.ERROR_PASSWORD_FORMAT);
+				JOptionPane.showMessageDialog(null, Strings.ERROR_PASSWORD_FORMAT,"Error",JOptionPane.INFORMATION_MESSAGE);
 			}
 			else{
 				return true;
 			}
 		}
 		else
-			JOptionPane.showMessageDialog(null, Strings.ERROR_PASSWORD_CONFIRMATION);
+			JOptionPane.showMessageDialog(null, Strings.ERROR_PASSWORD_CONFIRMATION,"Error",JOptionPane.INFORMATION_MESSAGE);
 		return false;
 	}
 	

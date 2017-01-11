@@ -894,7 +894,7 @@ public class MainWindow extends JFrame {
             	file = file.concat(".xls");
             ExcelExport excelExporter = new ExcelExport(tb, new File(file));
             if (!excelExporter.export()) return;
-            JOptionPane.showMessageDialog(null, Strings.SUCCESS_TABLE_EXPORT);
+            JOptionPane.showMessageDialog(null, Strings.SUCCESS_TABLE_EXPORT,"Error",JOptionPane.INFORMATION_MESSAGE);
             return;
         }
         catch (Exception chooser) {
@@ -957,15 +957,15 @@ public class MainWindow extends JFrame {
 		calibrationTable.addRow(calibration);
 	}
 	public void errorOnCalibration(){
-		JOptionPane.showMessageDialog(null, Strings.ERROR_CALIBRATE);
+		JOptionPane.showMessageDialog(null, Strings.ERROR_CALIBRATE,"Error",JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	public void errorOnOpenFile() {
-		JOptionPane.showMessageDialog(null, Strings.ERROR_SELECT_FILE);
+		JOptionPane.showMessageDialog(null, Strings.ERROR_SELECT_FILE,"Error",JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	public void errorStartingObserver() {
-		JOptionPane.showMessageDialog(null, Strings.ERROR_STARTING_OBSERVER);
+		JOptionPane.showMessageDialog(null, Strings.ERROR_STARTING_OBSERVER,"Error",JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	public void calculateConcentrations(Date key) {

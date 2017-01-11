@@ -13,10 +13,12 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 
 import controller.DB;
+import values.Strings;
 
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 import org.json.JSONException;
 
@@ -44,6 +46,8 @@ public class LoginScreen extends JFrame {
 		
 		txtUsername.addKeyListener(new EnterKeyLogIn(this));
 		txtPassword.addKeyListener(new EnterKeyLogIn(this));
+		
+		UIManager.put("OptionPane.okButtonText", Strings.ACCEPT_ERROR_BUTTON); //text on errors display
 	}
 	private void initComponents(){
 		
@@ -158,11 +162,11 @@ public class LoginScreen extends JFrame {
 				dispose();
 			}
 			else{
-				JOptionPane.showMessageDialog(null, result);
+				JOptionPane.showMessageDialog(null, result,"Error",JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 		else{
-			JOptionPane.showMessageDialog(null, "Combination of username and password incorrect.");
+			JOptionPane.showMessageDialog(null, "Combination of username and password incorrect.","Error",JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 }

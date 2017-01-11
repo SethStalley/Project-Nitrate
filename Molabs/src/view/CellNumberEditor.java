@@ -51,7 +51,7 @@ public class CellNumberEditor extends DefaultCellEditor {
         else if(value == null){
         	editor.setValue(null);
         }else{
-        	JOptionPane.showMessageDialog(null, "invalid!!!");
+        	JOptionPane.showMessageDialog(null, "invalid!!!","Error",JOptionPane.INFORMATION_MESSAGE);
         }
         return editor;
     }

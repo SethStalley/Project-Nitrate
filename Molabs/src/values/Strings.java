@@ -16,6 +16,9 @@ public class Strings {
 	public static final String ALERT_DELETE_COLUMN_CONCENTRATION = "Are you sure you want to delete this concentration?";
 	public static final String ALERT_DELETE_COLUMN_ABSORBANCE = "Are you sure you want to delete this absorbance, it will delete all concentrations and calibrations that used this absorbance?";
 	public static final String ERROR_CONCENTRATION_COLUMN = "The current value is invalid, it should be a number and can include floating point decimals with a '.'";
+	public static final String ERROR_LOG_IN = "Combination of username and password incorrect.";
+	public static final String ACCEPT_ERROR_BUTTON = "Okay";
+	public static final String ERROR_NO_ABSORBANCE = "No absorbance value was found for that wavelength. Please choose different wavelength.";
 
 	
 	/*

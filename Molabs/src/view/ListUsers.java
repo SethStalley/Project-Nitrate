@@ -62,7 +62,7 @@ public class ListUsers extends JFrame {
 		ArrayList<String[]> users = DB.getInstance().getUsersForUsername();
 
 		if (users == null){
-			JOptionPane.showMessageDialog(null, Strings.ERROR_NO_INTERNET);
+			JOptionPane.showMessageDialog(null, Strings.ERROR_NO_INTERNET,"Error",JOptionPane.INFORMATION_MESSAGE);
 		}
 		else{
 			((view.userTable) userTable).loadUsers(users);
@@ -87,7 +87,7 @@ public class ListUsers extends JFrame {
 					
 				}
 				else{
-					JOptionPane.showMessageDialog(null, Strings.ERROR_NO_USER_SELECTED);
+					JOptionPane.showMessageDialog(null, Strings.ERROR_NO_USER_SELECTED,"Error",JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 		});
@@ -111,18 +111,18 @@ public class ListUsers extends JFrame {
 						String result = DB.getInstance().deleteUser(userToUpdate[0]);
 						if(result == null){
 							((view.userTable) userTable).deleteUser();
-							JOptionPane.showMessageDialog(null, "User: " + userToUpdate[0] + " deleted.");
+							JOptionPane.showMessageDialog(null, "User: " + userToUpdate[0] + " deleted.","",JOptionPane.INFORMATION_MESSAGE);
 						}
 						else{
-							JOptionPane.showMessageDialog(null, result);
+							JOptionPane.showMessageDialog(null, result,"",JOptionPane.INFORMATION_MESSAGE);
 						}
 					}
 					else{
-						JOptionPane.showMessageDialog(null, "You cannot delete yourself!");
+						JOptionPane.showMessageDialog(null, "You cannot delete yourself!","Error",JOptionPane.INFORMATION_MESSAGE);
 					}
 				}
 				else{
-					JOptionPane.showMessageDialog(null, Strings.ERROR_NO_USER_SELECTED);
+					JOptionPane.showMessageDialog(null, Strings.ERROR_NO_USER_SELECTED,"Error",JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 		});

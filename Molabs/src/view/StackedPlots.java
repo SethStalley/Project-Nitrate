@@ -12,7 +12,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import de.erichseifert.gral.data.DataTable;
-import view.ExamplePanel;
 import de.erichseifert.gral.graphics.DrawableContainer;
 import de.erichseifert.gral.graphics.Insets2D;
 import de.erichseifert.gral.graphics.layout.TableLayout;

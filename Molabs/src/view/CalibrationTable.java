@@ -82,7 +82,7 @@ public class CalibrationTable extends CustomTable {
 	    if(key != null){
 	    	controller.calculateConcentrations(key);
 	    }else{
-	    	JOptionPane.showMessageDialog(null, Strings.ERROR_NO_ACTIVE_CALIBRATION);
+	    	JOptionPane.showMessageDialog(null, Strings.ERROR_NO_ACTIVE_CALIBRATION,"Error",JOptionPane.INFORMATION_MESSAGE);
 	    }
 	}
 	
