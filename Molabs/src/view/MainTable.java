@@ -7,22 +7,26 @@ import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.sql.Time;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.EventObject;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import javax.swing.text.JTextComponent;
 
 import controller.Controller;
@@ -43,8 +47,24 @@ public class MainTable extends CustomTable {
 	public MainTable(SortableJTableModel model, Controller controller){
 		super(model, controller);
 		graphPoints = new ArrayList<String[]>();
-		//this.setAutoCreateRowSorter(true);
+		setupRowSorter();
+	}
+	
+	private void setupRowSorter() {
+		//Limit columns that can be sorted
+		RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(getModel()) {
+		    @Override
+		    public boolean isSortable(int column) {
+		        if(column < 2)
+		            return true;
+		        else 
+		            return false;
+		    };
+		};
+		List<RowSorter.SortKey> sortKeys = new ArrayList<RowSorter.SortKey>();
 		
+		sorter.setSortKeys(sortKeys);
+		this.setRowSorter(sorter);
 	}
 
 	@Override
