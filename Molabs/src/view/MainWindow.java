@@ -50,10 +50,6 @@ import javax.swing.JTable;
 
 import controller.Controller;
 import de.erichseifert.gral.data.DataTable;
-import controller.DB;
-import de.erichseifert.gral.io.plots.DrawableWriter;
-import de.erichseifert.gral.io.plots.DrawableWriterFactory;
-import de.erichseifert.gral.ui.InteractivePanel;
 
 import model.Calibration;
 import values.Preferences;
@@ -117,6 +113,7 @@ public class MainWindow extends JFrame {
 		setLocationRelativeTo(null);
 		initComponents();
 		setupKeyAdapters();
+		
 	}
 	
 	private void initComponents(){

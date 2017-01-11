@@ -43,6 +43,7 @@ public class MainTable extends CustomTable {
 	public MainTable(SortableJTableModel model, Controller controller){
 		super(model, controller);
 		graphPoints = new ArrayList<String[]>();
+		this.setAutoCreateRowSorter(true);
 		
 	}
 
