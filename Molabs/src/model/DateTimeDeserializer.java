@@ -17,8 +17,12 @@ public class DateTimeDeserializer implements JsonDeserializer<Date> {
 		try {
 			return new SimpleDateFormat("EEE MMM dd kk:mm:ss z yyyy").parse(json.getAsString());
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			return null;
+			try {
+				return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse(json.getAsString());
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
 		}
+		return null;
 	}
 }

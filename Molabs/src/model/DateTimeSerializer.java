@@ -1,6 +1,7 @@
 package model;
 
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.google.gson.JsonElement;
@@ -12,7 +13,8 @@ public class DateTimeSerializer implements JsonSerializer<Date>{
 
 	@Override
 	public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext context) {
-		return new JsonPrimitive(src.toString());
+		String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(src);
+		return new JsonPrimitive(time);
 	}
 
 }
