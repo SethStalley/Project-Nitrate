@@ -143,6 +143,8 @@ public class Controller {
 	
 	public void removeAbsorbanceColumn(int key) {
 		WorkingWavelength ww = this.mainTable.getAbsorbanceColumn(key);
+		String wavelength = ww.getWavelength();
+		graphicInterface.deleteCalibrationsByWavelength(wavelength);//delete calibrations for that absorbance
 		this.mainTable.removeWorkingWavelength(key);
 		graphicInterface.delteAbsorbanceMainTable(key, ww.getNumOfConcentrations());
 	}

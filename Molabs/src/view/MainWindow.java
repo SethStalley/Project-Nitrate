@@ -999,6 +999,10 @@ public class MainWindow extends JFrame {
 		return ((MainTable)mainTable).getConcentrationPoints();
 	}
 	
+	public void deleteCalibrationsByWavelength(String wavelength){
+		((CalibrationTable)calibrationTable).deleteCalibrationsByWavelength(wavelength);
+	}
+	
 	
 	
 }

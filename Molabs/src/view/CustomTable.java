@@ -96,6 +96,15 @@ public abstract class CustomTable extends JTable {
 		this.controller.initiateConcentrationGraph();
 	}
 	
+	public void deleteCalibrationsByWavelength(String wavelength){
+		for(int row = 0; row < this.model.getRowCount(); row++){
+			if (this.model.getValueAt(row, Strings.CALIBRATIONTABLE_COLUMN_WAVELENGTH).equals(wavelength)){
+				deleteCalibration(row);
+				JOptionPane.showMessageDialog(null, "Borre una!");
+			}
+		}
+	}
+	
 	private void deleteCalibration(int index) {
 		Date date = getDateFromRow(index);
 		Calibration calibration = controller.getCalibrationData(date);
