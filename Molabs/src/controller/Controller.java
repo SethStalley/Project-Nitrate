@@ -249,11 +249,18 @@ public class Controller {
 
 	public void loadProgram(String file) {
 		Save save = Save.getSave(file);
-		this.mainTable = save.getStateMainTable();
-		this.calibrationTable = save.getCalibrationTable();
 		
-		this.graphicInterface.mainTable.updateFromModel();
-		this.graphicInterface.calibrationTable.updateFromModel();
+		if (save != null) {
+			this.mainTable = save.getStateMainTable();
+			this.calibrationTable = save.getCalibrationTable();
+			
+			this.graphicInterface.mainTable.updateFromModel();
+			this.graphicInterface.calibrationTable.updateFromModel();
+		} else {
+			//save is invalid send error msg
+			this.graphicInterface.errorOpenSave();
+		}
+		
 	}
 	
 	/*

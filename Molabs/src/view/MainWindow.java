@@ -964,6 +964,10 @@ public class MainWindow extends JFrame {
 		JOptionPane.showMessageDialog(null, Strings.ERROR_SELECT_FILE,"Error",JOptionPane.INFORMATION_MESSAGE);
 	}
 	
+	public void errorOpenSave() {
+		JOptionPane.showMessageDialog(null, Strings.ERROR_SELECT_SAVE,"Error",JOptionPane.INFORMATION_MESSAGE);
+	}
+	
 	public void errorStartingObserver() {
 		JOptionPane.showMessageDialog(null, Strings.ERROR_STARTING_OBSERVER,"Error",JOptionPane.INFORMATION_MESSAGE);
 	}

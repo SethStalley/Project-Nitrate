@@ -5,6 +5,7 @@ public class Strings {
 	 * Errors
 	 */
 	public static final String ERROR_SELECT_FILE = "Selected file has an unexpected format or already exists.";
+	public static final String ERROR_SELECT_SAVE = "Selected save file has an unexpected format or currupted.";
 	public static final String ERROR_WAVELENGTH_INPUT = "Wavelength must be a 3 digit number and one decimal.";
 	public static final String ERROR_SELECT_COLUMN = "No column selected.";
 	public static final String ERROR_SELECT_ABSORBANCE_COLUMN = "Select an Absorbance Column.";
