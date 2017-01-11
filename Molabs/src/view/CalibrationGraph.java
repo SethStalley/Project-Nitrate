@@ -45,7 +45,7 @@ public class CalibrationGraph extends JPanel{
 	public CalibrationGraph(Calibration calibration) {
 		// receives (x,y)  (concentration, absorbance)
 		super(new BorderLayout());
-		setPreferredSize(new Dimension(488, 261));
+		setPreferredSize(new Dimension(400, 200));
 		setBackground(Color.WHITE);
 		
 		// Generate data
@@ -72,7 +72,7 @@ public class CalibrationGraph extends JPanel{
 
 		// Create and format upper plot
 		XYPlot plot = new XYPlot(data,data2);
-		plot.setInsets(new Insets2D.Double(10.0, 65.0, 88.0, 30.0));
+		plot.setInsets(new Insets2D.Double(10.0, 65.0, 60.0, 30.0));
 		
 		if (calibration != null){
 

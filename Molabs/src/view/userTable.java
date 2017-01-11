@@ -35,7 +35,7 @@ public class userTable extends JTable {
         header.setOpaque(false); //let the table display the header
     }
 	
-	public void loadUsers(ArrayList<String[]> users){
+	public void loadUsers(ArrayList<String[]> users){ 
 		for(String[] user : users){
 			addUser(user);
 		}

@@ -71,6 +71,17 @@ public class Strings {
 	public static final double EXTRA_PORCENTAGE = 0.5;
 	public static final int PUSH_GRAPH_SLEEP = 3; //3 seconds
 	
+	/*
+	 * About data
+	 */
+	
+
+	
+	public static final String ABOUT_THE_SOFTWARE = "Molabs is a software dedicated to display different absorbances of different molecules. "
+			+ "It was mainly designed for Nitrate measurng, but can be used for different molecules. \r\n\r\nThe software can be used to calculate "
+			+ "concentrations depending on a correlation between two or more samples. Also, it can graph concentrations by time to represent the "
+			+ "changes throughout time.";
+	
 	
 
 }

@@ -24,6 +24,8 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
@@ -71,7 +73,7 @@ public class MainWindow extends JFrame {
 	private static final int HEIGTH_TABS = 30;
 	
 	private JMenuBar menuBar;
-	private JMenu mnFile, mnEdit, mnTools, mnUsers, mnObserver;
+	private JMenu mnFile, mnEdit, mnTools, mnUsers, mnObserver, mnAbout;
 	
 	private JMenuItem mntmOpenProject, mntmSaveProject, mntmOpenData, mntmDeleteDataFile, mntmPrint, mntmExit; //File
 	
@@ -375,6 +377,43 @@ public class MainWindow extends JFrame {
 		
 		mnUsers = new JMenu("Users");
 		setMenuProperties(mnUsers);
+		
+		//About
+		
+		mnAbout = new JMenu("About");
+		setMenuProperties(mnAbout);
+		mnAbout.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				new About().setVisible(true);
+				
+			}
+		});
 		
 		//Invisible observer
 		mnObserver = new JMenu("                                   Observer running");
