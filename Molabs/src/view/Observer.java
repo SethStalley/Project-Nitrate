@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -132,8 +133,11 @@ public class Observer extends JFrame {
 	
 	public void startObserver() {
 		String path = txtActualFolder.getText();
-		controller.startObserver(path);
-		getContentPane().setBackground(new Color(Preferences.WINDOW_OBSERVER_RUNNING_RGB));
+		
+		if(new File(path).isDirectory()) {
+			controller.startObserver(path);
+			getContentPane().setBackground(new Color(Preferences.WINDOW_OBSERVER_RUNNING_RGB));
+		}
 	
 	}
 	
