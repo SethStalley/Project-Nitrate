@@ -1,7 +1,10 @@
 package controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -226,7 +229,23 @@ public class Controller {
 	}
 	
 	public Enumeration<Date> getAllFileKeys() {
-		return this.mainTable.getAllFiles().keys();
+		Enumeration<String> keys = this.mainTable.getAllFiles().keys();
+		ArrayList<Date> dateKeys = new ArrayList<Date>();
+		
+		while (keys.hasMoreElements()) {
+			String key = keys.nextElement();
+			Date dateKey;
+			try {
+				dateKey = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse(key);
+				dateKeys.add(dateKey);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
+		return Collections.enumeration(dateKeys);
 	}
 	
 	public ArrayList<Calibration> getAllCalibrations() {

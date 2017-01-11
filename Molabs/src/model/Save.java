@@ -41,6 +41,7 @@ public class Save extends JSON_Exportable{
 	
 	public void saveState(String completePath) {
 		String data = this.getAsJSON();
+		
 		//encrypt data
 		data = Encrypt.encrypt(data);
 		

@@ -3,6 +3,7 @@ package model;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Hashtable;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
@@ -16,5 +17,6 @@ public class DateTimeSerializer implements JsonSerializer<Date>{
 		String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(src);
 		return new JsonPrimitive(time);
 	}
+	
 
 }

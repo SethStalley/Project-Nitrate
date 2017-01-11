@@ -1,5 +1,6 @@
 package model;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
@@ -19,7 +20,8 @@ public class CalibrationTable extends JSON_Exportable{
 		Calibration cal = new Calibration(fileKeys, absorbances, concentrations, wavelength);
 		
 		if (cal.getWavelength() != null && !Double.isNaN(cal.getPearson())) {
-			this.calibrations.put(cal.getDate().toString(), cal);
+			String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(cal.getDate());
+			this.calibrations.put(date, cal);
 			return cal;
 		}
 		
@@ -27,15 +29,17 @@ public class CalibrationTable extends JSON_Exportable{
 	}
 	
 	public boolean removeCalibration(Date index){
-		if(this.calibrations.containsKey(index.toString())) {
-			this.calibrations.remove(index.toString());
+		String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(index);
+		if(this.calibrations.containsKey(date)) {
+			this.calibrations.remove(date);
 			return true;
 		}
 		return false;
 	}
 	
 	public Calibration getCalibration(Date index) {
-		return this.calibrations.get(index.toString());	
+		String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(index);
+		return this.calibrations.get(date);	
 	}
 	
 	public Hashtable<String,Calibration> getAllCalibration() {

@@ -1,5 +1,6 @@
 package model;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
@@ -9,11 +10,11 @@ import values.Strings;
 
 public class MainTable extends JSON_Exportable{
 	private int absorbanceStartColumn = Strings.CONCENTRATION_COLUMN_INDEX+1;
-	private Hashtable<Date,TextFile> files;
+	private Hashtable<String,TextFile> files;
 	private ArrayList<WorkingWavelength> workingWavelength;
 	
 	public MainTable() {
-		this.files = new Hashtable<Date,TextFile>();
+		this.files = new Hashtable<String,TextFile>();
 		this.workingWavelength = new ArrayList<>();
 	}
 	
@@ -24,7 +25,8 @@ public class MainTable extends JSON_Exportable{
 		TextFile txtData = new TextFile(path);
 		
 		if(txtData.getDate() != null && this.files.get(txtData.getDate()) == null) {
-			this.files.put(txtData.getDate(), txtData);
+			String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(txtData.getDate());
+			this.files.put(date, txtData);
 			return txtData.getDate();
 		}
 		
@@ -37,7 +39,8 @@ public class MainTable extends JSON_Exportable{
 	
 	public boolean addRow(String name, Date date) {
 		TextFile file = new TextFile(name, date);
-		return this.files.put(date, file) == null;
+		String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(date);
+		return this.files.put(time, file) == null;
 	}
 	
 	public void addWorkingWavelength(String wavelength) {
@@ -91,12 +94,13 @@ public class MainTable extends JSON_Exportable{
 	}
 
 	
-	public Hashtable<Date,TextFile> getAllFiles() {
+	public Hashtable<String,TextFile> getAllFiles() {
 		return this.files;
 	}
 	
 	public TextFile getFile(Date dateKey) {
-		return this.files.get(dateKey);
+		String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(dateKey);
+		return this.files.get(time);
 	}
 	
 	public ArrayList<WorkingWavelength> getWorkingWaveLengths() {
