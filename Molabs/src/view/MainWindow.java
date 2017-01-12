@@ -34,6 +34,8 @@ import javax.swing.Box;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -507,7 +509,6 @@ public class MainWindow extends JFrame {
 		btnConcentration.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				calibrationTable.actionButton();
-				initiateGraphConcentration();
 			}
 		});
 		setButtonProperties(btnConcentration, pnMain);
@@ -764,7 +765,6 @@ public class MainWindow extends JFrame {
 		JLabel lblNewLabel_1 = new JLabel("Grafico concentracion tiempo real"); //Label para tests
 		concentrationGraphR.add(lblNewLabel_1);
 		//-----------------------Fin labels primer iteracion-----------------------------------
-		
 		
 		
 		//Panel Configuration
@@ -1041,6 +1041,18 @@ public class MainWindow extends JFrame {
 	
 	public void deleteCalibrationsByWavelength(String wavelength){
 		((CalibrationTable)calibrationTable).deleteCalibrationsByWavelength(wavelength);
+	}
+	
+	public void graphConcentrationSelected(int index){
+		if(mainTable.getSelectedRows().length != 0){
+			DataTable data =((MainTable)mainTable).getConcentrationsGraphSelected(index);
+			concentrationGraph.getViewport().setView(new StackedPlots(data));
+			
+		}
+		else{
+			JOptionPane.showMessageDialog(null, "Seleccione columnas", "Error", JOptionPane.INFORMATION_MESSAGE);
+		}
+		
 	}
 	
 	

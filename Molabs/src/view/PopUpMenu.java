@@ -16,6 +16,7 @@ import values.rightclickIdentifier;
 
 public class PopUpMenu extends JPopupMenu {
     JMenuItem anItem;
+    JMenuItem anItem2;
     public PopUpMenu(Controller controller, rightclickIdentifier type, int index){
         if(type == rightclickIdentifier.ABSORBANCE){
         		deleteAbsorbance(controller, index);
@@ -49,7 +50,14 @@ public class PopUpMenu extends JPopupMenu {
 				}
 	      }
     	});
-        add(anItem);
+    	add(anItem);
+    	anItem2 = new JMenuItem("Graph Concentration");
+    	anItem2.addActionListener(new ActionListener() {
+	      public void actionPerformed(ActionEvent event) {
+	    	  controller.graphConcentration(index);
+	      }
+    	});
+        add(anItem2);
     }
 	private boolean confirmDelete(String alert){
 		int dialogResult = JOptionPane.showOptionDialog(null, alert, "Warning",

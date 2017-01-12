@@ -322,9 +322,7 @@ public class Controller {
 		
 	}
 	
-	public void initiateConcentrationGraph(){
-		graphicInterface.initiateGraphConcentration();
-	}
+
 	
 	public void cleanGraph(){
 		graphicInterface.cleanGraph();
@@ -332,6 +330,10 @@ public class Controller {
 	
 	public ArrayList<String[]> getConcentrationGraphData(){
 		return graphicInterface.getConcentrationPoints();
+	}
+	
+	public void graphConcentration(int index){
+		graphicInterface.graphConcentrationSelected(index);
 	}
 
 }

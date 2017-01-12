@@ -162,7 +162,6 @@ public class MainTable extends CustomTable {
 		
 		//add our dropdown options
 		addDropdowns();
-		controller.initiateConcentrationGraph();
 	}
 
 	
@@ -184,7 +183,6 @@ public class MainTable extends CustomTable {
 		this.addRow(new Object[]{name,date, date, Strings.SAMPLE});;
 		controller.addCustomRow(name, date);
 		addDropdowns();
-		controller.initiateConcentrationGraph();
 	}
 
 	public void addColumn(Object header, Object[] columns) {
@@ -553,7 +551,6 @@ public class MainTable extends CustomTable {
 			this.setValueAt("", row, column + i + 1);
 		}
 		addDropdowns();
-		controller.initiateConcentrationGraph();
 	}
 	// for custom rows
 	private void addConcentrationsForAbsorbance(int column, ArrayList<Calibration> concentrations, int row, double absorbance){
@@ -563,7 +560,6 @@ public class MainTable extends CustomTable {
 			this.setValueAt(concentration, row, column + i + 1);
 		}
 		addDropdowns();
-		controller.initiateConcentrationGraph();
 	}
 	
 	private DefaultTableCellRenderer getSelectedHeaderRenderer(){
@@ -580,7 +576,6 @@ public class MainTable extends CustomTable {
 		super.model.removeColumn(index);
 		resizeColumns();
 		addDropdowns();
-		controller.initiateConcentrationGraph();
 	}
 
 	
@@ -588,7 +583,6 @@ public class MainTable extends CustomTable {
 		super.model.removeColumn(column);
 		resizeColumns();
 		addDropdowns();
-		controller.initiateConcentrationGraph();
 	}
 
 	public void setPasteEditable(boolean state){
@@ -627,6 +621,31 @@ public class MainTable extends CustomTable {
 	
 	public ArrayList<String[]> getConcentrationPoints(){
 		return graphPoints;
+	}
+	
+	public DataTable getConcentrationsGraphSelected(int index){
+		DataTable data;
+		int[] rows = this.getSelectedRows();
+		data = new DataTable(Long.class, Double.class);
+		for (int i = 0; i < rows.length; i++){
+			if(this.getValueAt(rows[i], index) != null){
+				if(this.getValueAt(rows[i], index).getClass() == String.class && !((String)this.getValueAt(rows[i], index)).isEmpty()){
+					long time = ((Date)this.getValueAt(rows[i], Strings.MAINTABLE_COLUMN_DATE+1)).getTime();
+					data.add(time,Double.parseDouble((String)this.getValueAt(rows[i], index)));
+				}
+				else if(this.getValueAt(rows[i], index).getClass() == Double.class){
+					long time = ((Date)this.getValueAt(rows[i], Strings.MAINTABLE_COLUMN_DATE+1)).getTime();
+					data.add(time,(Double)this.getValueAt(rows[i], index));
+					String[] actual = {Long.toString(time),((Double)this.getValueAt(rows[i], index)).toString()};
+					graphPoints.add(actual);
+				}
+			}
+				
+		}
+		if(data.getRowCount()>0)
+			return data;
+		else
+			return null;
 	}
 
 
