@@ -29,11 +29,13 @@ import javax.swing.JFileChooser;
 
 public class Observer extends JFrame {
 	private JTextField txtActualFolder;
-	private JButton btnBrowse, btnStart, btnStop;
+	private JButton btnBrowse, btnStartStop;
 	private Controller controller;
+	private boolean running;
 	private static Observer instance = null;
 	
 	public Observer( Controller controller) {
+		this.running = false;
 		instance = this;
 		this.controller = controller;
 		setMinimumSize(new Dimension(500, 180));
@@ -71,25 +73,17 @@ public class Observer extends JFrame {
 		});
 		
 		
-		btnStart = new GenericRoundedButton("Start");
-		setButtonProperties(btnStart);
-		btnStart.addMouseListener(setButtonsListeners(btnStart));
-		btnStart.addActionListener(new ActionListener() {
+		btnStartStop = new GenericRoundedButton("Start");
+		btnStartStop.setOpaque(false);
+		setButtonProperties(btnStartStop);
+		btnStartStop.addMouseListener(setButtonsListeners(btnStartStop));
+		btnStartStop.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				startObserver();
+				observerAction();
 			}
 		});
-		
-		btnStop = new GenericRoundedButton("Stop");
-		setButtonProperties(btnStop);
-		btnStop.addMouseListener(setButtonsListeners(btnStop));
-		btnStop.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				stopObserver();
-			}
-		});
+	
 		
 //------------------------------Layout-----------------------------------------------------------------------
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
@@ -97,7 +91,7 @@ public class Observer extends JFrame {
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+					.addGroup(groupLayout.createParallelGroup(Alignment.CENTER)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(lblActualFolder, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
@@ -106,9 +100,8 @@ public class Observer extends JFrame {
 							.addComponent(btnBrowse)
 							.addGap(28))
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(btnStart)
-							.addGap(18)
-							.addComponent(btnStop)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnStartStop)
 							.addContainerGap())))
 		);
 		groupLayout.setVerticalGroup(
@@ -121,8 +114,7 @@ public class Observer extends JFrame {
 						.addComponent(btnBrowse))
 					.addPreferredGap(ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnStart)
-						.addComponent(btnStop))
+						.addComponent(btnStartStop))
 					.addGap(26))
 		);
 		
@@ -131,17 +123,34 @@ public class Observer extends JFrame {
 		getContentPane().setLayout(groupLayout);
 	}
 	
-	public void startObserver() {
+	public void observerAction() {
+		if (running) {
+			stopObserver();
+		} else {
+			startObserver();
+		}	
+		btnStartStop.setUI(btnStartStop.getUI());
+	}
+	
+	private void startObserver() {
 		String path = txtActualFolder.getText();
 		
 		if(new File(path).isDirectory()) {
+			this.running = true;
+			btnStartStop.setText("Stop");
+			btnStartStop.setBackground(new Color(Preferences.BTN_COLOR_RED));
+			
 			controller.startObserver(path);
 			getContentPane().setBackground(new Color(Preferences.WINDOW_OBSERVER_RUNNING_RGB));
 		}
 	
 	}
 	
-	public void stopObserver() {
+	private void stopObserver() {
+		this.running = false;
+		btnStartStop.setText("Start");
+		btnStartStop.setBackground(new Color(Preferences.BTN_COLOR_BLUE));
+		
 		controller.stopObserver();
 		getContentPane().setBackground(new Color(Preferences.WINDOW_NORMAL_RGB));
 	}

@@ -9,7 +9,8 @@ public class Preferences {
 
 	public static final int WINDOW_NORMAL_RGB = new Color(204,204,204).getRGB();
 	public static final int WINDOW_OBSERVER_RUNNING_RGB = new Color(160,157,157).getRGB();
-	
+	public static final int BTN_COLOR_RED = new Color(160, 0, 0).getRGB();
+	public static final int BTN_COLOR_BLUE = new Color(6, 114, 155).getRGB();
 	
 	//calibration table
 	public static final int CALIBRATION_STATUS_WIDTH = 115;

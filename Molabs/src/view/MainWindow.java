@@ -294,7 +294,7 @@ public class MainWindow extends JFrame {
 		mntmOpenObserver.addActionListener(new java.awt.event.ActionListener() {
 	        @Override
 	        public void actionPerformed(java.awt.event.ActionEvent evt) {
-	           Observer.getInstance(controller).startObserver();
+	           Observer.getInstance(controller).observerAction();
 	        }
 	    });
 		
@@ -303,7 +303,7 @@ public class MainWindow extends JFrame {
 		mntmCloseObserver.addActionListener(new java.awt.event.ActionListener() {
 	        @Override
 	        public void actionPerformed(java.awt.event.ActionEvent evt) {
-	           Observer.getInstance(controller).stopObserver();
+	           Observer.getInstance(controller).observerAction();
 	        }
 	    });
 		
