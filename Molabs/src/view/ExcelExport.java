@@ -13,6 +13,7 @@ import jxl.format.BorderLineStyle;
 import jxl.format.Colour;
 import jxl.format.UnderlineStyle;
 import jxl.write.Label;
+import jxl.write.Number;
 import jxl.write.WritableCellFormat;
 import jxl.write.WritableFont;
 import jxl.write.WritableSheet;
@@ -58,7 +59,8 @@ public class ExcelExport {
                         if(objeto == null) {
                         	this.createFilas(s, i, j+1, "");
                         } else {
-                        	this.createFilas(s, i, j+1, String.valueOf(objeto));
+                        	String value = String.valueOf(objeto);       
+                        	this.createFilas(s, i, j+1, value);
                         }
                     }
                     
@@ -114,23 +116,23 @@ public class ExcelExport {
         cevell.setFormat(this.fomato_fila);
         this.addFilas(sheet, number_columna, filas, name_filas, this.fomato_fila);
     }
+    
 
     private void addColumna(WritableSheet sheet, int column, int row, String s, WritableCellFormat format) throws RowsExceededException, WriteException {
         Label label = new Label(column, row, s, format);
         sheet.addCell(label);
     }
 
-    private void addFilas(WritableSheet sheet, int column, int row, String s, WritableCellFormat format) throws WriteException, RowsExceededException {  	
-    	Label label;
-    	
-    	//check if double cell
-//    	if(column >= sheet.getColumns()-2) {
-//    		//is double
-//    		s = s.replace('.', ',');
-//    	}
-    	
-    	label = new Label(column, row, s, format);
-        sheet.addCell(label);
+    private void addFilas(WritableSheet sheet, int column, int row, String value, WritableCellFormat format) throws WriteException, RowsExceededException {  	
+    	try {
+    		Double doubleValue = Double.parseDouble(value);
+    		Number label = new Number(column, row, doubleValue);
+    		sheet.addCell(label);
+    	} catch (Exception e) {
+    		Label label = new Label(column, row, value, format);
+    		sheet.addCell(label);
+    	} 	
+        
     }
     
 }
