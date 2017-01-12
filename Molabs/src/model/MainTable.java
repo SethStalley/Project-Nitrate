@@ -34,7 +34,8 @@ public class MainTable extends JSON_Exportable{
 	}
 	
 	public boolean removeFile(Date key) {
-		return this.files.remove(key) != null;
+		String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(key);
+		return this.files.remove(time) != null;
 	}
 	
 	public boolean addRow(String name, Date date) {
