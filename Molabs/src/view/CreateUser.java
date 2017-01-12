@@ -55,7 +55,7 @@ public class CreateUser extends JFrame {
 	public CreateUser( Controller controller, boolean admin, boolean update, String[] userNameToUpdate) {
 		this.controller = controller;
 		setMinimumSize(new Dimension(500, 360));
-		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Icon.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(Preferences.IMG_ICON)));
 		setTitle("MOLABS Create User");
 		setLocationRelativeTo(null);
 		getContentPane().setBackground(new Color(Preferences.WINDOW_NORMAL_RGB));

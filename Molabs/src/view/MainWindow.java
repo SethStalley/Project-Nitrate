@@ -111,7 +111,7 @@ public class MainWindow extends JFrame {
 		this.username = username;
 		
 		setMinimumSize(new Dimension(1280, 720));
-		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Icon.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(Preferences.IMG_ICON)));
 		setTitle("MOLABS");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);

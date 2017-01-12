@@ -12,6 +12,10 @@ public class Preferences {
 	public static final int BTN_COLOR_RED = new Color(160, 0, 0).getRGB();
 	public static final int BTN_COLOR_BLUE = new Color(6, 114, 155).getRGB();
 	
+	//Logos
+	public static final String IMG_LOGO = "/resources/Logo.png";
+	public static final String IMG_ICON = "/resources/Icon.png";
+	
 	//calibration table
 	public static final int CALIBRATION_STATUS_WIDTH = 115;
 	public static final int CALIBRATION_DATE_WIDTH = 260;

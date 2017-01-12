@@ -38,7 +38,7 @@ public class About extends JFrame {
 	
 	public About() {
 		setMinimumSize(new Dimension(690, 530));
-		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Icon.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(Preferences.IMG_ICON)));
 		setTitle("MOLABS");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -53,7 +53,7 @@ public class About extends JFrame {
 		//Logo
 		
 		lblImageIcon = new JLabel("");
-		lblImageIcon.setIcon(new ImageIcon(getClass().getResource("/Logo.png")));
+		lblImageIcon.setIcon(new ImageIcon(getClass().getResource(Preferences.IMG_LOGO)));
 		
 		lblUsername = new JLabel("Version: 1.0");
 		lblUsername.setFont(new Font("Roboto Medium", Font.PLAIN, 16));

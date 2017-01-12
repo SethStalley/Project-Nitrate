@@ -51,8 +51,8 @@ public class ListUsers extends JFrame {
 	public ListUsers( Controller controller, boolean admin) {
 		this.controller = controller;
 		setMinimumSize(new Dimension(715, 360));
-		setIconImage(Toolkit.getDefaultToolkit().getImage(MainWindow.class.getResource("/Resources/Icon.png")));
-		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Icon.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(MainWindow.class.getResource(Preferences.IMG_LOGO)));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(Preferences.IMG_ICON)));
 		setTitle("MOLABS Users");
 		setLocationRelativeTo(null);
 		isAdmin = false; /// por ahorta por que no hay users.

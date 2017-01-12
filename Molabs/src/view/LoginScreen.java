@@ -13,6 +13,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 
 import controller.DB;
+import values.Preferences;
 import values.Strings;
 
 import javax.swing.JLabel;
@@ -36,7 +37,7 @@ public class LoginScreen extends JFrame {
 	
 	public LoginScreen() {
 		setMinimumSize(new Dimension(640, 480));
-		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Icon.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(Preferences.IMG_ICON)));
 		setTitle("MOLABS");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -64,7 +65,7 @@ public class LoginScreen extends JFrame {
 		//Logo
 		
 		lblImageIcon = new JLabel("");
-		lblImageIcon.setIcon(new ImageIcon(getClass().getResource("/Logo.png")));
+		lblImageIcon.setIcon(new ImageIcon(getClass().getResource(Preferences.IMG_LOGO)));
 		
 		//Username
 		
