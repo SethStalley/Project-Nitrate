@@ -252,7 +252,7 @@ public class MainTable extends CustomTable {
 				ArrayList<String> concentrations = new ArrayList<String>();
 				for(String absorbance : listAbsorbance){
 					if (absorbance != null){
-						Double absorbanceValue = Double.parseDouble(absorbance);
+						Double absorbanceValue = Double.parseDouble(((String)absorbance).replace(',', '.'));
 						Double concentrationValue = controller.getConcentration(key, absorbanceValue);
 						concentrations.add(new DecimalFormat("#.######").format(concentrationValue));
 					}
@@ -351,7 +351,8 @@ public class MainTable extends CustomTable {
 		for (int i=0; i<numRows; i++ ) {
 			if (isSTDRow(rows[i])) {
 				if (model.getValueAt(rows[i], index) != null) {
-					values.add(Double.parseDouble(model.getValueAt(rows[i], index).toString()));
+					String valueStr = ((String)model.getValueAt(rows[i], index).toString()).replace(',', '.');
+					values.add(Double.parseDouble(valueStr));
 				}
 				else {
 					//error value no inserted
@@ -552,9 +553,10 @@ public class MainTable extends CustomTable {
 			WorkingWavelength absorbance = controller.getAbsorbanceColumn(column);
 			String wavelength = absorbance.getWavelength();
 			if (aValue != null) {
+				String valueStr = ((String) aValue).replace(',', '.');
 				controller.addManualAbsorbance(key, wavelength, (String) aValue);
 				this.addConcentrationsForAbsorbance(column, absorbance.getWorkingConcentrationColumns(), this.getSelectedRow(),
-						Double.parseDouble((String) aValue));
+						Double.parseDouble(valueStr));
 			}
 			else{
 				controller.removeManualAbosrbance(key, wavelength);
@@ -648,11 +650,11 @@ public class MainTable extends CustomTable {
 		for (int i = 0; i < rows.length; i++){
 			if(this.getValueAt(rows[i], index) != null){
 				if(this.getValueAt(rows[i], index).getClass() == String.class && !((String)this.getValueAt(rows[i], index)).isEmpty()){
-					long time = ((Date)this.getValueAt(rows[i], Strings.MAINTABLE_COLUMN_DATE+1)).getTime();
+					long time = ((Date)this.getValueAt(rows[i], Strings.MAINTABLE_COLUMN_DATE)).getTime();
 					data.add(time,Double.parseDouble((String)this.getValueAt(rows[i], index)));
 				}
 				else if(this.getValueAt(rows[i], index).getClass() == Double.class){
-					long time = ((Date)this.getValueAt(rows[i], Strings.MAINTABLE_COLUMN_DATE+1)).getTime();
+					long time = ((Date)this.getValueAt(rows[i], Strings.MAINTABLE_COLUMN_DATE)).getTime();
 					data.add(time,(Double)this.getValueAt(rows[i], index));
 					String[] actual = {Long.toString(time),((Double)this.getValueAt(rows[i], index)).toString()};
 					graphPoints.add(actual);

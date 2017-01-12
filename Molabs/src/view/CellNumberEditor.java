@@ -39,7 +39,8 @@ public class CellNumberEditor extends DefaultCellEditor {
         JFormattedTextField editor = (JFormattedTextField) super.getTableCellEditorComponent(table, value, isSelected, row, column);
 
         if (value instanceof String){
-        	float newValue = Float.parseFloat((String)value);
+        	String valueStr = ((String)value).replace(',', '.');
+        	float newValue = Float.parseFloat(valueStr);
             NumberFormat numberFormatB = NumberFormat.getInstance();
 
             editor.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(

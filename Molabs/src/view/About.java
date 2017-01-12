@@ -40,7 +40,6 @@ public class About extends JFrame {
 		setMinimumSize(new Dimension(690, 530));
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(Preferences.IMG_ICON)));
 		setTitle("MOLABS");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		getContentPane().setBackground(new Color(204, 204, 204));
 		
