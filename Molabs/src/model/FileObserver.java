@@ -49,7 +49,7 @@ public class FileObserver extends Thread{
 	}
 	
 	public void run() {
-		
+		mainTable.cleanTable();
 		while (this.run) {
 			try {
 				this.watcher = FileSystems.getDefault().newWatchService();
@@ -73,7 +73,7 @@ public class FileObserver extends Thread{
 		            Path path = ev.context();
 		            String completePath = Paths.get(dir.toString(), path.toString()).toString();
 		           
-		            this.mainTable.addRow(new File(completePath));
+		            this.mainTable.addRowObserver(new File(completePath));
 				}
 				
 				this.watcher.close();

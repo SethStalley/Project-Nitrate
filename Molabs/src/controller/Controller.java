@@ -12,6 +12,7 @@ import java.util.Iterator;
 
 import javax.swing.JOptionPane;
 
+import de.erichseifert.gral.data.DataTable;
 import model.Calibration;
 import model.CalibrationTable;
 import model.FileObserver;
@@ -308,18 +309,14 @@ public class Controller {
 			return false;
 		}
 	}
-	public Boolean setConcentrationGraph(String calibrationDate, String wavelength){
+	public int setConcentrationGraph(String calibrationDate, String wavelength){
 		WorkingWavelength ww = getWavelengthWithWavelength(wavelength);
 		Integer offset =  ww.getIndexConcentration(calibrationDate);
 		if (offset > 0){
 			Integer absorbanceColumn = getAbsorbanceColumnIndex(wavelength);
-			graphicInterface.graphConcentration(offset + absorbanceColumn);
-			return true;
+			return offset + absorbanceColumn;
 		}
-		else{
-			return false;
-		}
-		
+		return -1;
 	}
 	
 
@@ -334,6 +331,19 @@ public class Controller {
 	
 	public void graphConcentration(int index){
 		graphicInterface.graphConcentrationSelected(index);
+	}
+	
+	public int getCalibrationIndex(){
+		Date date = graphicInterface.getCalibrationDate();
+		if(date != null){
+			Calibration calibration = getCalibrationData(date);
+			return setConcentrationGraph(date.toString(), calibration.getWavelength());
+		}
+		return -1;
+	}
+	
+	public void graphRealTime(DataTable data){
+		graphicInterface.graphConcentrationRealTime(data);
 	}
 
 }

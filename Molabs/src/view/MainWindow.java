@@ -752,7 +752,7 @@ public class MainWindow extends JFrame {
 		concentrationGraphR = new JScrollPane();
 		concentrationGraphR.setBackground(Color.WHITE);
 		tabbedPane.addTab("Concentration (Real Time)", null, concentrationGraphR, null);
-		concentrationGraphR.getViewport().setView(new CalibrationGraph(null));
+		concentrationGraphR.getViewport().setView(new StackedPlots(null));
 
 		
 	    //-----------------------Labels primer iteracion-------------------------------------
@@ -1024,8 +1024,7 @@ public class MainWindow extends JFrame {
 	}
 	
 	public void graphConcentration(int index){
-		DataTable data = ((MainTable)mainTable).getConcentrationsGraph(index);
-		concentrationGraph.getViewport().setView(new StackedPlots(data));
+		
 	}
 	
 	public void initiateGraphConcentration(){
@@ -1044,15 +1043,23 @@ public class MainWindow extends JFrame {
 	}
 	
 	public void graphConcentrationSelected(int index){
-		if(mainTable.getSelectedRows().length != 0){
+		if(mainTable.getSelectedRows().length > 1){
 			DataTable data =((MainTable)mainTable).getConcentrationsGraphSelected(index);
 			concentrationGraph.getViewport().setView(new StackedPlots(data));
 			
 		}
 		else{
-			JOptionPane.showMessageDialog(null, "Seleccione columnas", "Error", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Please select more than one column", "Error", JOptionPane.INFORMATION_MESSAGE);
 		}
 		
+	}
+	
+	public Date getCalibrationDate(){
+		return ((CalibrationTable)calibrationTable).getActiveCalibration();
+	}
+	
+	public void graphConcentrationRealTime(DataTable data){
+		concentrationGraphR.getViewport().setView(new StackedPlots(data));
 	}
 	
 	

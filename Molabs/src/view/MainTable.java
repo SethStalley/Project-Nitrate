@@ -42,10 +42,12 @@ public class MainTable extends CustomTable {
 	private int lastBlankRow = 1;
 	private boolean pasteEditable;
 	private ArrayList<String[]> graphPoints;
+	private DataTable graphPointsRealTime;
 	
 	public MainTable(SortableJTableModel model, Controller controller){
 		super(model, controller);
 		graphPoints = new ArrayList<String[]>();
+		graphPointsRealTime = new DataTable(Long.class, Double.class);
 		setupRowSorter();
 	}
 	
@@ -70,8 +72,22 @@ public class MainTable extends CustomTable {
 	public void addRow(Object pFile) {
 		File file = (File)pFile;
 		Date key = controller.addFile(file.getAbsolutePath());
-		if(key != null)
+		if(key != null){
 			renderNewFile(key);
+			formatRows();
+		}
+	}
+	
+	public void addRowObserver(Object pFile){
+		File file = (File)pFile;
+		Date key = controller.addFile(file.getAbsolutePath());
+		if(key != null){
+			renderNewFile(key);
+			System.out.println(model.getColumnCount()-1);
+			graphPointsRealTime.add(key.getTime(),Double.parseDouble((String)getValueAt(model.getRowCount()-1,controller.getCalibrationIndex())));
+			formatRows();
+		}
+		controller.graphRealTime(graphPointsRealTime);
 	}
 	
 	/**
@@ -132,7 +148,6 @@ public class MainTable extends CustomTable {
 	
 	private void addRow(Object[] object) {
 		model.addRow(object);
-		
 		//render date's using a custom format
 		this.getColumnModel().getColumn(DATE_INDEX).setCellRenderer(new CellRenderDateAsYYMMDD());
 		this.getColumnModel().getColumn(TIME_INDEX).setCellRenderer(new CellRenderDateAsTimeOfDay());
@@ -157,9 +172,12 @@ public class MainTable extends CustomTable {
 			}
 		}
 		
+	}
+	
+	private void formatRows(){
 		//sort table by date
 		this.model.sortAddedRowByDate(DATE_INDEX);
-		
+				
 		//add our dropdown options
 		addDropdowns();
 	}
@@ -647,6 +665,9 @@ public class MainTable extends CustomTable {
 		else
 			return null;
 	}
-
-
+	
+	public void cleanTable(){
+		graphPointsRealTime.clear();
+	}
+	
 }
