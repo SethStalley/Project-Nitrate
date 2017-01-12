@@ -23,9 +23,9 @@ public class MainTable extends JSON_Exportable{
 	 */
 	public Date addFile(String path) {
 		TextFile txtData = new TextFile(path);
+		String date = CustomDate.dateToString(txtData.getDate());
 		
-		if(txtData.getDate() != null && this.files.get(txtData.getDate()) == null) {
-			String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(txtData.getDate());
+		if(txtData.getDate() != null && this.files.get(date) == null) {
 			this.files.put(date, txtData);
 			return txtData.getDate();
 		}
@@ -100,7 +100,7 @@ public class MainTable extends JSON_Exportable{
 	}
 	
 	public TextFile getFile(Date dateKey) {
-		String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(dateKey);
+		String time = CustomDate.dateToString(dateKey);
 		return this.files.get(time);
 	}
 	
@@ -150,9 +150,11 @@ public class MainTable extends JSON_Exportable{
 	}
 
 	public boolean doesConcentrationColumnExist(Date key) {
+		String time = CustomDate.dateToString(key);
 		for (WorkingWavelength ww : workingWavelength) {
 			for (Calibration cal : ww.workingConcentrationColumns) {
-				if (cal.getDate().compareTo(key) == 0 ){
+				String calDate = CustomDate.dateToString(cal.getDate());
+				if (calDate.equals(time)){
 					return true;
 				}
 			}
