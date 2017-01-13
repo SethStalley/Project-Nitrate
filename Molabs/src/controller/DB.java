@@ -1,6 +1,7 @@
 package controller;
 
 import java.net.NoRouteToHostException;
+import java.net.SocketException;
 import java.security.GeneralSecurityException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
@@ -299,7 +300,7 @@ public class DB {
 		return null;
 	}
 	
-	public String updateGraph(ArrayList<?> points, String graphType, String slope, String intercept){
+	public String updateGraph(ArrayList<?> points, String graphType, String slope, String intercept, String pearson, String wavelength){
 		// points must be like : [{1,2},{2,4}]
 		// graphType: ABSvsConce , ConcenVsTime, CalibrationGraph
 		// updateGraphForUser(graphType VARCHAR(45), newJson VARCHAR(1000), pUserName VARCHAR(45), pPassword VARBINARY(512))
@@ -326,6 +327,8 @@ public class DB {
 			pointsJson.put("y", Arrays.toString(yValues));
 			pointsJson.put("slope", slope);
 			pointsJson.put("intercept", intercept);
+			pointsJson.put("pearson", pearson);
+			pointsJson.put("wavelength", wavelength);
 			
 			bigJson.put("graphType", graphType);
 			bigJson.put("newJson", pointsJson.toString());
@@ -344,7 +347,7 @@ public class DB {
 		return null;
 	}
 	
-	private String postRequest(String procedure, JSONObject parameters) throws HttpHostConnectException, NoRouteToHostException{
+	private String postRequest(String procedure, JSONObject parameters) throws SocketException{
 		
 		try {
 			SSLContextBuilder builder = new SSLContextBuilder();
@@ -384,9 +387,13 @@ public class DB {
 			throw e;
 		}
 		
+		catch (java.net.SocketException e){
+			throw e;
+		}
+		
 		catch (Exception ex) {
 
-		    JOptionPane.showMessageDialog(null, ex.toString());
+		    JOptionPane.showMessageDialog(null, ex.toString()+  ". This is a generic exception.");
 
 		}
 		return null;

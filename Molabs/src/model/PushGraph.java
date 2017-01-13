@@ -33,9 +33,10 @@ public class PushGraph extends Thread{
 					//System.out.println("Push graph calibration with : " + currentCalibration.getDate());
 					
 					DB.getInstance().updateGraph(currentCalibration.getXYValues(), "CalibrationGraph", String.valueOf(currentCalibration.getSlope()),
-							String.valueOf(currentCalibration.getIntercept()));
+							String.valueOf(currentCalibration.getIntercept()), String.valueOf(currentCalibration.getPearson())
+								, currentCalibration.getWavelength());
 					
-					DB.getInstance().updateGraph(controller.getConcentrationGraphData(), "ConcenVsTime", "", ""); 
+					DB.getInstance().updateGraph(controller.getConcentrationGraphData(), "ConcenVsTime", "", "", "", ""); 
 				}
 			}
 			catch (Exception e){
