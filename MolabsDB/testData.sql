@@ -23,4 +23,4 @@ CALL molabsdb.insertUser('user', 'user',  'user','User User', '1111-1111','user@
 	'adrian' , 'lopez');
 
 SELECT * FROM molabsdb.users order by date;
-SELECT * FROM molabsdb.graphs;
+SELECT * FROM molabsdb.graphs order by date;
