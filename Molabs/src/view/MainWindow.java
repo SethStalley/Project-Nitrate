@@ -53,6 +53,7 @@ import java.awt.GridLayout;
 import javax.swing.JTable;
 
 import controller.Controller;
+import controller.DB;
 import de.erichseifert.gral.data.DataTable;
 
 import model.Calibration;
@@ -63,37 +64,30 @@ import javax.swing.JTabbedPane;
 
 public class MainWindow extends JFrame {
 	
-	private Controller controller;
+	protected Controller controller;
 	private boolean isMaster;
 	
 	//Storage components
 	
-	private File[] files; //possibly in the future
+	protected File[] files; //possibly in the future
 	
 	
 	// GUI componentes;
 	private static final int HEIGTH_TABS = 30;
 	
-	private JMenuBar menuBar;
-	private JMenu mnFile, mnEdit, mnTools, mnUsers, mnObserver, mnAbout;
+	protected JMenuBar menuBar;
+	protected JMenu mnFile, mnTools, mnAbout;
 	
 	private JMenuItem mntmOpenProject, mntmSaveProject, mntmOpenData, mntmDeleteDataFile, mntmPrint, mntmExit; //File
 	
-	private JMenuItem mntmAddRow, mntmCopyRow, mntmPasteRow, mntmDeleteRow; //Edit
-	
-	private JMenuItem mntmFindObsorbance, mntmCalibrate, mntmCalibrationGraph, 
-					  mntmConcentrationGraph, mntmObserver, mntmOpenObserver, mntmCloseObserver, 
-					  mntmAlertValues, mntmExportExcel; //Tools
-	
-	private JMenuItem mntmAddUser, mntmListUser; //Users
-	private JPanel pnMain, graphConc;
-	private JButton btnOpenFile, btnAddRow, btnDeleteRow, btnSaveProject, btnConcentration, btnAbsorbance; // first row buttons
-	private JButton btnRemoveCalibration, btnCalibrate; //buttons second row panel
-	public JTextField txtWavelength; //single textfield
-	private JPanel pnFirstRow, pnSecondRow; // Container panels
+	private JMenuItem mntmExportExcel; //Tools
+
+	protected JPanel pnMain, graphConc;
+	protected JButton btnRemoveCalibration, btnCalibrate; //buttons second row panel
+	protected JPanel pnFirstRow, pnSecondRow; // Container panels
 	public CustomTable mainTable, calibrationTable; // Tables
 
-	private JScrollPane mainTablePane, scrollPaneCalibration,concentrationGraph, concentrationGraphR, scrollPaneCalibrationGraph; //scrollpane for tables
+	protected JScrollPane mainTablePane, scrollPaneCalibration,concentrationGraph, concentrationGraphR, scrollPaneCalibrationGraph; //scrollpane for tables
 	private JPanel calibrationGraph; //panel tabs
 
 	private JLabel lblPearson, lblIntercept, lblSlope; //labels tab 1
@@ -102,7 +96,9 @@ public class MainWindow extends JFrame {
 	private JLabel lblSlopeValue;
 	private JMenu mnUsernameIngresado;
 	
-	private ExcelAdapter excelAdapter;
+	protected JTabbedPane tabbedPane;
+	
+	protected ExcelAdapter excelAdapter;
 	
 	private String username;
 	
@@ -120,23 +116,24 @@ public class MainWindow extends JFrame {
 		
 	}
 	
-	private void initComponents(){
+	protected void initComponents(){
 		setMenuBar();
-		setMenu();
-		setMenuItems();
+		setFirstMenus();
+		setMiddleMenus();
+		setLastMenus();
 		setFirstPanel();
+		setMenuItems();
 		setMainTable();
 		setSecondPanel();
 		setMainPanelLayout();
 	}
 	
-	private void setupKeyAdapters() {
+	protected void setupKeyAdapters(){
 		excelAdapter = new ExcelAdapter(mainTable);
-		txtWavelength.addKeyListener(new EnterKey(this));
-	}
+	};
 	
 //----------------------initial setup of components section-------------------------------------------------------
-	private void setMainPanelLayout(){
+	protected void setMainPanelLayout(){
 		getContentPane().setLayout(new GridLayout(0, 1, 0, 0));
 		pnMain = new JPanel();
 		pnMain.setBackground(new Color(204, 204, 204));
@@ -148,13 +145,13 @@ public class MainWindow extends JFrame {
 		
 		GroupLayout gl_pnMain = new GroupLayout(pnMain);
 		gl_pnMain.setHorizontalGroup(
-			gl_pnMain.createParallelGroup(Alignment.LEADING)
+			gl_pnMain.createParallelGroup(Alignment.TRAILING)
 				.addComponent(pnFirstRow, GroupLayout.DEFAULT_SIZE, 1264, Short.MAX_VALUE)
-				.addGroup(Alignment.TRAILING, gl_pnMain.createSequentialGroup()
+				.addGroup(gl_pnMain.createSequentialGroup()
 					.addGap(21)
 					.addGroup(gl_pnMain.createParallelGroup(Alignment.TRAILING)
-						.addComponent(mainTablePane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 1219, Short.MAX_VALUE)
-						.addComponent(pnSecondRow, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+						.addComponent(pnSecondRow, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 1219, Short.MAX_VALUE)
+						.addComponent(mainTablePane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 1219, Short.MAX_VALUE))
 					.addGap(24))
 		);
 		gl_pnMain.setVerticalGroup(
@@ -162,9 +159,9 @@ public class MainWindow extends JFrame {
 				.addGroup(gl_pnMain.createSequentialGroup()
 					.addComponent(pnFirstRow, GroupLayout.PREFERRED_SIZE, 63, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(mainTablePane, GroupLayout.PREFERRED_SIZE, 259, GroupLayout.PREFERRED_SIZE)
+					.addComponent(mainTablePane, GroupLayout.PREFERRED_SIZE, 267, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(pnSecondRow, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addComponent(pnSecondRow, GroupLayout.DEFAULT_SIZE, 293, Short.MAX_VALUE)
 					.addContainerGap())
 		);
 				
@@ -183,164 +180,7 @@ public class MainWindow extends JFrame {
 		setJMenuBar(menuBar);
 		
 	}
-	private void setMenuItems(){
-		UIManager.put("MenuItem.selectionBackground",new Color(204,204,204));
-		UIManager.put("MenuItem.selectionForeground", Color.white);
-				
-		//File
-		
-		mntmOpenProject = new JMenuItem("Open Project");
-		setMenuItemProperties(mntmOpenProject, mnFile);
-		mntmOpenProject.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				openProgram();
-			}
-		});
-		
-		mntmSaveProject = new JMenuItem("Save Project");
-		setMenuItemProperties(mntmSaveProject, mnFile);
-		mntmSaveProject.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				saveProgram();
-			}
-		});
-		
-		mntmOpenData = new JMenuItem("Open Data File");
-		setMenuItemProperties(mntmOpenData, mnFile);
-		mntmOpenData.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				OpenFile(arg0);
-			}
-		});
-		
-		mntmDeleteDataFile = new JMenuItem("Delete Data File");
-		setMenuItemProperties(mntmDeleteDataFile, mnFile);
-		mntmDeleteDataFile.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				mainTable.deleteSelectedFiles();
-			}
-		});
-		
-		mntmPrint = new JMenuItem("Export Graph");
-		setMenuItemProperties(mntmPrint, mnFile);
-		
-		
-		mntmExit = new JMenuItem("Exit");
-		setMenuItemProperties(mntmExit, mnFile);
-		mntmExit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				System.exit(0);
-			}
-		});
-		
-		//Edit
-		mntmAddRow = new JMenuItem("Add Row");
-		setMenuItemProperties(mntmAddRow, mnEdit);
-		mntmAddRow.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				((MainTable) mainTable).addBlankRow();
-			}
-		});
-		
-		mntmCopyRow = new JMenuItem("Copy");
-		setMenuItemProperties(mntmCopyRow, mnEdit);
-		mntmCopyRow.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				excelAdapter.pasteFromClipboard();
-			}
-		});
-	
-		mntmPasteRow = new JMenuItem("Paste");
-		setMenuItemProperties(mntmPasteRow, mnEdit);
-		mntmPasteRow.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				excelAdapter.pasteFromClipboard();
-			}
-		});
-		
-		mntmDeleteRow = new JMenuItem("Delete Row");
-		setMenuItemProperties(mntmDeleteRow, mnEdit);
-		mntmDeleteRow.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				mainTable.deleteSelectedFiles();
-			}
-		});
-		
-		
-		//Tools
-		mntmFindObsorbance = new JMenuItem("Find Absorbance");
-		setMenuItemProperties(mntmFindObsorbance, mnTools);
-		
-		mntmCalibrate = new JMenuItem("Calibrate");
-		setMenuItemProperties(mntmCalibrate, mnTools);
-		
-		mntmCalibrationGraph = new JMenuItem("Calibration");
-		setMenuItemProperties(mntmCalibrationGraph, mnTools);
-		
-		mntmConcentrationGraph = new JMenuItem("Concentration");
-		setMenuItemProperties(mntmConcentrationGraph, mnTools);
-		
-		mntmObserver = new JMenuItem("Observer");
-		setMenuItemProperties(mntmObserver, mnTools);
-		mntmObserver.addActionListener(new java.awt.event.ActionListener() {
-	        @Override
-	        public void actionPerformed(java.awt.event.ActionEvent evt) {
-	           Observer.getInstance(controller).setVisible(true);
-	        }
-	    });
-		
-		mntmOpenObserver = new JMenuItem("Start Observer");
-		setMenuItemProperties(mntmOpenObserver, mnTools);
-		mntmOpenObserver.addActionListener(new java.awt.event.ActionListener() {
-	        @Override
-	        public void actionPerformed(java.awt.event.ActionEvent evt) {
-	           Observer.getInstance(controller).observerAction();
-	        }
-	    });
-		
-		mntmCloseObserver = new JMenuItem("Stop Observer");
-		setMenuItemProperties(mntmCloseObserver, mnTools);
-		mntmCloseObserver.addActionListener(new java.awt.event.ActionListener() {
-	        @Override
-	        public void actionPerformed(java.awt.event.ActionEvent evt) {
-	           Observer.getInstance(controller).observerAction();
-	        }
-	    });
-		
-		mntmAlertValues = new JMenuItem("Alert Values");
-		setMenuItemProperties(mntmAlertValues, mnTools);
-		
-		mntmExportExcel = new JMenuItem("Export Excel");
-		setMenuItemProperties(mntmExportExcel, mnTools);
-		mntmExportExcel.addActionListener(new java.awt.event.ActionListener() {
-	        @Override
-	        public void actionPerformed(java.awt.event.ActionEvent evt) {
-	        	export2Excel();
-	        }
-	    });
-		
-		//Users
-		mntmAddUser = new JMenuItem("Add User");
-		setMenuItemProperties(mntmAddUser, mnUsers);
-		mntmAddUser.addActionListener(new java.awt.event.ActionListener() {
-	        @Override
-	        public void actionPerformed(java.awt.event.ActionEvent evt) {
-	           new CreateUser(controller,false,false, null).setVisible(true); ///////////////////////master alambrado por ahora que no hay users.
-	        }
-	    });
-		
-		mntmListUser = new JMenuItem("List Users");
-		setMenuItemProperties(mntmListUser, mnUsers);
-		mntmListUser.addActionListener(new java.awt.event.ActionListener() {
-	        @Override
-	        public void actionPerformed(java.awt.event.ActionEvent evt) {
-	           new ListUsers(controller,false).setVisible(true); ///////////////////////master alambrado por ahora que no hay users.
-	        }
-	    });
-		
-	}
-	private void setMenu(){
-		
+	protected void setFirstMenus(){
 		UIManager.put("Menu.selectionBackground",new Color(204,204,204));
 		UIManager.put("Menu.selectionForeground", Color.white);
 
@@ -349,37 +189,16 @@ public class MainWindow extends JFrame {
 		mnFile = new JMenu("File");
 		setMenuProperties(mnFile);
 		
-		//Edit
-		
-		mnEdit = new JMenu("Edit"){
-			private KeyStroke accelerator;
-
-            @Override
-            public KeyStroke getAccelerator() {
-                return accelerator;
-            }
-
-            @Override
-            public void setAccelerator(KeyStroke keyStroke) {
-                KeyStroke oldAccelerator = accelerator;
-                this.accelerator = keyStroke;
-                repaint();
-                revalidate();
-                firePropertyChange("accelerator", oldAccelerator, accelerator);
-            }
-		};
-		setMenuProperties(mnEdit);
-		
 		//Tools
 		
 		mnTools = new JMenu("Tools");
 		setMenuProperties(mnTools);
 		
-		//Users
-		
-		mnUsers = new JMenu("Users");
-		setMenuProperties(mnUsers);
-		
+	}
+	protected void setMiddleMenus(){
+		//nothing, but cant be abtsract to use gui window builder
+	}
+	protected void setLastMenus(){
 		//About
 		
 		mnAbout = new JMenu("About");
@@ -417,14 +236,6 @@ public class MainWindow extends JFrame {
 			}
 		});
 		
-		//Invisible observer
-		mnObserver = new JMenu("                                   Observer running");
-		mnObserver.setBackground(new Color(51,51,51));
-		mnObserver.setForeground(Color.WHITE);
-		mnObserver.setFont(new Font("Roboto Medium", Font.BOLD, 12));
-		menuBar.add(mnObserver);
-		mnObserver.setEnabled(false);
-		
 		//Username registered
 		
 		mnUsernameIngresado = new JMenu("Current user: " + this.username);
@@ -435,134 +246,56 @@ public class MainWindow extends JFrame {
 		mnUsernameIngresado.setBackground(new Color(51, 51, 51));
 		menuBar.add(Box.createHorizontalGlue()); 
 		menuBar.add(mnUsernameIngresado);
-		mnObserver.setVisible(false);
-		
 	}
-	private void setFirstPanel(){		
+	protected void setMenuItems(){
+		UIManager.put("MenuItem.selectionBackground",new Color(204,204,204));
+		UIManager.put("MenuItem.selectionForeground", Color.white);
+				
+		//File
+		
+		mntmOpenProject = new JMenuItem("Open Project");
+		setMenuItemProperties(mntmOpenProject, mnFile);
+		mntmOpenProject.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				openProgram();
+			}
+		});
+		
+		mntmSaveProject = new JMenuItem("Save Project");
+		setMenuItemProperties(mntmSaveProject, mnFile);
+		mntmSaveProject.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				saveProgram();
+			}
+		});
+		
+		mntmExit = new JMenuItem("Exit");
+		setMenuItemProperties(mntmExit, mnFile);
+		mntmExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
+			}
+		});
+		
+		//Tools
+		
+		mntmExportExcel = new JMenuItem("Export Excel");
+		setMenuItemProperties(mntmExportExcel, mnTools);
+		mntmExportExcel.addActionListener(new java.awt.event.ActionListener() {
+	        @Override
+	        public void actionPerformed(java.awt.event.ActionEvent evt) {
+	        	export2Excel();
+	        }
+	    });
+	}
+	
+	
+	protected void setFirstPanel(){
 		pnFirstRow = new JPanel();
-		pnFirstRow.setMinimumSize(new Dimension(10, 20));
-		pnFirstRow.setPreferredSize(new Dimension(10, 20));
-		pnFirstRow.setBackground(new Color(204, 204, 204));		
-		
-		// btn Open files
-		
-		btnOpenFile = new GenericRoundedButton("Open File(s)");
-		btnOpenFile.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				OpenFile(arg0);
-			}
-		});
-		setButtonProperties(btnOpenFile, pnMain);
-		btnOpenFile.addMouseListener(setButtonsListeners(btnOpenFile));
-		
-		//btn Add Row
-		
-		btnAddRow = new GenericRoundedButton("Add Row");
-		setButtonProperties(btnAddRow, pnMain);
-		btnAddRow.addMouseListener(setButtonsListeners(btnAddRow));
-		btnAddRow.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				((MainTable) mainTable).addBlankRow();
-			}
-		});
-		
-		//btn Delete Row
-		
-		btnDeleteRow = new GenericRoundedButton("Delete Row");
-		setButtonProperties(btnDeleteRow, pnMain);
-		btnDeleteRow.addMouseListener(setButtonsListeners(btnDeleteRow));
-		btnDeleteRow.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				mainTable.deleteSelectedFiles();
-			}
-		});
-		
-		//btn Save Project
-				
-		btnSaveProject = new GenericRoundedButton("Save Project");
-		setButtonProperties(btnSaveProject, pnMain);
-		btnSaveProject.addMouseListener(setButtonsListeners(btnSaveProject));
-				
-		JLabel lblWavelengthnm = new JLabel("Wavelength (nm): ");
-		lblWavelengthnm.setFont(new Font("Roboto Light", Font.PLAIN, 12));
-				
-		//txt Absorbance
-				
-		txtWavelength = new JTextField();
-		txtWavelength.setColumns(10);
-				
-		//btn Absorbance
-				
-		btnAbsorbance = new GenericRoundedButton("Absorbance");
-		btnAbsorbance.addActionListener(new ActionListener() {
-			@SuppressWarnings("unchecked")
-			public void actionPerformed(ActionEvent arg0) {
-				((MainTable) mainTable).addAbsorbanceColumnFromWavelength(txtWavelength.getText());
-			}
-		});
-		setButtonProperties(btnAbsorbance, pnMain);
-		btnAbsorbance.addMouseListener(setButtonsListeners(btnAbsorbance));
-				
-		//btn Concentration
-
-		btnConcentration = new GenericRoundedButton("Concentration");
-		btnConcentration.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				calibrationTable.actionButton();
-			}
-		});
-		setButtonProperties(btnConcentration, pnMain);
-		btnConcentration.addMouseListener(setButtonsListeners(btnConcentration));		
-		
-		
-//--------Layout Four butons to the left and 2 and a textfield to the right--------------------------------
-		
-		GroupLayout gl_pnFirstRow = new GroupLayout(pnFirstRow);
-		gl_pnFirstRow.setHorizontalGroup(
-			gl_pnFirstRow.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_pnFirstRow.createSequentialGroup()
-					.addGap(22)
-					.addComponent(btnOpenFile, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(btnAddRow, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(btnDeleteRow, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(btnSaveProject, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 420, Short.MAX_VALUE)
-					.addComponent(lblWavelengthnm)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(txtWavelength, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(btnAbsorbance, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(btnConcentration, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(24))
-		);
-		gl_pnFirstRow.setVerticalGroup(
-			gl_pnFirstRow.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_pnFirstRow.createSequentialGroup()
-					.addContainerGap(27, Short.MAX_VALUE)
-					.addGroup(gl_pnFirstRow.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_pnFirstRow.createParallelGroup(Alignment.BASELINE)
-							.addComponent(btnConcentration, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addComponent(btnAbsorbance, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addComponent(txtWavelength, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addComponent(lblWavelengthnm))
-						.addGroup(gl_pnFirstRow.createParallelGroup(Alignment.BASELINE)
-							.addComponent(btnOpenFile, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addComponent(btnAddRow, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addComponent(btnDeleteRow, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addComponent(btnSaveProject, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap())
-		);
-		
-//--------Ends Layout Four butons to the left and 2 and a textfield to the right--------------------------------	
-		
-		pnFirstRow.setLayout(gl_pnFirstRow);
-		
-		
-	}
+		pnFirstRow.setMinimumSize(new Dimension(0, 0));
+		pnFirstRow.setPreferredSize(new Dimension(0, 0));
+		pnFirstRow.setBackground(new Color(204, 204, 204));
+	};
 	private void setMainTable(){
 		mainTablePane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
@@ -595,7 +328,7 @@ public class MainWindow extends JFrame {
 		mainTablePane.setViewportView(mainTable);		
 		
 	}
-	private void setSecondPanel(){
+	protected void setSecondPanel(){
 		
 		//Table
 	
@@ -658,7 +391,7 @@ public class MainWindow extends JFrame {
 
 		UIManager.put("TabbedPane.selected", new Color(21,81,104));
 		
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setFont(new Font("Roboto Medium", Font.PLAIN, 11));
 		tabbedPane.setBackground(new Color(15,101,131));
 		tabbedPane.setForeground(Color.white);
@@ -747,26 +480,6 @@ public class MainWindow extends JFrame {
 		cleanGraph();
 		
 		
-		// Tab 3
-		
-		concentrationGraphR = new JScrollPane();
-		concentrationGraphR.setBackground(Color.WHITE);
-		tabbedPane.addTab("Concentration (Real Time)", null, concentrationGraphR, null);
-		concentrationGraphR.getViewport().setView(new StackedPlots(null));
-
-		
-	    //-----------------------Labels primer iteracion-------------------------------------
-	    JLabel lblNewLabel2 = new JLabel("Grafico calibracion"); //Label para tests
-		concentrationGraph.add(lblNewLabel2);
-		
-		JLabel lblNewLabel = new JLabel("Grafico concentracion"); //Label para tests
-		concentrationGraph.add(lblNewLabel);
-		
-		JLabel lblNewLabel_1 = new JLabel("Grafico concentracion tiempo real"); //Label para tests
-		concentrationGraphR.add(lblNewLabel_1);
-		//-----------------------Fin labels primer iteracion-----------------------------------
-		
-		
 		//Panel Configuration
 		
 		pnSecondRow = new JPanel();
@@ -784,23 +497,22 @@ public class MainWindow extends JFrame {
 							.addComponent(btnCalibrate, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(btnRemoveCalibration, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
 					.addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, 625, GroupLayout.PREFERRED_SIZE))
 		);
 		gl_pnSecondRow.setVerticalGroup(
 			gl_pnSecondRow.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_pnSecondRow.createSequentialGroup()
+				.addGroup(Alignment.TRAILING, gl_pnSecondRow.createSequentialGroup()
 					.addGap(51)
-					.addComponent(scrollPaneCalibration, GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
+					.addComponent(scrollPaneCalibration, GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
 					.addGap(18)
 					.addGroup(gl_pnSecondRow.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnCalibrate, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnRemoveCalibration, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(26))
 				.addGroup(gl_pnSecondRow.createSequentialGroup()
-					.addGap(11)
-					.addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, 290, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
+					.addContainerGap()
+					.addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE))
 		);
 		
 		pnSecondRow.setLayout(gl_pnSecondRow);
@@ -813,13 +525,13 @@ public class MainWindow extends JFrame {
 	
 //----------------------------Properties and listeners setup section--------------------------------------------
 	
-	private void setButtonProperties(JButton button, JPanel panel){
+	protected void setButtonProperties(JButton button, JPanel panel){
 		button.setFont(new Font("Roboto Medium", Font.BOLD, 12));
 		button.setBackground(new Color(15,101,131));
 	}
 	
 	
-	private MouseAdapter setMenuListeners(JMenu menu){
+	protected MouseAdapter setMenuListeners(JMenu menu){
 		return new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
@@ -832,7 +544,7 @@ public class MainWindow extends JFrame {
 		};
 		
 	}
-	private MouseAdapter setButtonsListeners(JButton button){
+	protected MouseAdapter setButtonsListeners(JButton button){
 		return new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
@@ -845,19 +557,20 @@ public class MainWindow extends JFrame {
 		};
 		
 	}
-	private void setMenuItemProperties(JMenuItem menuItem, JMenu father){
-		menuItem.setForeground(Color.WHITE);
-		menuItem.setFont(new Font("Roboto Medium", Font.BOLD, 12));
-		menuItem.setBackground(new Color(51,51,51));
-		father.add(menuItem);
-	}
-	private void setMenuProperties(JMenu menu){
+	protected void setMenuProperties(JMenu menu){
 		menu.setOpaque(true);
 		menu.addMouseListener(setMenuListeners(menu));
 		menu.setBackground(new Color(51,51,51));
 		menu.setForeground(Color.WHITE);
 		menu.setFont(new Font("Roboto Medium", Font.BOLD, 12));
 		menuBar.add(menu);
+	}
+	
+	protected void setMenuItemProperties(JMenuItem menuItem, JMenu father){
+		menuItem.setForeground(Color.WHITE);
+		menuItem.setFont(new Font("Roboto Medium", Font.BOLD, 12));
+		menuItem.setBackground(new Color(51,51,51));
+		father.add(menuItem);
 	}
 	
 // ----------------------------------------- Actions ------------------------------------------
@@ -888,29 +601,6 @@ public class MainWindow extends JFrame {
 		String file = fileChooser.getSelectedFile().toString();
 		
 		controller.loadProgram(file);
-	}
-	
-	private void OpenFile(ActionEvent evt) {
-		
-			JFileChooser fileChooser = new JFileChooser();
-			fileChooser.setFileFilter(new NitratoFileType());
-			fileChooser.setMultiSelectionEnabled(true);
-	        
-			int returnVal = fileChooser.showOpenDialog(this);
-	        
-	        if (returnVal != 0) {
-	            System.out.println("File access cancelled by user.");
-	            return;
-	        }
-	        
-			
-	        File[] arrfile = this.files = fileChooser.getSelectedFiles();  
-	
-	        for(int i=0; i< arrfile.length; i++) {
-	            File file = arrfile[i];
-	            this.mainTable.addRow(file);
-	        } 
-	       
 	}
 	
 	private void export2Excel() {
@@ -974,21 +664,7 @@ public class MainWindow extends JFrame {
 
 	
 //--------------------------------------Methods from controller ------------------------------------------
-	public void observerRunningColor() {
-		pnMain.setBackground(new Color(Preferences.WINDOW_OBSERVER_RUNNING_RGB));
-		pnFirstRow.setBackground(new Color(Preferences.WINDOW_OBSERVER_RUNNING_RGB));
-		pnSecondRow.setBackground(new Color(Preferences.WINDOW_OBSERVER_RUNNING_RGB));
-		mnObserver.setVisible(true);
-		
-	}
-	
-	public void observerStoppedColor() {
-		pnMain.setBackground(new Color(Preferences.WINDOW_NORMAL_RGB));
-		pnFirstRow.setBackground(new Color(Preferences.WINDOW_NORMAL_RGB));
-		pnSecondRow.setBackground(new Color(Preferences.WINDOW_NORMAL_RGB));
-		mnObserver.setVisible(false);
-	}
-	
+
 	public void setNewCalibration(Calibration calibration){
 		calibrationTable.addRow(calibration);
 	}
@@ -1031,7 +707,7 @@ public class MainWindow extends JFrame {
 		((CalibrationTable)calibrationTable).graphCalibration();
 	}
 	public void cleanGraph(){
-		concentrationGraph.getViewport().setView(new StackedPlots(null));
+		concentrationGraph.getViewport().setView(new ConcentrationTimeGraph(null));
 	}
 	
 	public ArrayList<String[]> getConcentrationPoints(){
@@ -1045,7 +721,7 @@ public class MainWindow extends JFrame {
 	public void graphConcentrationSelected(int index){
 		if(mainTable.getSelectedRows().length > 1){
 			DataTable data =((MainTable)mainTable).getConcentrationsGraphSelected(index);
-			concentrationGraph.getViewport().setView(new StackedPlots(data));
+			concentrationGraph.getViewport().setView(new ConcentrationTimeGraph(data));
 			
 		}
 		else{
@@ -1059,9 +735,7 @@ public class MainWindow extends JFrame {
 	}
 	
 	public void graphConcentrationRealTime(DataTable data){
-		concentrationGraphR.getViewport().setView(new StackedPlots(data));
+		concentrationGraphR.getViewport().setView(new ConcentrationTimeGraph(data));
 	}
-	
-	
 	
 }

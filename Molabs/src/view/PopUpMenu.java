@@ -17,15 +17,15 @@ import values.rightclickIdentifier;
 public class PopUpMenu extends JPopupMenu {
     JMenuItem anItem;
     JMenuItem anItem2;
-    public PopUpMenu(Controller controller, rightclickIdentifier type, int index){
-        if(type == rightclickIdentifier.ABSORBANCE){
+    boolean isUser;
+    
+    public PopUpMenu(Controller controller, rightclickIdentifier type, int index, boolean isUser){
+    	this.isUser = isUser;
+        if(type == rightclickIdentifier.ABSORBANCE && !isUser){
         		deleteAbsorbance(controller, index);
         }else{
-        	if(type == rightclickIdentifier.CONCENTRATION){
+        	if(type == rightclickIdentifier.CONCENTRATION)
         		deleteConcentration(controller, index);
-        	}else{
-        		deleteAbsorbance(controller, index);
-        	}
         }
     }
     
@@ -42,15 +42,17 @@ public class PopUpMenu extends JPopupMenu {
 	}
 
 	private void deleteConcentration(Controller controller, int index){
-    	anItem = new JMenuItem("Delete Concentration");
-    	anItem.addActionListener(new ActionListener() {
-	      public void actionPerformed(ActionEvent event) {
-				if(confirmDelete(Strings.ALERT_DELETE_COLUMN_CONCENTRATION)){
-					controller.removeConcentrationColumn(index);
-				}
-	      }
-    	});
-    	add(anItem);
+		if(!isUser){
+	    	anItem = new JMenuItem("Delete Concentration");
+	    	anItem.addActionListener(new ActionListener() {
+		      public void actionPerformed(ActionEvent event) {
+					if(confirmDelete(Strings.ALERT_DELETE_COLUMN_CONCENTRATION)){
+						controller.removeConcentrationColumn(index);
+					}
+		      }
+	    	});
+	    	add(anItem);
+		}
     	anItem2 = new JMenuItem("Graph Concentration");
     	anItem2.addActionListener(new ActionListener() {
 	      public void actionPerformed(ActionEvent event) {

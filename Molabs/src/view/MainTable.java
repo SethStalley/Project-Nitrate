@@ -29,6 +29,7 @@ import javax.swing.table.TableRowSorter;
 import javax.swing.text.JTextComponent;
 
 import controller.Controller;
+import controller.DB;
 import de.erichseifert.gral.data.DataTable;
 import model.Calibration;
 import model.WorkingWavelength;
@@ -484,7 +485,8 @@ public class MainTable extends CustomTable {
 			type = rightclickIdentifier.CONCENTRATION;
 		
 		if (selectedColumn > Strings.CONCENTRATION_COLUMN_INDEX) {
-			PopUpMenu menu = new PopUpMenu(controller,type, selectedColumn);
+			boolean isUser = (DB.getInstance().getType().equals("user")) ? true : false;
+			PopUpMenu menu = new PopUpMenu(controller,type, selectedColumn, isUser);
 			menu.show(evt.getComponent(), evt.getX(), evt.getY());
 		}
 	}

@@ -68,7 +68,7 @@ public abstract class CustomTable extends JTable {
 	
 
 	public abstract void addRow(Object value);
-	public abstract void addDropdowns(); 
+	public abstract void addDropdowns();
 
 	public void deleteSelectedFiles() {
 		int[] rows = this.getSelectedRows();

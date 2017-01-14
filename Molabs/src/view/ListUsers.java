@@ -55,7 +55,7 @@ public class ListUsers extends JFrame {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(Preferences.IMG_ICON)));
 		setTitle("MOLABS Users");
 		setLocationRelativeTo(null);
-		isAdmin = false; /// por ahorta por que no hay users.
+		isAdmin = admin;
 		getContentPane().setBackground(new Color(Preferences.WINDOW_NORMAL_RGB));
 		initComponents();
 		
@@ -81,7 +81,6 @@ public class ListUsers extends JFrame {
 				// search for user to udpate
 				String[] userToUpdate = ((view.userTable) userTable).getSelectedUser();
 				if (userToUpdate != null){
-					
 					new CreateUser(controller,isAdmin,true,userToUpdate).setVisible(true);
 					dispose();
 					

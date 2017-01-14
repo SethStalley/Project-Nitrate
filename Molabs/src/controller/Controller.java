@@ -22,6 +22,7 @@ import model.Save;
 import model.TextFile;
 import model.WorkingWavelength;
 import view.MainWindow;
+import view.MainWindowOwner;
 
 public class Controller {
 	
@@ -51,9 +52,9 @@ public class Controller {
 		Boolean success = !path.isEmpty() && this.fileObserver.startObserver(path);
 		
 		if (success) {
-			graphicInterface.observerRunningColor();
+			((MainWindowOwner)graphicInterface).observerRunningColor();
 		} else {
-		    graphicInterface.errorStartingObserver();
+		    ((MainWindowOwner)graphicInterface).errorStartingObserver();
 		}
 		
 	}
@@ -67,7 +68,7 @@ public class Controller {
 		if (this.fileObserver != null)
 			this.fileObserver.stopObserver();
 		this.fileObserver = null;
-		graphicInterface.observerStoppedColor();
+		((MainWindowOwner)graphicInterface).observerStoppedColor();
 	}
 	
 	public void addWorkingWavelength(String wavelength) {

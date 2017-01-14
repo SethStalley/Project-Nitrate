@@ -5,6 +5,8 @@ import java.util.Vector;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+
+import controller.DB;
 import values.Strings;
 
 public class SortableJTableModel extends DefaultTableModel{
@@ -43,18 +45,22 @@ public class SortableJTableModel extends DefaultTableModel{
 	 */
 	@Override
 	public boolean isCellEditable(int row, int column) {
-        if(column == Strings.TYPE_COLUMN_INDEX){ //for dropdown
-        	return true;
-        }else if(column == Strings.CONCENTRATION_COLUMN_INDEX){
-        	return true;
-        }
-        else if(column >= Strings.CONCENTRATION_COLUMN_INDEX && getColumnName(column).startsWith("A")){
-        	Object valueCustom = this.getValueAt(row, 0);
-        	if(valueCustom.toString().startsWith("Custom")){
-        		return true;
-        	}
-        	return false;
-        }else return false;
+		if(DB.getInstance().getType().equals("user")){
+			return false;
+		}else{
+	        if(column == Strings.TYPE_COLUMN_INDEX){ //for dropdown
+	        	return true;
+	        }else if(column == Strings.CONCENTRATION_COLUMN_INDEX){
+	        	return true;
+	        }
+	        else if(column >= Strings.CONCENTRATION_COLUMN_INDEX && getColumnName(column).startsWith("A")){
+	        	Object valueCustom = this.getValueAt(row, 0);
+	        	if(valueCustom.toString().startsWith("Custom")){
+	        		return true;
+	        	}
+	        	return false;
+	        }else return false;
+		}
         
     }
 			

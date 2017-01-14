@@ -52,7 +52,7 @@ public class CalibrationGraph extends JPanel{
 	public CalibrationGraph(Calibration calibration) {
 		// receives (x,y)  (concentration, absorbance)
 		super(new BorderLayout());
-		setPreferredSize(new Dimension(48, 245));
+		setPreferredSize(new Dimension(48, 230));
 		setBackground(Color.BLUE);
 		
 		// Generate data

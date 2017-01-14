@@ -61,13 +61,13 @@ public class CreateUser extends JFrame {
 		getContentPane().setBackground(new Color(Preferences.WINDOW_NORMAL_RGB));
 		initComponents();
 		updateFlag = update;
-		if(admin){
-			setAdminValues();
-		}
 		if(update){
 			userToUpdate = userNameToUpdate;
 			setUpdateValues();
 			setTitle("MOLABS Update User: "  + userNameToUpdate[0]);
+		}
+		if(admin){
+			setAdminValues();
 		}
 	}
 	
@@ -268,7 +268,6 @@ public class CreateUser extends JFrame {
 		getContentPane().setLayout(groupLayout);
 	}
 	
-	
 	private void setButtonProperties(JButton button){
 		button.setFont(new Font("Roboto Medium", Font.BOLD, 12));
 		button.setBackground(new Color(15,101,131));
@@ -333,6 +332,7 @@ public class CreateUser extends JFrame {
 		rdbtnAdmin.setVisible(false);
 		rdbtnMaster.setVisible(false);
 		rdbtnUser.setVisible(false);
+		rdbtnUser.setSelected(true);
 		lblType.setVisible(false);
 	}
 	private DocumentListener setCreateButton(){

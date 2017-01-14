@@ -42,6 +42,7 @@ public class DB {
 	private String username;
 	private String password; // current username and password
 	private String url;
+	private String type;
 	private static String AesKey;
 
 	private DB() {
@@ -124,7 +125,8 @@ public class DB {
 		    JSONArray jsonA = new JSONArray(this.postRequest("validateUser", json));
 		    JSONObject resultJson =   (JSONObject) (((JSONArray) jsonA.get(0)).get(0));
 		    
-		    return resultJson.getString("type");
+		    type = resultJson.getString("type");
+		    return type;
 
 		}
 		catch (HttpHostConnectException e){ //not working
@@ -397,6 +399,10 @@ public class DB {
 
 		}
 		return null;
+	}
+	
+	public String getType(){
+		return type;
 	}
 
 }

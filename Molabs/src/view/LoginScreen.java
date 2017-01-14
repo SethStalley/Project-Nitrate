@@ -151,15 +151,15 @@ public class LoginScreen extends JFrame {
 		String result = db.validateUser();
 		if(result != null){
 			if(result.equals("owner")){
-				new MainWindow(username + " (owner)").setVisible(true);
+				new MainWindowOwner(username + " (owner)").setVisible(true);
 				dispose();
 			}
 			else if(result.equals("admin")){
-				new MainWindow(username + " (admin)").setVisible(true);
+				new MainWindowOwner(username + " (admin)").setVisible(true);
 				dispose();
 			}
 			else if(result.equals("user")){
-				new MainWindow(username + " (user)").setVisible(true);
+				new MainWindowUser(username + " (user)").setVisible(true);
 				dispose();
 			}
 			else{
