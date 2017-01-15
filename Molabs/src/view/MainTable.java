@@ -86,6 +86,8 @@ public class MainTable extends CustomTable {
 			renderNewFile(key);
 			System.out.println(model.getColumnCount()-1);
 			graphPointsRealTime.add(key.getTime(),Double.parseDouble((String)getValueAt(model.getRowCount()-1,controller.getCalibrationIndex())));
+			String[] actual = {Long.toString(key.getTime()),(String)getValueAt(model.getRowCount()-1,controller.getCalibrationIndex())};
+			graphPoints.add(actual);
 			formatRows();
 		}
 		controller.graphRealTime(graphPointsRealTime);
@@ -672,6 +674,7 @@ public class MainTable extends CustomTable {
 	
 	public void cleanTable(){
 		graphPointsRealTime.clear();
+		graphPoints.clear();
 	}
 	
 }
