@@ -31,7 +31,8 @@ BEGIN
 			WHERE g.date > (NOW() - INTERVAL IFNULL(pDays , 3) DAY) -- if pDays is null, set dafult to 3 days
 				  AND u.userName = IFNULL(@createdBy, u.username)-- for users, admin and owners ignore this clasue
 				  AND u.type != 'user'-- ignore user
-                  AND g.type = 'ConcenVsTime'; -- only check for this graph
+                  AND g.type = 'ConcenVsTime' -- only check for this graph
+					ORDER by date DESC;
     
             
 	COMMIT;
