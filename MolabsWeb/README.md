@@ -18,7 +18,12 @@ Install Polymer
 npm install -g polymer-CLI
 ```
 
-`cd` into this directory and Serve locally with
+`cd` into this directory and install any missing bower dependencies with
+
+```sh
+bower install
+```
+finally you can serve locally with
 
 ```sh
 polymer serve
