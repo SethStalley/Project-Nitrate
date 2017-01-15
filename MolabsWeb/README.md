@@ -28,3 +28,6 @@ finally you can serve locally with
 ```sh
 polymer serve
 ```
+
+
+**NOTE**: App will not be able to access api when running locally due Browser Origin control. While developing use this plugin to get around this https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?hl=en . FYI, while running this plugin has a tendancy to break production sites, such as Github!
