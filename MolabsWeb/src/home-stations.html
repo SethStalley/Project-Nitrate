@@ -4,6 +4,7 @@
 <link rel="import" href="../bower_components/iron-input/iron-input.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="app-data.html">
 <link rel="import" href="shared-styles.html">
 
@@ -12,7 +13,6 @@
     <style include="shared-styles">
       :host {
         display: block;
-
         padding: 10px;
       }
       .wrapper-btns{
@@ -26,19 +26,33 @@
         font-size: 14px;
         padding: 10px;
       }
+
+      .iron-selector-element {
+        font-size: 24px;
+        padding: 5px;
+      }
+
+      .iron-selected {
+        -webkit-text-fill-color: white;
+        background: var(--app-secondary-color);
+      }
     </style>
 
-    <iron-localstorage name="user-storage" value="{{storedUser}}"></iron-localstorage>
+    <iron-localstorage 
+      name="user-storage" 
+      value="{{storedUser}}"
+      on-iron-localstorage-load="setStationsRequestBody"></iron-localstorage>
     <app-data key="userData" data="{{storedUser}}"></app-data>
     
     <iron-ajax
+      auto
       id="getStationsAjax"
-      
       content-type="application/json"
       url="https://54.144.112.150/api/selectActiveStations"
       method="post"
       handle-as="json"
-      last-response="{{stations}}">
+      last-response="{{stations}}"
+      on-response="handleStationsResponse">
     </iron-ajax>
 
     <iron-ajax
@@ -51,7 +65,15 @@
     ></iron-ajax>
 
     <div class="card" id="authenticated" hidden$="[[!storedUser.loggedin]]">
+
       <h1>Select an Active Station</h1>
+
+      <iron-selector attr-for-selected="name">
+        <template is="dom-repeat" items="{{stations}}">
+            <div class="iron-selector-element" name="{{item.username}}">{{item.username}}</div>
+        </template>
+      </iron-selector>
+
     </div>
 
     <!--If user is not logged in-->
@@ -88,9 +110,13 @@
           type : Object,
           value: {}
         },
-        storedUser:Object,
+        storedUser: {
+          type: Object,
+          value: {}
+        },
         error: String
       },
+
       _setReqBody: function() {
         this.$.loginAjax.body = this.formData;
       },
@@ -98,6 +124,7 @@
         this._setReqBody();
         this.$.loginAjax.generateRequest();
       },
+
       handleLoginResponse: function(event) {
         var response = event.detail.response[0][0];
 
@@ -108,12 +135,37 @@
             type: response.type,
             loggedin: true
           }
+          
+          //fill stations data
+          this.setStationsRequestBody();
         } else {
           this.error = 'Invalid username and/or password.'
         }
 
         //reset form data
         this.formData = {};
+      },
+
+      handleStationsResponse : function(event) {
+        var response = event.detail.response[0];
+
+        console.log(response);
+
+        //continiously update
+        // this.async(function() {
+        //   this.$.getStationsAjax.generateRequest();
+        // }, 10000);
+      },
+
+      setStationsRequestBody: function() {
+        if(this.storedUser) { 
+          var body = {
+            "pUserName" : this.storedUser.name,
+            "pPassword" : this.storedUser.password,
+            "pDays": "1"
+          }
+          this.$.getStationsAjax.body = body;
+        }
       }
     });
   </script>

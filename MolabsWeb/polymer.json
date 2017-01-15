@@ -5,6 +5,7 @@
     "src/user-login.html",
     "src/secret-stations.html",
     "src/secret-concentration.html",
+    "src/secret-graphs.html",
     "src/my-view404.html"
   ],
   "sourceGlobs": [
