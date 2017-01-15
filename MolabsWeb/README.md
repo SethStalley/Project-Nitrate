@@ -18,7 +18,7 @@ Install Polymer
 npm install -g polymer-CLI
 ```
 
-Cd into this directory and Serve locally with
+`cd` into this directory and Serve locally with
 
 ```sh
 polymer serve
