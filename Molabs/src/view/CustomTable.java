@@ -89,8 +89,13 @@ public abstract class CustomTable extends JTable {
 	public void deleteSelectedCalibrations() {
 		int[] rows = this.getSelectedRows();
 		
-		for (int index : rows) {
-			deleteCalibration(index);
+		if (rows.length > 0){
+			for (int index : rows) {
+				deleteCalibration(index);
+			}
+		}
+		else{
+			JOptionPane.showMessageDialog(null, Strings.ERROR_NO_CALIBRATION);
 		}
 	}
 	

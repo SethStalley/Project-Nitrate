@@ -12,6 +12,7 @@ public class Strings {
 	public static final String ERROR_NEW_CALIBRATION = "Select more than one concentrations for the new calibration.";
 	public static final String ERROR_CALIBRATE = "There is an error with the calibration values.";
 	public static final String ERROR_NO_ACTIVE_CALIBRATION = "Please select one calibration as type Active."; //unkown
+	public static final String ERROR_NO_CALIBRATION = "Please select at least one calibration.";
 	public static final String ERROR_NO_ABSORBANCE_SELECTED = "Please select one absorbance column";
 	public static final String ALERT_DELETE_ROW = "Are you sure you want to delete this row (s)?";
 	public static final String ALERT_DELETE_COLUMN_CONCENTRATION = "Are you sure you want to delete this concentration?";
@@ -68,7 +69,7 @@ public class Strings {
 	
 	public static final double XVALUEMAX = 100;
 	public static final double XVALUEMIN = -100;
-	public static final double EXTRA_PORCENTAGE = 0.5;
+	public static final double EXTRA_PORCENTAGE = 0.6;
 	public static final int PUSH_GRAPH_SLEEP = 3; //3 seconds
 	
 	/*

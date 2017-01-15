@@ -84,11 +84,14 @@ public class MainTable extends CustomTable {
 		Date key = controller.addFile(file.getAbsolutePath());
 		if(key != null){
 			renderNewFile(key);
-			System.out.println(model.getColumnCount()-1);
-			graphPointsRealTime.add(key.getTime(),Double.parseDouble((String)getValueAt(model.getRowCount()-1,controller.getCalibrationIndex())));
-			String[] actual = {Long.toString(key.getTime()),(String)getValueAt(model.getRowCount()-1,controller.getCalibrationIndex())};
-			graphPoints.add(actual);
-			formatRows();
+			// System.out.println(model.getColumnCount()-1);
+			Integer calibrationIndex = controller.getCalibrationIndex();
+			JOptionPane.showMessageDialog(null, calibrationIndex);
+			if (calibrationIndex > 0){// in case there is no active calibration
+				graphPointsRealTime.add(key.getTime(),Double.parseDouble((String)getValueAt(model.getRowCount()-1,calibrationIndex)));
+				String[] actual = {Long.toString(key.getTime()),(String)getValueAt(model.getRowCount()-1,calibrationIndex)};
+				graphPoints.add(actual);
+			}
 		}
 		controller.graphRealTime(graphPointsRealTime);
 	}
