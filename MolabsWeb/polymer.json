@@ -2,13 +2,12 @@
   "entrypoint": "index.html",
   "shell": "src/my-app.html",
   "fragments": [
-    "src/user-login.html",
-    "src/secret-stations.html",
+    "src/home-stations.html",
     "src/secret-concentration.html",
     "src/secret-graphs.html",
-    "src/my-view404.html"
+    "src/page-view404.html"
   ],
-  "sourceGlobs": [
+  "sources": [
     "src/**/*",
     "images/**/*",
     "bower.json"

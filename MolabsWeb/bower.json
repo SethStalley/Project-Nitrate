@@ -19,7 +19,10 @@
     "iron-ajax": "PolymerElements/iron-ajax#^1.4.3",
     "paper-button": "PolymerElements/paper-button#^1.0.14",
     "byutv-jsonp": "^1.3.0",
-    "highcharts-chart": "^2.0.0"
+    "highcharts-chart": "^2.0.0",
+    "iron-input":"PolymerElements/iron-input",
+    "paper-input":"PolymerElements/paper-input"
+
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
