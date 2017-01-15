@@ -40,6 +40,7 @@
     </style>
 
     <iron-localstorage 
+      id="localStorage"
       name="user-storage" 
       value="{{storedUser}}"
       on-iron-localstorage-load="setStationsRequestBody"></iron-localstorage>
@@ -52,7 +53,6 @@
       url="http://54.144.112.150/api/selectActiveStations"
       method="post"
       handle-as="json"
-      last-response="{{stations}}"
       on-response="handleStationsResponse">
     </iron-ajax>
 
@@ -69,7 +69,8 @@
 
       <h1>Select an Active Station</h1>
 
-      <iron-selector attr-for-selected="name">
+      <iron-selector attr-for-selected="name" on-iron-select="_stationSelected"
+        selected="{{storedUser.station}}">
         <template is="dom-repeat" items="{{stations}}">
             <div class="iron-selector-element" name="{{item.username}}">{{item.username}}</div>
         </template>
@@ -115,6 +116,7 @@
           type: Object,
           value: {}
         },
+        stations: Object,
         error: String
       },
 
@@ -134,7 +136,7 @@
             name: this.formData.pUserName,
             password: this.formData.pPassword,
             type: response.type,
-            loggedin: true
+            loggedin: true,
           }
           
           //fill stations data
@@ -149,7 +151,7 @@
 
       handleStationsResponse : function(event) {
         var response = event.detail.response[0];
-
+        this.stations = response;
         console.log(response);
 
         //continiously update
@@ -163,10 +165,16 @@
           var body = {
             "pUserName" : this.storedUser.name,
             "pPassword" : this.storedUser.password,
-            "pDays": "1"
+            "pDays": "2"
           }
           this.$.getStationsAjax.body = body;
         }
+      },
+
+      _stationSelected: function(event) {
+        var station = event.detail.item.name;
+        this.storedUser.station = station;
+        this.$.localStorage.save();
       }
     });
   </script>
