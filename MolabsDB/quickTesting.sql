@@ -5,9 +5,9 @@ call molabsdb.validateUser('root' , 'root');
 -- call molabsdb.selectUserByUsername('adrian','root' , CAST(SHA2('root', 512) AS BINARY));
 
 
-call molabsdb.updateGraphForUser('ConcenVsTime','Jcaca','admin' , 'admin');
+/*call molabsdb.updateGraphForUser('ConcenVsTime','Jcaca','admin' , 'admin');
 call molabsdb.selectUserGraphs('admin', 'ConcenVsTime','admin' , 'admin');
-SELECT * from molabsdb.graphs;
+SELECT * from molabsdb.graphs;*/
 
 /*START TRANSACTION;
 SELECT * from molabsdb.graphs;
@@ -28,8 +28,10 @@ ROLLBACK;*/
 
 -- GRAPHS
 
-CALL molabsdb.selectActiveStations('admin','admin',5);
+-- CALL molabsdb.selectActiveStations('admin','admin',5);
 
+CALL molabsdb.updateAlertValues(-2.6 , 5.8,'user','user');
+CALL molabsdb.selectAlertValues('admin','admin');
 
 SELECT * FROM molabsdb.users;
 
