@@ -124,6 +124,8 @@ public class DB {
 
 		    JSONArray jsonA = new JSONArray(this.postRequest("validateUser", json));
 		    JSONObject resultJson =   (JSONObject) (((JSONArray) jsonA.get(0)).get(0));
+		    /*JSONObject resultJson =   new JSONObject(this.postRequest("validateUser", json));
+		    JOptionPane.showMessageDialog(null, resultJson);*/
 		    
 		    type = resultJson.getString("type");
 		    return type;
@@ -291,8 +293,7 @@ public class DB {
 		    json.put("pPassword", password);
 		    
 		    JSONObject resultJson = new JSONObject(this.postRequest("deleteUserByUsername", json));
-		    JOptionPane.showMessageDialog(null, json);
-		    JOptionPane.showMessageDialog(null, resultJson);
+
 		}
 		catch(Exception e){
 			return Strings.ERROR_NO_INTERNET;
@@ -300,6 +301,65 @@ public class DB {
 		
 		
 		return null;
+	}
+	
+	public String updateAlertValues(Double minValue, Double maxValue){
+		// return null if everything it´s ok, otherwise a string value
+		try{
+			/*molabsdb.updateAlertValues(pMinValue DOUBLE, pMaxValue DOUBLE,
+					pUserName VARCHAR(45), pPassword VARCHAR(45))*/
+			
+			JSONObject json = new JSONObject();
+			
+			json.put("pMinValue", minValue);
+			json.put("pMaxValue", maxValue);
+			
+		    json.put("pUserName", username);
+		    json.put("pPassword", password);
+		    
+		    JSONObject resultJson =   new JSONObject(this.postRequest("updateAlertValues", json));
+		    
+		    //JOptionPane.showMessageDialog(null, resultJson);
+		    
+		    return null;
+	
+		}
+		catch (Exception e){
+			//JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+		
+		return Strings.ERROR_NO_INTERNET;
+	}
+	
+	public String[] getAlertValues(){
+		/* return an empty list of string if it does not find something. This should not happen*/
+		// returns null if there is an exception, probably due to no internet connection
+		/* user type name email phone*/
+		String[] values = new String[2];
+		
+		try{
+			/*molabsdb.selectAlertValues(
+					pUserName VARCHAR(45), pPassword VARCHAR(45)) */
+			JSONObject json = new JSONObject();
+		    json.put("pUserName", username);
+		    json.put("pPassword", password);
+		    
+		    //JSONObject resultJson =   new JSONObject(this.postRequest("selectAlertValues", json));
+		    JSONArray jsonA = new JSONArray(this.postRequest("selectAlertValues", json));
+		    JSONObject resultJson =   (JSONObject) (((JSONArray) jsonA.get(0)).get(0));
+	
+		    
+		    values[0] = resultJson.getString("valueMin");
+		    values[1] = resultJson.getString("valueMax");
+		   
+		    
+		}
+		catch(Exception e){
+			// JOptionPane.showMessageDialog(null, e.getMessage());
+			return null; // probably internet
+		}
+		//JOptionPane.showMessageDialog(null, Arrays.toString(values));
+		return values;
 	}
 	
 	public String updateGraph(ArrayList<?> points, String graphType, String slope, String intercept, String pearson, String wavelength){
@@ -344,10 +404,10 @@ public class DB {
 			//JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 		
-		
-		
 		return null;
 	}
+	
+	
 	
 	private String postRequest(String procedure, JSONObject parameters) throws SocketException{
 		
