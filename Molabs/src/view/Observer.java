@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.text.NumberFormat;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,12 +21,14 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.text.NumberFormatter;
 
 import controller.Controller;
 import values.Preferences;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JFormattedTextField;
 
 public class Observer extends JFrame {
 	private JTextField txtActualFolder;
@@ -33,12 +36,14 @@ public class Observer extends JFrame {
 	private Controller controller;
 	private boolean running;
 	private static Observer instance = null;
+	private JFormattedTextField txtYellow;
+	private JFormattedTextField txtRed;
 	
 	public Observer( Controller controller) {
 		this.running = false;
 		instance = this;
 		this.controller = controller;
-		setMinimumSize(new Dimension(500, 180));
+		setMinimumSize(new Dimension(500, 250));
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(Preferences.IMG_ICON)));
 		setTitle("MOLABS Observer");
 		setLocationRelativeTo(null);
@@ -83,26 +88,58 @@ public class Observer extends JFrame {
 				observerAction();
 			}
 		});
+		
+		JLabel lblAlertValues = new JLabel("Alert Values: ");
+		
+		NumberFormat format = NumberFormat.getInstance();
+	    NumberFormatter formatter = new NumberFormatter(format);
+	    formatter.setValueClass(Integer.class);
+	    formatter.setMinimum(0);
+	    formatter.setMaximum(Integer.MAX_VALUE);
+	    formatter.setAllowsInvalid(false);
+	    // If you want the value to be committed on each keystroke instead of focus lost
+	    formatter.setCommitsOnValidEdit(true);
+		
+		txtYellow = new JFormattedTextField(formatter);
+		txtYellow.setColumns(10);
+		
+		JLabel lblYellowValues = new JLabel("Yellow Values: ");
+		
+		JLabel lblRedValues = new JLabel("Red Values:");
+		
+		txtRed = new JFormattedTextField(formatter);
+		txtRed.setColumns(10);
 	
 		
 //------------------------------Layout-----------------------------------------------------------------------
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
+			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.CENTER)
+					.addComponent(lblAlertValues, GroupLayout.PREFERRED_SIZE, 93, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(381, Short.MAX_VALUE))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(92)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblYellowValues)
+						.addComponent(lblRedValues))
+					.addGap(18)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(txtRed, 0, 0, Short.MAX_VALUE)
+						.addComponent(txtYellow, GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE))
+					.addContainerGap(246, Short.MAX_VALUE))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addComponent(btnStartStop, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(lblActualFolder, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(txtActualFolder, GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
+							.addComponent(txtActualFolder, GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
 							.addGap(18)
-							.addComponent(btnBrowse)
-							.addGap(28))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnStartStop)
-							.addContainerGap())))
+							.addComponent(btnBrowse, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addGap(28))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -111,11 +148,20 @@ public class Observer extends JFrame {
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblActualFolder)
 						.addComponent(txtActualFolder, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnBrowse))
-					.addPreferredGap(ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+						.addComponent(btnBrowse, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(29)
+					.addComponent(lblAlertValues)
+					.addGap(17)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnStartStop))
-					.addGap(26))
+						.addComponent(txtYellow, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblYellowValues))
+					.addGap(18)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(txtRed, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblRedValues))
+					.addPreferredGap(ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+					.addComponent(btnStartStop, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
 		);
 		
 //---------------------------------------Ends Layout ------------------------------------------------------------
@@ -198,5 +244,4 @@ public class Observer extends JFrame {
 		};
 		
 	}
-	
 }
