@@ -83,7 +83,8 @@ public abstract class CustomTable extends JTable {
 	private void deleteFile(int index) {
 		Date key = getDateFromRow(index);
 		this.controller.removeFile(key);
-		((DefaultTableModel) this.getModel()).removeRow(index);
+		int modelIndex = this.convertRowIndexToModel(index);
+		((DefaultTableModel) this.getModel()).removeRow(modelIndex);
 	}
 	
 	public void deleteSelectedCalibrations() {
