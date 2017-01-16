@@ -43,7 +43,7 @@ module.exports = {
                 
                 var query = "CALL molabsdb."
                 query += procedureName
-                query += parametersAsString(templateParameters, req.query)
+                query += parametersAsString(templateParameters, req.body)
                 console.log(query)
                 pool.getConnection(function (error, connection) {
                     pool.query(query, function (err, rows) {
@@ -53,7 +53,7 @@ module.exports = {
                             console.log (err);
                             res.send(err);
                         }
-                        
+                        console.log(rows);
                         res.send(rows);
                     })
                 })
