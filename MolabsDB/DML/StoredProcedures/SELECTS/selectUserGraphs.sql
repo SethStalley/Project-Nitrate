@@ -23,7 +23,7 @@ BEGIN
     
     SELECT type, json, date
 		FROM molabsdb.graphs
-			WHERE idUser = @idUser AND type = IFNULL(graphType, type);
+			WHERE idUser = @idUser;-- AND type = IFNULL(graphType, type);
             
 	COMMIT;
 		
