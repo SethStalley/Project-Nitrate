@@ -152,12 +152,6 @@
       handleStationsResponse : function(event) {
         var response = event.detail.response[0];
         this.stations = response;
-        console.log(response);
-
-        //continiously update
-        // this.async(function() {
-        //   this.$.getStationsAjax.generateRequest();
-        // }, 10000);
       },
 
       setStationsRequestBody: function() {

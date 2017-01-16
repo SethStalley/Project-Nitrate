@@ -112,6 +112,7 @@
       logout: function() {
         this.storedUser = null;
         this.page = 'home-stations';
+        this.$.drawer.close();
       },
       observers: [
         '_routePageChanged(routeData.page)',
