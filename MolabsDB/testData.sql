@@ -1,8 +1,8 @@
 DELETE FROM molabsdb.graphs WHERE idGraph > 0;
 DELETE FROM molabsdb.users WHERE idUser > 0;
 
-INSERT INTO molabsdb.users(username, password, type, date, completeName, telephoneNumber, email, createdBy)
-	VALUES('root' , CAST(SHA2('root', 512) AS BINARY), 'owner', NOW(), 'Root Quiros', '6666-6666','root@gmail.com', 'root');
+INSERT INTO molabsdb.users(username, password, type, date, completeName, telephoneNumber, email, createdBy, valueMin, valueMax)
+	VALUES('root' , CAST(SHA2('root', 512) AS BINARY), 'owner', NOW(), 'Root Quiros', '6666-6666','root@gmail.com', 'root', -1.0, 1.0);
     
 CALL molabsdb.insertUser('Lauranha', 'epsilon', 'owner', 'Laura Hernández', '','',
 	'root' , 'root');
