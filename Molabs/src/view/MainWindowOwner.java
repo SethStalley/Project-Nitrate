@@ -185,10 +185,6 @@ public class MainWindowOwner extends MainWindow {
 	        }
 	    });
 		
-		mntmAlertValues = new JMenuItem("Alert Values");
-		setMenuItemProperties(mntmAlertValues, mnTools);
-		
-		
 		//Users
 		mntmAddUser = new JMenuItem("Add User");
 		setMenuItemProperties(mntmAddUser, mnUsers);

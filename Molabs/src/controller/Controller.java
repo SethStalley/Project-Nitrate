@@ -346,5 +346,9 @@ public class Controller {
 	public void graphRealTime(DataTable data){
 		graphicInterface.graphConcentrationRealTime(data);
 	}
+	
+	public Double[] getAlertValues(){
+		return DB.getInstance().getAlertValues();
+	}
 
 }

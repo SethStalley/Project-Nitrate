@@ -21,6 +21,10 @@ public class Strings {
 	public static final String ERROR_LOG_IN = "Combination of username and password incorrect.";
 	public static final String ACCEPT_ERROR_BUTTON = "Okay";
 	public static final String ERROR_NO_ABSORBANCE = "No absorbance value was found for that wavelength. Please choose different wavelength.";
+	public static final String ERROR_INTERNET = "There are problems with your internet connection, please check your internet connection before continuing";
+	public static final String ERROR_INTERNET_ALERT_VALUES = "There are problems with your internet connection, alert values can't update, please check your connection";
+	public static final String ERROR_ALERT_VALUES = "Yellow value must be lower than red value";
+	
 
 	
 	/*
@@ -37,6 +41,7 @@ public class Strings {
 	 * Events
 	 */
 	public static final String SUCCESS_TABLE_EXPORT = "Table exported successfully.";
+	public static final String SUCESS_ALERT_VALUES = "Values updated succesfully";
 	
 	/*
 	 * Table 

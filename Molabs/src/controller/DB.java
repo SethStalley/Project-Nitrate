@@ -331,11 +331,11 @@ public class DB {
 		return Strings.ERROR_NO_INTERNET;
 	}
 	
-	public String[] getAlertValues(){
+	public Double[] getAlertValues(){
 		/* return an empty list of string if it does not find something. This should not happen*/
 		// returns null if there is an exception, probably due to no internet connection
 		/* user type name email phone*/
-		String[] values = new String[2];
+		Double[] values = new Double[2];
 		
 		try{
 			/*molabsdb.selectAlertValues(
@@ -349,8 +349,8 @@ public class DB {
 		    JSONObject resultJson =   (JSONObject) (((JSONArray) jsonA.get(0)).get(0));
 	
 		    
-		    values[0] = resultJson.getString("valueMin");
-		    values[1] = resultJson.getString("valueMax");
+		    values[0] = Double.parseDouble(resultJson.getString("valueMin"));
+		    values[1] = Double.parseDouble(resultJson.getString("valueMax"));
 		   
 		    
 		}
