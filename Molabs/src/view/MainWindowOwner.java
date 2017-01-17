@@ -211,6 +211,15 @@ public class MainWindowOwner extends MainWindow {
 	        }
 	    });
 		
+		mntmExportExcel = new JMenuItem("Export Excel");
+		setMenuItemProperties(mntmExportExcel, mnTools);
+		mntmExportExcel.addActionListener(new java.awt.event.ActionListener() {
+	        @Override
+	        public void actionPerformed(java.awt.event.ActionEvent evt) {
+	        	export2Excel();
+	        }
+	    });
+		
 		//Users
 		mntmAddUser = new JMenuItem("Add User");
 		setMenuItemProperties(mntmAddUser, mnUsers);

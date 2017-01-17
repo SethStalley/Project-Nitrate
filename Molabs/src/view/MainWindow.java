@@ -603,7 +603,7 @@ public class MainWindow extends JFrame {
 		controller.loadProgram(file);
 	}
 	
-	private void export2Excel() {
+	protected void export2Excel() {
 		try {
             if (this.mainTable.getRowCount() <= 0) return;
             JFileChooser chooser = new JFileChooser();
