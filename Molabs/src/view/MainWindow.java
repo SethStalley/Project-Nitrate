@@ -574,7 +574,7 @@ public class MainWindow extends JFrame {
 	}
 	
 // ----------------------------------------- Actions ------------------------------------------
-	private void saveProgram() {
+	protected void saveProgram() {
 		 JFileChooser chooser = new JFileChooser();
          FileNameExtensionFilter filter = new FileNameExtensionFilter(Strings.LABEL_MOLABS_FILE, "molabs");
          chooser.setFileFilter(filter);
@@ -590,7 +590,7 @@ public class MainWindow extends JFrame {
          controller.saveProgram(file);
 	}
 	
-	private void openProgram() {
+	protected void openProgram() {
 		JFileChooser fileChooser = new JFileChooser();
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(Strings.LABEL_MOLABS_FILE, "molabs");
 		fileChooser.setFileFilter(filter);

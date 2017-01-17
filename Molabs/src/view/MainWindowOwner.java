@@ -110,6 +110,32 @@ public class MainWindowOwner extends MainWindow {
 			}
 		});
 		
+		//File - this is copy paste from MainWindow, dont know how to do this, my idea is to separate each menu items by methods, but it will take long and alot of refactor
+		
+		mntmOpenProject = new JMenuItem("Open Project");
+		setMenuItemProperties(mntmOpenProject, mnFile);
+		mntmOpenProject.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				openProgram();
+			}
+		});
+		
+		mntmSaveProject = new JMenuItem("Save Project");
+		setMenuItemProperties(mntmSaveProject, mnFile);
+		mntmSaveProject.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				saveProgram();
+			}
+		});
+		
+		mntmExit = new JMenuItem("Exit");
+		setMenuItemProperties(mntmExit, mnFile);
+		mntmExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
+			}
+		});
+		
 		//Edit
 		
 		mntmCopyRow = new JMenuItem("Copy");

@@ -112,6 +112,8 @@ public class MainTable extends CustomTable {
 			Date key = keys.nextElement();
 			renderNewFile(key);
 		}
+		
+		addDropdowns();
 	}
 	
 	private void addHeadersFromModel() {
@@ -199,6 +201,7 @@ public class MainTable extends CustomTable {
 		String stdConcentration = controller.getStdConcentration(key);
 		
 		this.addRow(new Object[]{name,date, date, type, stdConcentration});
+		this.model.sortAddedRowByDate(DATE_INDEX);
 	}
 
 	public void addBlankRow() {

@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import javax.swing.JFileChooser;
@@ -21,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import controller.DB;
 import de.erichseifert.gral.data.DataTable;
 import de.erichseifert.gral.graphics.Drawable;
 import de.erichseifert.gral.graphics.DrawableContainer;
@@ -33,6 +36,7 @@ import de.erichseifert.gral.plots.areas.AreaRenderer;
 import de.erichseifert.gral.plots.areas.DefaultAreaRenderer2D;
 import de.erichseifert.gral.plots.lines.DefaultLineRenderer2D;
 import de.erichseifert.gral.plots.lines.LineRenderer;
+import de.erichseifert.gral.plots.points.DefaultPointRenderer2D;
 import de.erichseifert.gral.plots.points.PointRenderer;
 import de.erichseifert.gral.ui.InteractivePanel;
 import de.erichseifert.gral.util.GraphicsUtils;
@@ -60,10 +64,28 @@ public class ConcentrationTimeGraph extends JPanel {
 		// Create and format lower plot
 		XYPlot plot = new XYPlot(data);
 		if(!init){
+			DataTable redData = this.getRedData(data);
+			DataTable yellowData = this.getYellowData(data);
+			
+			plot.add(redData);
+			plot.add(yellowData);
+			
+			PointRenderer pointsGreen = new DefaultPointRenderer2D();
+			pointsGreen.setShape(new Ellipse2D.Double(-3, -3, 10, 10));
+			pointsGreen.setColor(Color.GREEN);
+			plot.addPointRenderer(data, pointsGreen);
+			
+			PointRenderer pointsYellow = new DefaultPointRenderer2D();
+			pointsYellow.setShape(new Ellipse2D.Double(-3, -3, 10, 10));
+			pointsYellow.setColor(Color.YELLOW);
+			plot.addPointRenderer(yellowData, pointsYellow);
+			
+			PointRenderer pointsRed = new DefaultPointRenderer2D();
+			pointsRed.setShape(new Ellipse2D.Double(-3, -3, 10, 10));
+			pointsRed.setColor(Color.RED);
+			plot.addPointRenderer(redData, pointsRed);
+			
 			Color color = new Color( 55, 170, 200);
-			PointRenderer points = plot.getPointRenderers(data).get(0);
-			points.setColor(color);
-			points.setShape(new Ellipse2D.Double(-3, -3, 6, 6));
 			LineRenderer lineLower = new DefaultLineRenderer2D();
 			lineLower.setStroke(new BasicStroke(2f));
 			lineLower.setGap(1.0);
@@ -149,5 +171,53 @@ public class ConcentrationTimeGraph extends JPanel {
 			}
 		}
 	}
-
+	
+	
+	private void setPoints(XYPlot plot, DataTable data){
+		List<PointRenderer> myPointers = new ArrayList<PointRenderer>();
+		Double[] alert = DB.getInstance().getAlertValues();
+		Double min = alert[0];
+		for(int i = 0; i < data.getRowCount(); i++){
+			if(((Double)data.get(1, i)) < min){
+				PointRenderer points1 = new DefaultPointRenderer2D();
+				points1.setShape(new Ellipse2D.Double(-3, -3, 10, 10));
+				points1.setColor(Color.BLUE);
+				System.out.println("here blue");
+				myPointers.add(points1);
+			}else{
+				PointRenderer points1 = new DefaultPointRenderer2D();
+				points1.setShape(new Ellipse2D.Double(-3, -3, 10, 10));
+				points1.setColor(Color.RED);
+				System.out.println("here red");
+				myPointers.add(points1);
+			}
+		}
+		System.out.println(myPointers);
+		plot.setPointRenderers(data, myPointers);
+	}
+	
+	private DataTable getRedData(DataTable data){
+		DataTable reds = new DataTable(Long.class, Double.class);
+		Double[] alert = DB.getInstance().getAlertValues();
+		Double max = alert[1];
+		for(int i = 0; i < data.getRowCount(); i++){
+			if(((Double)data.get(1, i)) >= max){
+				reds.add(data.getRow(i));
+			}
+		}
+		return reds;
+	}
+	
+	private DataTable getYellowData(DataTable data){
+		DataTable yellows = new DataTable(Long.class, Double.class);
+		Double[] alert = DB.getInstance().getAlertValues();
+		Double max = alert[1];
+		Double min = alert[0];
+		for(int i = 0; i < data.getRowCount(); i++){
+			if(((Double)data.get(1, i)) < max && ((Double)data.get(1, i)) >= min){
+				yellows.add(data.getRow(i));
+			}
+		}
+		return yellows;
+	}
 }
