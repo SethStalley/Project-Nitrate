@@ -81,6 +81,8 @@ public class MainWindowOwner extends MainWindow {
 		mnUsers = new JMenu("Users");
 		setMenuProperties(mnUsers);
 		
+		super.setMiddleMenus();
+		
 		//Invisible observer
 		mnObserver = new JMenu("                                   Observer running");
 		mnObserver.setBackground(new Color(51,51,51));
@@ -89,6 +91,7 @@ public class MainWindowOwner extends MainWindow {
 		menuBar.add(mnObserver);
 		mnObserver.setEnabled(false);
 		mnObserver.setVisible(false);
+	
 	}
 	
 	protected void setMenuItems(){
@@ -198,7 +201,7 @@ public class MainWindowOwner extends MainWindow {
 		mntmOpenObserver.addActionListener(new java.awt.event.ActionListener() {
 	        @Override
 	        public void actionPerformed(java.awt.event.ActionEvent evt) {
-	           Observer.getInstance(controller).observerAction();
+	           Observer.getInstance(controller).observerAction(true);
 	        }
 	    });
 		
@@ -207,7 +210,7 @@ public class MainWindowOwner extends MainWindow {
 		mntmCloseObserver.addActionListener(new java.awt.event.ActionListener() {
 	        @Override
 	        public void actionPerformed(java.awt.event.ActionEvent evt) {
-	           Observer.getInstance(controller).observerAction();
+	           Observer.getInstance(controller).observerAction(false);
 	        }
 	    });
 		

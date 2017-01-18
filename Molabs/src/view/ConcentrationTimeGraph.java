@@ -41,6 +41,7 @@ import de.erichseifert.gral.plots.points.PointRenderer;
 import de.erichseifert.gral.ui.InteractivePanel;
 import de.erichseifert.gral.util.GraphicsUtils;
 import values.OptionErrorMessage;
+import values.Strings;
 
 public class ConcentrationTimeGraph extends JPanel {
 
@@ -173,33 +174,16 @@ public class ConcentrationTimeGraph extends JPanel {
 	}
 	
 	
-	private void setPoints(XYPlot plot, DataTable data){
-		List<PointRenderer> myPointers = new ArrayList<PointRenderer>();
-		Double[] alert = DB.getInstance().getAlertValues();
-		Double min = alert[0];
-		for(int i = 0; i < data.getRowCount(); i++){
-			if(((Double)data.get(1, i)) < min){
-				PointRenderer points1 = new DefaultPointRenderer2D();
-				points1.setShape(new Ellipse2D.Double(-3, -3, 10, 10));
-				points1.setColor(Color.BLUE);
-				System.out.println("here blue");
-				myPointers.add(points1);
-			}else{
-				PointRenderer points1 = new DefaultPointRenderer2D();
-				points1.setShape(new Ellipse2D.Double(-3, -3, 10, 10));
-				points1.setColor(Color.RED);
-				System.out.println("here red");
-				myPointers.add(points1);
-			}
-		}
-		System.out.println(myPointers);
-		plot.setPointRenderers(data, myPointers);
-	}
-	
 	private DataTable getRedData(DataTable data){
 		DataTable reds = new DataTable(Long.class, Double.class);
 		Double[] alert = DB.getInstance().getAlertValues();
-		Double max = alert[1];
+		Double max;
+		if(alert == null){
+			max = new Double(100);
+			JOptionPane.showMessageDialog(null, "Error on internet connection, alert values won't be loaded","Error",JOptionPane.INFORMATION_MESSAGE);
+		}else{
+			max = alert[1];
+		}
 		for(int i = 0; i < data.getRowCount(); i++){
 			if(((Double)data.get(1, i)) >= max){
 				reds.add(data.getRow(i));
@@ -211,8 +195,18 @@ public class ConcentrationTimeGraph extends JPanel {
 	private DataTable getYellowData(DataTable data){
 		DataTable yellows = new DataTable(Long.class, Double.class);
 		Double[] alert = DB.getInstance().getAlertValues();
-		Double max = alert[1];
-		Double min = alert[0];
+		Double max;
+		Double min;
+		if(alert == null){
+			max = new Double(100);
+			min = new Double(99);
+			JOptionPane.showMessageDialog(null, "Error on internet connection, alert values won't be loaded","Error",JOptionPane.INFORMATION_MESSAGE);
+
+		}
+		else{
+			max = alert[1];
+			min = alert[0];
+		}
 		for(int i = 0; i < data.getRowCount(); i++){
 			if(((Double)data.get(1, i)) < max && ((Double)data.get(1, i)) >= min){
 				yellows.add(data.getRow(i));

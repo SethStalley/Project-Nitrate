@@ -194,11 +194,6 @@ public class MainWindow extends JFrame {
 		
 	}
 	protected void setMiddleMenus(){
-		//nothing, but cant be abtsract to use gui window builder
-	}
-	protected void setLastMenus(){
-		//About
-		
 		mnAbout = new JMenu("About");
 		setMenuProperties(mnAbout);
 		mnAbout.addMouseListener(new MouseListener() {
@@ -233,6 +228,8 @@ public class MainWindow extends JFrame {
 				
 			}
 		});
+	}
+	protected void setLastMenus(){
 		
 		//Username registered
 		

@@ -89,7 +89,7 @@ public class Observer extends JFrame {
 		btnStartStop.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				observerAction();
+				observerAction(!running);
 			}
 		});
 		
@@ -199,11 +199,13 @@ public class Observer extends JFrame {
 		getContentPane().setLayout(groupLayout);
 	}
 	
-	public void observerAction() {
-		if (running) {
-			stopObserver();
+	public void observerAction(boolean start) {
+		if (start) {
+			if(!running)
+				startObserver();
 		} else {
-			startObserver();
+			if(running)
+				stopObserver();
 		}	
 		btnStartStop.setUI(btnStartStop.getUI());
 	}
@@ -218,8 +220,9 @@ public class Observer extends JFrame {
 				btnStartStop.setBackground(new Color(Preferences.BTN_COLOR_RED));
 				getContentPane().setBackground(new Color(Preferences.WINDOW_OBSERVER_RUNNING_RGB));
 			}
-		}
-	
+		}else{
+			JOptionPane.showMessageDialog(null, Strings.ERROR_PATH_OBSERVER,"Error",JOptionPane.INFORMATION_MESSAGE);
+		}	
 	}
 	
 	private void stopObserver() {

@@ -31,6 +31,7 @@ import javax.swing.text.JTextComponent;
 import controller.Controller;
 import controller.DB;
 import de.erichseifert.gral.data.DataTable;
+import de.erichseifert.gral.data.comparators.DataComparator;
 import model.Calibration;
 import model.WorkingWavelength;
 import validation.Validation;
@@ -88,8 +89,22 @@ public class MainTable extends CustomTable {
 			Integer calibrationIndex = controller.getCalibrationIndex();
 			if (calibrationIndex > 0){// in case there is no active calibration
 				graphPointsRealTime.add(key.getTime(),Double.parseDouble((String)getValueAt(getRowCount()-1,calibrationIndex)));
-				String[] actual = {Long.toString(key.getTime()),(String)getValueAt(getRowCount()-1,calibrationIndex)};
-				graphPoints.add(actual);
+				graphPointsRealTime.sort(new DataComparator(0) {
+					
+					@Override
+					public int compare(Comparable<?>[] arg0, Comparable<?>[] arg1) {
+						return ((Long)arg0[getColumn()]).compareTo((Long)arg1[getColumn()]); 
+					}
+				});
+				
+				//ordering for web
+				ArrayList<String[]> tempPoints = new ArrayList<>();
+				
+				for(int i = 0; i<graphPointsRealTime.getRowCount(); i++){
+					String[] actual = {Long.toString((Long)graphPointsRealTime.get(0,i)),Double.toString((Double)graphPointsRealTime.get(1,i))};
+					tempPoints.add(actual);
+				}
+				graphPoints = tempPoints;
 			}
 			this.model.sortAddedRowByDate(DATE_INDEX);
 		}

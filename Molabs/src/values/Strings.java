@@ -19,11 +19,12 @@ public class Strings {
 	public static final String ALERT_DELETE_COLUMN_ABSORBANCE = "Are you sure you want to delete this absorbance, it will delete all concentrations and calibrations that used this absorbance?";
 	public static final String ERROR_CONCENTRATION_COLUMN = "The current value is invalid, it should be a number and can include floating point decimals with a '.'";
 	public static final String ERROR_LOG_IN = "Combination of username and password incorrect.";
-	public static final String ACCEPT_ERROR_BUTTON = "Okay";
+	public static final String ACCEPT_ERROR_BUTTON = "Ok";
 	public static final String ERROR_NO_ABSORBANCE = "No absorbance value was found for that wavelength. Please choose different wavelength.";
 	public static final String ERROR_INTERNET = "There are problems with your internet connection, please check your internet connection before continuing";
 	public static final String ERROR_INTERNET_ALERT_VALUES = "There are problems with your internet connection, alert values can't update, please check your connection";
 	public static final String ERROR_ALERT_VALUES = "Yellow value must be lower than red value";
+	public static final String ERROR_PATH_OBSERVER = "Please select a valid path to a folder";
 	
 
 	
