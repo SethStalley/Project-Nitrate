@@ -70,6 +70,13 @@
 
     </div>
 
+    <div class="card" hidden$=[[!station.completeName]]>
+      <h3>Station user Information</h3>
+      <p>Full Name: <strong>[[station.completeName]]</strong></p>
+      <p>Email: <strong>[[station.email]]</strong></p>
+      <p>Phone Number: <strong>[[station.telephoneNumber]]</strong></p>
+    </div>
+
     <!--If user is not logged in-->
     <div class="card" id="not-authenticated" hidden$="[[storedUser.loggedin]]">
       <h1>Log In</h1>
@@ -109,7 +116,8 @@
           value: {},
         },
         stations: Object,
-        error: String
+        error: String,
+        station: Object
       },
 
       _setReqBody: function() {
@@ -143,7 +151,7 @@
 
       handleStationsResponse : function(event) {
         var response = event.detail.response[0];
-        this.stations = response;
+        this.set('stations', response);
         this.async(function() {
            this.$.getStationsAjax.generateRequest();
          }, 2000);
@@ -163,9 +171,15 @@
       _stationSelected: function(event) {
         var station = event.detail.item.name;
         this.set("storedUser.station", station)
-    
+  
+        for (var i in this.stations) {
+          if (this.stations[i].username == station) {
+            this.set('station', this.stations[i]);
+            break;
+          }
+        }
         this.$.localStorage.save();
-      }
+      },
     });
   </script>
 </dom-module>
