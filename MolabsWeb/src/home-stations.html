@@ -106,7 +106,7 @@
         },
         storedUser: {
           type: Object,
-          value: {}
+          value: {},
         },
         stations: Object,
         error: String
@@ -159,7 +159,8 @@
 
       _stationSelected: function(event) {
         var station = event.detail.item.name;
-        this.storedUser.station = station;
+        this.set("storedUser.station", station)
+    
         this.$.localStorage.save();
       }
     });
