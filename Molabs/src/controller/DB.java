@@ -53,11 +53,10 @@ public class DB {
 		this.username = username;
 		this.password = password;
 		url = "https://54.144.112.150/api/";
-		AesKey = loadAesKey();
 	}
 	
-	public static String getAesKey() {
-		return AesKey;
+	public String getAesKey() {
+		return loadAesKey();
 	}
 	
 	public String getUser(){
@@ -78,10 +77,10 @@ public class DB {
 
 		}
 		catch (HttpHostConnectException e){ //not working
-			return Strings.ERROR_NO_INTERNET;
+			return null;
 		}
 		catch (java.net.NoRouteToHostException e){
-			return Strings.ERROR_NO_INTERNET;
+			return null;
 		}
 		catch (Exception ex) {
 

@@ -75,6 +75,7 @@ public class MainTable extends CustomTable {
 		Date key = controller.addFile(file.getAbsolutePath());
 		if(key != null){
 			renderNewFile(key);
+			this.model.sortAddedRowByDate(DATE_INDEX);
 			formatRows();
 		}
 	}
@@ -84,14 +85,13 @@ public class MainTable extends CustomTable {
 		Date key = controller.addFile(file.getAbsolutePath());
 		if(key != null){
 			renderNewFile(key);
-			// System.out.println(model.getColumnCount()-1);
 			Integer calibrationIndex = controller.getCalibrationIndex();
-			JOptionPane.showMessageDialog(null, calibrationIndex);
 			if (calibrationIndex > 0){// in case there is no active calibration
-				graphPointsRealTime.add(key.getTime(),Double.parseDouble((String)getValueAt(model.getRowCount()-1,calibrationIndex)));
-				String[] actual = {Long.toString(key.getTime()),(String)getValueAt(model.getRowCount()-1,calibrationIndex)};
+				graphPointsRealTime.add(key.getTime(),Double.parseDouble((String)getValueAt(getRowCount()-1,calibrationIndex)));
+				String[] actual = {Long.toString(key.getTime()),(String)getValueAt(getRowCount()-1,calibrationIndex)};
 				graphPoints.add(actual);
 			}
+			this.model.sortAddedRowByDate(DATE_INDEX);
 		}
 		controller.graphRealTime(graphPointsRealTime);
 	}
@@ -111,6 +111,7 @@ public class MainTable extends CustomTable {
 		while(keys.hasMoreElements()) {
 			Date key = keys.nextElement();
 			renderNewFile(key);
+			this.model.sortAddedRowByDate(DATE_INDEX);
 		}
 		
 		addDropdowns();
@@ -201,13 +202,13 @@ public class MainTable extends CustomTable {
 		String stdConcentration = controller.getStdConcentration(key);
 		
 		this.addRow(new Object[]{name,date, date, type, stdConcentration});
-		this.model.sortAddedRowByDate(DATE_INDEX);
 	}
 
 	public void addBlankRow() {
 		Date date = new Date();
 		String name = "Custom Row " + this.lastBlankRow++;
 		this.addRow(new Object[]{name,date, date, Strings.SAMPLE});;
+		this.model.sortAddedRowByDate(DATE_INDEX);
 		controller.addCustomRow(name, date);
 		addDropdowns();
 	}

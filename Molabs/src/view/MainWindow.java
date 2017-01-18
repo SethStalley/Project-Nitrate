@@ -261,14 +261,6 @@ public class MainWindow extends JFrame {
 			}
 		});
 		
-		mntmSaveProject = new JMenuItem("Save Project");
-		setMenuItemProperties(mntmSaveProject, mnFile);
-		mntmSaveProject.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				saveProgram();
-			}
-		});
-		
 		mntmExit = new JMenuItem("Exit");
 		setMenuItemProperties(mntmExit, mnFile);
 		mntmExit.addActionListener(new ActionListener() {
@@ -736,6 +728,15 @@ public class MainWindow extends JFrame {
 	
 	public void graphConcentrationRealTime(DataTable data){
 		concentrationGraphR.getViewport().setView(new ConcentrationTimeGraph(data));
+	}
+	
+	public String getWavelengthCalibration(){
+		int row = calibrationTable.getSelectedRow();
+		Date key = (Date) calibrationTable.getValueAt(row, Strings.CALIBRATIONTABLE_COLUMN_DATE);
+		
+		Calibration calibration = controller.getCalibrationData(key);
+		
+		return calibration.getWavelength();
 	}
 	
 }

@@ -45,16 +45,25 @@ public class Controller {
 		this.calibrationTable = new CalibrationTable();
 	}
 	
-	public void startObserver(String path) {
-		stopObserver();
-		
-		this.fileObserver = new FileObserver(this, (view.MainTable) graphicInterface.mainTable);
-		Boolean success = !path.isEmpty() && this.fileObserver.startObserver(path);
-		
-		if (success) {
-			((MainWindowOwner)graphicInterface).observerRunningColor();
-		} else {
-		    ((MainWindowOwner)graphicInterface).errorStartingObserver();
+	public boolean startObserver(String path) {
+		if(getCalibrationIndex() > 0){
+			stopObserver();
+			
+			this.fileObserver = new FileObserver(this, (view.MainTable) graphicInterface.mainTable);
+			Boolean success = !path.isEmpty() && this.fileObserver.startObserver(path);
+			
+			if (success) {
+				((MainWindowOwner)graphicInterface).observerRunningColor();
+				if(pushGraph != null){
+					pushGraph.setIsObserving(true);
+				}
+			} else {
+			    ((MainWindowOwner)graphicInterface).errorStartingObserver();
+			}
+			return true;
+		}else{
+			JOptionPane.showMessageDialog(null, "Please select and active calibration and calculate its concentration", "Error", JOptionPane.INFORMATION_MESSAGE);
+			return false;
 		}
 		
 	}
@@ -69,6 +78,7 @@ public class Controller {
 			this.fileObserver.stopObserver();
 		this.fileObserver = null;
 		((MainWindowOwner)graphicInterface).observerStoppedColor();
+		pushGraph.setIsObserving(false);
 	}
 	
 	public void addWorkingWavelength(String wavelength) {
@@ -349,6 +359,9 @@ public class Controller {
 	
 	public Double[] getAlertValues(){
 		return DB.getInstance().getAlertValues();
+	}
+	public int getAbosrbanceIndex(){
+		return this.getAbsorbanceColumnIndex((graphicInterface.getWavelengthCalibration()));
 	}
 
 }

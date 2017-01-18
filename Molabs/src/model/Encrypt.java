@@ -17,75 +17,84 @@ import controller.DB;
 public class Encrypt {
 	
 	public static String encrypt(String unencryptedText) {
-		String key = DB.getAesKey();
-		SecretKey myDesKey;
-		
-		try {
-			myDesKey = new SecretKeySpec(new String(key).getBytes(), "AES");
-
-	        Cipher desCipher;
-	        desCipher = Cipher.getInstance("AES");
-
-
-	        byte[] text = unencryptedText.getBytes();
-
-
-	        desCipher.init(Cipher.ENCRYPT_MODE, myDesKey);
-	        byte[] textEncrypted = desCipher.doFinal(text);
-
-	        String s = new String(new Base64().encode(textEncrypted));
-	        return s;
+		String key = DB.getInstance().getAesKey();
+		if(key != null){
+			SecretKey myDesKey;
 			
-		} catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvalidKeyException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalBlockSizeException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (BadPaddingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			try {
+				myDesKey = new SecretKeySpec(new String(key).getBytes(), "AES");
+	
+		        Cipher desCipher;
+		        desCipher = Cipher.getInstance("AES");
+	
+	
+		        byte[] text = unencryptedText.getBytes();
+	
+	
+		        desCipher.init(Cipher.ENCRYPT_MODE, myDesKey);
+		        byte[] textEncrypted = desCipher.doFinal(text);
+	
+		        String s = new String(new Base64().encode(textEncrypted));
+		        return s;
+				
+			} catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvalidKeyException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalBlockSizeException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (BadPaddingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return null;
+		}else{
+			return null;
 		}
-		
-		return null;
         
 	}
 	
 	public static String unencrypt(String encryptedText) {
-		String key = DB.getAesKey();
-		SecretKey myDesKey;
-		
-		try {
-			myDesKey = new SecretKeySpec(new String(key).getBytes(), "AES");
+		String key = DB.getInstance().getAesKey();
+		if( key != null){
+			SecretKey myDesKey;
 			
-			Cipher desCipher = Cipher.getInstance("AES");
-			desCipher.init(Cipher.DECRYPT_MODE, myDesKey);
-	        byte[] textDecrypted = desCipher.doFinal(new Base64().decode(encryptedText.getBytes()));
-
-	        String s = new String(textDecrypted);
-	        return s;
-	        
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		} catch (NoSuchPaddingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvalidKeyException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalBlockSizeException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (BadPaddingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-		
-		
-		return null;
+			try {
+				myDesKey = new SecretKeySpec(new String(key).getBytes(), "AES");
+				
+				Cipher desCipher = Cipher.getInstance("AES");
+				desCipher.init(Cipher.DECRYPT_MODE, myDesKey);
+		        byte[] textDecrypted = desCipher.doFinal(new Base64().decode(encryptedText.getBytes()));
+	
+		        String s = new String(textDecrypted);
+		        return s;
+		        
+			} catch (NoSuchAlgorithmException e) {
+				e.printStackTrace();
+			} catch (NoSuchPaddingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvalidKeyException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalBlockSizeException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (BadPaddingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+			
+			
+			return null;
+		}
+		else{
+			return null;
+		}
 	}
 	
 }

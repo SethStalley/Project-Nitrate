@@ -6,6 +6,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Date;
 
+import javax.swing.JOptionPane;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -44,12 +46,15 @@ public class Save extends JSON_Exportable{
 		
 		//encrypt data
 		data = Encrypt.encrypt(data);
-		
-		try (FileWriter file = new FileWriter(completePath)) {
-			file.write(data);
-			System.out.println("Successfully saved program data.");
-		} catch (IOException e) {
-			e.printStackTrace();
+		if(data != null){
+			try (FileWriter file = new FileWriter(completePath)) {
+				file.write(data);
+				JOptionPane.showMessageDialog(null, "Successfully saved program data.", "Info", JOptionPane.INFORMATION_MESSAGE);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}else{
+			JOptionPane.showMessageDialog(null, "There are problems with your internet connection", "Error", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 	

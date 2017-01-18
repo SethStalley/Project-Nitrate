@@ -15,11 +15,13 @@ public class PushGraph extends Thread{
 	private CalibrationTable calibrationTable;
 	private Boolean run;
 	private Calibration currentCalibration;
+	private boolean isObserving;
 
 	public PushGraph(Controller controller, CalibrationTable calibrationTable) {
 		this.controller = controller;
 		this.calibrationTable = calibrationTable;
 		run = true;
+		isObserving = false;
 		
 	}
 	
@@ -36,13 +38,18 @@ public class PushGraph extends Thread{
 							String.valueOf(currentCalibration.getIntercept()), String.valueOf(currentCalibration.getPearson())
 								, currentCalibration.getWavelength());
 					
-					DB.getInstance().updateGraph(controller.getConcentrationGraphData(), "ConcenVsTime", "", "", "", ""); 
+					if(isObserving)
+						DB.getInstance().updateGraph(controller.getConcentrationGraphData(), "ConcenVsTime", "", "", "", ""); 
 				}
 			}
 			catch (Exception e){
 				e.printStackTrace();
 			}
 		}	
+	}
+	
+	public void setIsObserving(boolean value){
+		this.isObserving = value;
 	}
 	
 	

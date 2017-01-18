@@ -212,12 +212,12 @@ public class Observer extends JFrame {
 		String path = txtActualFolder.getText();
 		
 		if(new File(path).isDirectory()) {
-			this.running = true;
-			btnStartStop.setText("Stop");
-			btnStartStop.setBackground(new Color(Preferences.BTN_COLOR_RED));
-			
-			controller.startObserver(path);
-			getContentPane().setBackground(new Color(Preferences.WINDOW_OBSERVER_RUNNING_RGB));
+			if(controller.startObserver(path)){
+				this.running = true;
+				btnStartStop.setText("Stop");
+				btnStartStop.setBackground(new Color(Preferences.BTN_COLOR_RED));
+				getContentPane().setBackground(new Color(Preferences.WINDOW_OBSERVER_RUNNING_RGB));
+			}
 		}
 	
 	}
