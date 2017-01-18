@@ -80,7 +80,7 @@ public class MainWindow extends JFrame {
 	
 	private JMenuItem mntmOpenProject, mntmSaveProject, mntmOpenData, mntmDeleteDataFile, mntmPrint, mntmExit; //File
 	
-	private JMenuItem mntmExportExcel; //Tools
+	private JMenuItem mntmExportExcel, mntmAlertValues; //Tools
 
 	protected JPanel pnMain, graphConc;
 	protected JButton btnRemoveCalibration, btnCalibrate; //buttons second row panel
@@ -270,6 +270,15 @@ public class MainWindow extends JFrame {
 		});
 		
 		//Tools
+		
+		mntmAlertValues = new JMenuItem("Alert Values");
+		setMenuItemProperties(mntmAlertValues, mnTools);
+		mntmAlertValues.addActionListener(new java.awt.event.ActionListener() {
+	        @Override
+	        public void actionPerformed(java.awt.event.ActionEvent evt) {
+	        	new AlertValues(controller).setVisible(true);
+	        }
+	    });
 		
 		mntmExportExcel = new JMenuItem("Export Excel");
 		setMenuItemProperties(mntmExportExcel, mnTools);
