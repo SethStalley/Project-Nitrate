@@ -41,13 +41,13 @@ BEGIN
         
 	/* Now insert all posible graphs for the users. JSON in null */
 	INSERT INTO molabsdb.graphs(type, json, idUser, date)
-		VALUES ('CalibrationGraph', NULL, @idUser, NOW() - INTERVAL IFNULL(pDays , 3) DAY);
+		VALUES ('CalibrationGraph', NULL, @idUser, NOW() - INTERVAL 4 DAY);
 		
 	INSERT INTO molabsdb.graphs(type, json, idUser, date)
-		VALUES ('ABSvsConce', NULL, @idUser, NOW() - INTERVAL IFNULL(pDays , 3) DAY);
+		VALUES ('ABSvsConce', NULL, @idUser, NOW() - INTERVAL 4 DAY);
 		
 	INSERT INTO molabsdb.graphs(type, json, idUser, date)
-		VALUES ('ConcenVsTime', NULL, @idUser, NOW() - INTERVAL IFNULL(pDays , 3) DAY);
+		VALUES ('ConcenVsTime', NULL, @idUser, NOW() - INTERVAL 4 DAY);
             
 	COMMIT;
         
