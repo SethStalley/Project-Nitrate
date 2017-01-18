@@ -38,7 +38,6 @@ public class PushGraph extends Thread{
 							String.valueOf(currentCalibration.getIntercept()), String.valueOf(currentCalibration.getPearson())
 								, currentCalibration.getWavelength());
 					if (controller.getConcentrationGraphData().size() != 0){
-						JOptionPane.showMessageDialog(null, "push");
 						DB.getInstance().updateGraph(controller.getConcentrationGraphData(), "ConcenVsTime", "", "", "", ""); 
 					}
 				}
