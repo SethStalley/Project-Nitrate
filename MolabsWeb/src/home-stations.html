@@ -144,6 +144,9 @@
       handleStationsResponse : function(event) {
         var response = event.detail.response[0];
         this.stations = response;
+        this.async(function() {
+           this.$.getStationsAjax.generateRequest();
+         }, 2000);
       },
 
       setStationsRequestBody: function() {
