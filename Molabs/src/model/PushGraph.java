@@ -3,6 +3,8 @@ package model;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import javax.swing.JOptionPane;
+
 import controller.Controller;
 import controller.DB;
 import values.Strings;
@@ -35,8 +37,10 @@ public class PushGraph extends Thread{
 					DB.getInstance().updateGraph(currentCalibration.getXYValues(), "CalibrationGraph", String.valueOf(currentCalibration.getSlope()),
 							String.valueOf(currentCalibration.getIntercept()), String.valueOf(currentCalibration.getPearson())
 								, currentCalibration.getWavelength());
-					
-					DB.getInstance().updateGraph(controller.getConcentrationGraphData(), "ConcenVsTime", "", "", "", ""); 
+					if (controller.getConcentrationGraphData().size() != 0){
+						JOptionPane.showMessageDialog(null, "push");
+						DB.getInstance().updateGraph(controller.getConcentrationGraphData(), "ConcenVsTime", "", "", "", ""); 
+					}
 				}
 			}
 			catch (Exception e){
