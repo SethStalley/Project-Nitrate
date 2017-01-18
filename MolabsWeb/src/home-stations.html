@@ -69,12 +69,14 @@
       </iron-selector>
 
     </div>
-
-    <div class="card" hidden$=[[!station.completeName]]>
-      <h3>Station user Information</h3>
-      <p>Full Name: <strong>[[station.completeName]]</strong></p>
-      <p>Email: <strong>[[station.email]]</strong></p>
-      <p>Phone Number: <strong>[[station.telephoneNumber]]</strong></p>
+    
+    <div hidden$=[[!storedUser.loggedin]]>
+      <div class="card" hidden$=[[_noStationInfo(station)]] >
+        <h3>Station user Information</h3>
+        <p>Full Name: <strong>[[station.completeName]]</strong></p>
+        <p>Email: <strong>[[station.email]]</strong></p>
+        <p>Phone Number: <strong>[[station.telephoneNumber]]</strong></p>
+      </div>
     </div>
 
     <!--If user is not logged in-->
@@ -117,7 +119,14 @@
         },
         stations: Object,
         error: String,
-        station: Object
+        station: {
+          type: Object,
+          value: {
+            completeName: "",
+            email: "",
+            telephoneNumber: ""
+          }
+        }
       },
 
       _setReqBody: function() {
@@ -180,6 +189,15 @@
         }
         this.$.localStorage.save();
       },
+
+      _noStationInfo: function(station) {
+        if (station.completeName =="" &&
+            station.email =="" &&
+            station.telephoneNumber == "") {
+          return true
+        }
+        return false
+      }
     });
   </script>
 </dom-module>
