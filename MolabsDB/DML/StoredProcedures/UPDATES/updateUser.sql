@@ -43,7 +43,7 @@ BEGIN
 				WHERE username = pUserNameToUpdate 
 					  AND (createdBy = pUserName OR pUserNameToUpdate = pUsername); -- only if you created this user you can modify it, or is it yourself :)
         
-
+	COMMIT;
     
 END$$
 

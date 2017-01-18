@@ -24,6 +24,9 @@ BEGIN
 		SET valueMin = IFNULL(pMinValue, valueMin),
 			valueMax = IFNULL(pMaxValue, valueMax)
 				WHERE username = pUserName;
+                
+                
+	COMMIT;
         
 
     

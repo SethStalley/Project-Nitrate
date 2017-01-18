@@ -13,9 +13,13 @@ BEGIN
 		SET MESSAGE_TEXT = 'Validación de usuario incorrecta.';
 	END IF;
     
+    START TRANSACTION READ ONLY;
+    
     SELECT idUser, userName, type, date,completeName, telephoneNumber, email
 		FROM molabsdb.users
 			WHERE ((type = 'user' OR type = 'admin') AND createdBy = pUserName) OR (userName = pUserName);
+            
+	COMMIT;
 		
     
 END$$

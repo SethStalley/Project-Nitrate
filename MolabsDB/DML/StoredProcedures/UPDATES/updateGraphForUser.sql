@@ -16,7 +16,7 @@ BEGIN
 		SET MESSAGE_TEXT = 'Validación de usuario incorrecta.';
 	END IF;
     
-    START TRANSACTION;
+    START TRANSACTION READ ONLY;
     
     SET @idUser = (SELECT idUser FROM molabsdb.users WHERE userName = pUserName);
     

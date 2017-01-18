@@ -6,7 +6,6 @@ CREATE PROCEDURE molabsdb.selectAlertValues(
 BEGIN
 
     
-    START TRANSACTION;
     
     SET @type = (SELECT type
 					FROM molabsdb.users
@@ -17,14 +16,16 @@ BEGIN
 		SET MESSAGE_TEXT = 'Validación de usuario incorrecta.';
 	END IF;
     
-
     
+    
+    START TRANSACTION READ ONLY;
     
 	SELECT valueMin, valueMax
 		FROM molabsdb.users
 			WHERE userName = pUserName;
         
-
+	
+    COMMIT;
     
 END$$
 

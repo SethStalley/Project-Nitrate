@@ -1,3 +1,4 @@
+
 DELIMITER $$
 DROP PROCEDURE IF EXISTS molabsdb.selectAesKey;$$
 
@@ -21,6 +22,9 @@ BEGIN
     
     
 	SELECT * from molabsdb.keys;
+    
+    
+    COMMIT;
         
 
     
