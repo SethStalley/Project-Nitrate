@@ -35,7 +35,7 @@ BEGIN
     
     
 	INSERT INTO molabsdb.users(username, password, type, date, createdBy,completeName, telephoneNumber, email, valueMin, valueMax)
-		VALUES(pNewUserName, (CAST(SHA2(pNewPassword, 512) AS BINARY)), pType, NOW(), pUserName,pCompleteName,pTelephoneNumber, pEmail, 3, 5);
+		VALUES(pNewUserName, (CAST(SHA2(pNewPassword, 512) AS BINARY)), pType, NOW(), pUserName,pCompleteName,pTelephoneNumber, pEmail, 3.0, 5.0);
             
 	SET @idUser = (SELECT MAX(idUser) FROM molabsdb.users);
         
