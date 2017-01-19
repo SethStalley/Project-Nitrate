@@ -136,7 +136,7 @@ public class ConcentrationTimeGraph extends JPanel {
 	private void save(Drawable plot){
 		JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter1 = new FileNameExtensionFilter("PNG", "png");
-        FileNameExtensionFilter filter2 = new FileNameExtensionFilter("JPG", "JPG");
+        FileNameExtensionFilter filter2 = new FileNameExtensionFilter("JPEG", "JPEG");
         chooser.addChoosableFileFilter(filter1);
         chooser.addChoosableFileFilter(filter2);
         chooser.setDialogTitle("Export Image");
@@ -149,8 +149,8 @@ public class ConcentrationTimeGraph extends JPanel {
 				DrawableWriter writer;
 				if(chooser.getFileFilter().equals(filter2)){
 					writer = DrawableWriterFactory.getInstance().get("image/jpeg");
-					if (!file.toString().contains(".jpg") )
-						file = new File(file.getAbsolutePath().concat(".jpg"));
+					if (!file.toString().contains(".jpeg") )
+						file = new File(file.getAbsolutePath().concat(".jpeg"));
 				}else{
 					writer = DrawableWriterFactory.getInstance().get("image/png");
 					if (!file.toString().contains(".png") )
