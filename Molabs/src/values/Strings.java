@@ -43,6 +43,7 @@ public class Strings {
 	 */
 	public static final String SUCCESS_TABLE_EXPORT = "Table exported successfully.";
 	public static final String SUCESS_ALERT_VALUES = "Values updated succesfully";
+	public static final String SUCESS_EXPORT_GRAPH = "Graph exported succesfully";
 	
 	/*
 	 * Table 

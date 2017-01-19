@@ -171,6 +171,9 @@ public class CalibrationGraph extends JPanel{
 					FileOutputStream fileStream = new FileOutputStream(file);
 					writer.write(plot,fileStream, plot.getWidth(), plot.getHeight());
 					fileStream.close();
+					JOptionPane.showMessageDialog(null, Strings.SUCESS_EXPORT_GRAPH,"Info",JOptionPane.INFORMATION_MESSAGE);
+
+					
 				}
 			} catch (IOException e){
 				e.printStackTrace();

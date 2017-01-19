@@ -175,6 +175,7 @@ public class AlertValues extends JFrame {
 					JOptionPane.showMessageDialog(null, Strings.ERROR_INTERNET_ALERT_VALUES,"Error",JOptionPane.INFORMATION_MESSAGE);
 				}else{
 					JOptionPane.showMessageDialog(null, Strings.SUCESS_ALERT_VALUES,"Info",JOptionPane.INFORMATION_MESSAGE);
+					controller.graphRealTime();
 				}
 			}else{
 				JOptionPane.showMessageDialog(null, Strings.ERROR_ALERT_VALUES,"Error",JOptionPane.INFORMATION_MESSAGE);

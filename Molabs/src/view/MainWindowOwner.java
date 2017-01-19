@@ -173,20 +173,6 @@ public class MainWindowOwner extends MainWindow {
 			}
 		});
 		
-		
-		//Tools
-		mntmFindObsorbance = new JMenuItem("Find Absorbance");
-		setMenuItemProperties(mntmFindObsorbance, mnTools);
-		
-		mntmCalibrate = new JMenuItem("Calibrate");
-		setMenuItemProperties(mntmCalibrate, mnTools);
-		
-		mntmCalibrationGraph = new JMenuItem("Calibration");
-		setMenuItemProperties(mntmCalibrationGraph, mnTools);
-		
-		mntmConcentrationGraph = new JMenuItem("Concentration");
-		setMenuItemProperties(mntmConcentrationGraph, mnTools);
-		
 		mntmObserver = new JMenuItem("Observer");
 		setMenuItemProperties(mntmObserver, mnTools);
 		mntmObserver.addActionListener(new java.awt.event.ActionListener() {
@@ -282,12 +268,6 @@ public class MainWindowOwner extends MainWindow {
 				mainTable.deleteSelectedFiles();
 			}
 		});
-		
-		//btn Save Project
-				
-		btnSaveProject = new GenericRoundedButton("Save Project");
-		setButtonProperties(btnSaveProject, pnMain);
-		btnSaveProject.addMouseListener(setButtonsListeners(btnSaveProject));
 				
 		JLabel lblWavelengthnm = new JLabel("Wavelength (nm): ");
 		lblWavelengthnm.setFont(new Font("Roboto Light", Font.PLAIN, 12));
@@ -334,7 +314,6 @@ public class MainWindowOwner extends MainWindow {
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(btnDeleteRow, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(btnSaveProject, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED, 420, Short.MAX_VALUE)
 					.addComponent(lblWavelengthnm)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
@@ -358,8 +337,7 @@ public class MainWindowOwner extends MainWindow {
 						.addGroup(gl_pnFirstRow.createParallelGroup(Alignment.BASELINE)
 							.addComponent(btnOpenFile, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addComponent(btnAddRow, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addComponent(btnDeleteRow, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addComponent(btnSaveProject, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(btnDeleteRow, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		

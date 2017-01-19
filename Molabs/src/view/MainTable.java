@@ -699,4 +699,8 @@ public class MainTable extends CustomTable {
 		graphPoints.clear();
 	}
 	
+	public DataTable getGraphPointsRealTime(){
+		return graphPointsRealTime;
+	}
+	
 }

@@ -734,6 +734,10 @@ public class MainWindow extends JFrame {
 		concentrationGraphR.getViewport().setView(new ConcentrationTimeGraph(data));
 	}
 	
+	public void graphConcentrationRealTime(){
+		concentrationGraphR.getViewport().setView(new ConcentrationTimeGraph(((MainTable) mainTable).getGraphPointsRealTime()));
+	}
+	
 	public String getWavelengthCalibration(){
 		int row = calibrationTable.getSelectedRow();
 		Date key = (Date) calibrationTable.getValueAt(row, Strings.CALIBRATIONTABLE_COLUMN_DATE);
