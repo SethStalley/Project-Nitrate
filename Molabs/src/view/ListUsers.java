@@ -133,7 +133,7 @@ public class ListUsers extends JFrame {
 				new String[] {
 						"Username","Type","Name","Email","Phone" },0), controller); 
 		userTable.setRowHeight(24);
-		
+		userTable.setGridColor(Color.BLACK);
 		userTable.getTableHeader().setFont(new Font("Roboto Medium", Font.BOLD, 12));
 		userTable.setColumnSelectionAllowed(false);
 		

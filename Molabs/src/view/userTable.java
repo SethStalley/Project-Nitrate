@@ -20,6 +20,7 @@ public class userTable extends JTable {
 	private static final int headerHeigth = 28;
 
 	public userTable(TableModel model, Controller controller) {
+		this.setGridColor(Color.BLACK);
 		this.setRowSelectionAllowed(true);
 		createTableHeaders();
 		setModel(model);
