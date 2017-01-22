@@ -71,6 +71,7 @@ public class About extends JFrame {
 		});
 		btnLogIn.setBorderPainted(false);
 		btnLogIn.setFont(new Font("Roboto Medium", Font.BOLD, 20));
+		btnLogIn.setOpaque(true);
 		btnLogIn.setBackground(new Color(247,163,94));
 		btnLogIn.setForeground(Color.WHITE);
 		

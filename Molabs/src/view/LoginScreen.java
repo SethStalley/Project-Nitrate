@@ -34,8 +34,10 @@ public class LoginScreen extends JFrame {
 	private JTextField txtUsername, txtPassword;
 	private JLabel lblImageIcon, lblUsername, lblPassword;
 	private JButton btnLogIn;
+	int fontSize;
 	
 	public LoginScreen() {
+		setFontSize();
 		setMinimumSize(new Dimension(640, 480));
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(Preferences.IMG_ICON)));
 		setTitle("MOLABS");
@@ -50,6 +52,15 @@ public class LoginScreen extends JFrame {
 		
 		UIManager.put("OptionPane.okButtonText", Strings.ACCEPT_ERROR_BUTTON); //text on errors display
 	}
+	
+	private void setFontSize() {
+		if (Preferences.isMac()) {
+			this.fontSize = 14;
+		} else {
+			this.fontSize = 16;
+		}
+	}
+	
 	private void initComponents(){
 		
 		//Menu Bar
@@ -73,7 +84,7 @@ public class LoginScreen extends JFrame {
 		txtUsername.setColumns(10);
 		
 		lblUsername = new JLabel("Username: ");
-		lblUsername.setFont(new Font("Roboto Medium", Font.PLAIN, 16));
+		lblUsername.setFont(new Font("Roboto Medium", Font.PLAIN, fontSize));
 		
 		//Password
 		
@@ -81,7 +92,7 @@ public class LoginScreen extends JFrame {
 		txtPassword.setColumns(10);
 		
 		lblPassword = new JLabel("Password: ");
-		lblPassword.setFont(new Font("Roboto Medium", Font.PLAIN, 16));
+		lblPassword.setFont(new Font("Roboto Medium", Font.PLAIN, fontSize));
 		
 		btnLogIn= new JButton("Sign In");
 
