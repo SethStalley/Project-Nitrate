@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.EventObject;
@@ -20,6 +21,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.RowSorter;
+import javax.swing.RowSorter.SortKey;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -45,6 +47,9 @@ public class MainTable extends CustomTable {
 	private boolean pasteEditable;
 	private ArrayList<String[]> graphPoints;
 	private DataTable graphPointsRealTime;
+	private RowSorter<TableModel> sorter;
+	private List<? extends SortKey> lasSortOrder;
+	
 	
 	public MainTable(SortableJTableModel model, Controller controller){
 		super(model, controller);
@@ -52,10 +57,11 @@ public class MainTable extends CustomTable {
 		graphPointsRealTime = new DataTable(Long.class, Double.class);
 		setupRowSorter();
 	}
+
 	
 	private void setupRowSorter() {
 		//Limit columns that can be sorted
-		RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(getModel()) {
+		this.sorter = new TableRowSorter<TableModel>(getModel()) {
 		    @Override
 		    public boolean isSortable(int column) {
 		        if(column < 2)
@@ -63,7 +69,17 @@ public class MainTable extends CustomTable {
 		        else 
 		            return false;
 		    };
+		    
+		    @Override
+		    public void setComparator(int column, Comparator<?> comparator) {
+		    	// TODO Auto-generated method stub
+		    	super.setComparator(column, comparator);
+		    	
+		    	
+		    }
+		    
 		};
+			
 		List<RowSorter.SortKey> sortKeys = new ArrayList<RowSorter.SortKey>();
 		
 		sorter.setSortKeys(sortKeys);
@@ -76,7 +92,6 @@ public class MainTable extends CustomTable {
 		Date key = controller.addFile(file.getAbsolutePath());
 		if(key != null){
 			renderNewFile(key);
-			this.model.sortAddedRowByDate(DATE_INDEX);
 			formatRows();
 		}
 	}
@@ -106,7 +121,6 @@ public class MainTable extends CustomTable {
 				}
 				graphPoints = tempPoints;
 			}
-			this.model.sortAddedRowByDate(DATE_INDEX);
 		}
 		controller.graphRealTime(graphPointsRealTime);
 	}
@@ -126,7 +140,6 @@ public class MainTable extends CustomTable {
 		while(keys.hasMoreElements()) {
 			Date key = keys.nextElement();
 			renderNewFile(key);
-			this.model.sortAddedRowByDate(DATE_INDEX);
 		}
 		
 		addDropdowns();
@@ -199,9 +212,6 @@ public class MainTable extends CustomTable {
 	}
 	
 	private void formatRows(){
-		//sort table by date
-		this.model.sortAddedRowByDate(DATE_INDEX);
-				
 		//add our dropdown options
 		addDropdowns();
 	}
@@ -223,21 +233,19 @@ public class MainTable extends CustomTable {
 		Date date = new Date();
 		String name = "Custom Row " + this.lastBlankRow++;
 		this.addRow(new Object[]{name,date, date, Strings.SAMPLE});;
-		this.model.sortAddedRowByDate(DATE_INDEX);
 		controller.addCustomRow(name, date);
 		addDropdowns();
 	}
 
 	public void addColumn(Object header, Object[] columns) {
+		this.lasSortOrder = this.sorter.getSortKeys();
 		model.addColumn(header, columns);
-		//add our dropdown options
-				
-		//sort table by date
-		this.model.sortAddedRowByDate(DATE_INDEX);
 		selectedColumn = -1;
 		this.model.fireTableStructureChanged();
 		resizeColumns();
 		addDropdowns();
+		this.setupRowSorter();
+		this.sorter.setSortKeys(lasSortOrder);
 	}
 	
 	private void modifyVectorModel(int index){
