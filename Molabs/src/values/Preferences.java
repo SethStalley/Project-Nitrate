@@ -21,10 +21,20 @@ public class Preferences {
 	public static final int CALIBRATION_DATE_WIDTH = 260;
 	public static final int CALIBRATION_WAVE_WIDTH = 125;
 	
-	//main¿table
+	//mainï¿½table
 	
 	public static final int DATE_COLUMN_WIDTH = 200;
 	public static final int DEFAULT_COLUMN_WIDTH = 80;
 	public static final int ADDED_COLUMN_WIDTH = 145;
 	
+	public static final boolean isMac() {
+		String osName = System.getProperty("os.name").toLowerCase();
+		boolean isMacOs = osName.startsWith("mac os x");
+		if (isMacOs) 
+		{
+			System.out.println("IS Mac");
+			return true;
+		}
+		return false;
+	}
 }

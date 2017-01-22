@@ -94,6 +94,7 @@ public class LoginScreen extends JFrame {
 		btnLogIn.setBorderPainted(false);
 		btnLogIn.setFont(new Font("Roboto Medium", Font.BOLD, 20));
 		btnLogIn.setBackground(new Color(247,163,94));
+		btnLogIn.setOpaque(true);
 		btnLogIn.setForeground(Color.WHITE);
 		this.addKeyListener(new EnterKeyLogIn(this));
 		

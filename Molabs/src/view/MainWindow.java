@@ -1,8 +1,6 @@
 package view;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,10 +37,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
-import javax.swing.JTextField;
-import javax.swing.KeyStroke;
 import javax.swing.JLabel;
 import java.awt.Component;
 import java.awt.GridLayout;
@@ -51,7 +46,6 @@ import java.awt.GridLayout;
 import javax.swing.JTable;
 
 import controller.Controller;
-import controller.DB;
 import de.erichseifert.gral.data.DataTable;
 
 import model.Calibration;
@@ -173,7 +167,9 @@ public class MainWindow extends JFrame {
 		menuBar.setPreferredSize(new Dimension(0, 30));
 		menuBar.setMaximumSize(new Dimension(0, 20));
 		menuBar.setMinimumSize(new Dimension(0, 10));
-		menuBar.setForeground(Color.WHITE);
+		if (!Preferences.isMac()) {
+			menuBar.setForeground(Color.WHITE);
+		}
 		menuBar.setBackground(new Color(51, 51, 51));
 		setJMenuBar(menuBar);
 		

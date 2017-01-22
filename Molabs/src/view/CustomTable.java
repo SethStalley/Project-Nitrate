@@ -36,6 +36,7 @@ public abstract class CustomTable extends JTable {
 	protected SortableJTableModel model;
 	
 	public CustomTable(SortableJTableModel model, Controller controller) {
+		this.setGridColor(Color.BLACK);
 		this.setRowSelectionAllowed(true);
 		createTableHeaders();
 		setModel(model);
