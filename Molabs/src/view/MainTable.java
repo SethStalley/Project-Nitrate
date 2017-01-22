@@ -364,6 +364,12 @@ public class MainTable extends CustomTable {
 	    	ArrayList<Double> listConcentration = getStdValuesFromColumn(Strings.CONCENTRATION_COLUMN_INDEX);
 	    	ArrayList<Date> fileKeys = getSelectedFileKeys(Strings.MAINTABLE_COLUMN_DATE);
 	    	
+	    	
+	    	if (listAbsorbance == null || listAbsorbance == null){
+	    		JOptionPane.showMessageDialog(null, "Please make sure all rows are selected as STD and have a concentration value.");
+	    		return;
+	    	}
+	    	
 		
 	    	if(listConcentration.size() > 1) {
 	    		controller.addCalibration(fileKeys, listAbsorbance, listConcentration, getWaveLength(selectedColumn));
@@ -390,8 +396,11 @@ public class MainTable extends CustomTable {
 				else {
 					//error value no inserted
 					JOptionPane.showMessageDialog(null, "No value at row #" + i + " column #" + index,"Error",JOptionPane.INFORMATION_MESSAGE);
-					break;
+					return null;
 				}
+			}
+			else{
+				return null;
 			}
 		}
 		
