@@ -162,18 +162,9 @@ public class DB {
 		    for(int i = 0; i < jsonArray.length() ; i++){
 		    	JSONObject resultJson = (JSONObject) jsonArray.get(i);
 		    	String userName = resultJson.getString("userName");
-		    	
-		    	if (userName.equals(this.username)){
-		    		String[] allData = {username, "you", resultJson.getString("completeName"),
+		    	String[] allData = {resultJson.getString("userName"), resultJson.getString("type"), resultJson.getString("completeName"),
 			    			resultJson.getString("email") ,resultJson.getString("telephoneNumber")};
-		    		users.add(0, allData);
-		    	}
-		    	else{
-		    		String[] allData = {resultJson.getString("userName"), resultJson.getString("type"), resultJson.getString("completeName"),
-			    			resultJson.getString("email") ,resultJson.getString("telephoneNumber")};
-		    		users.add(allData);
-		    	}
-
+		    	users.add(allData);
 		    }
 		    
 		}
@@ -232,7 +223,7 @@ public class DB {
 		return Strings.ERROR_NO_INTERNET;
 	}
 	
-	public String updateUser(String[] userData){
+	public String updateUser(String[] userData, Controller control){
 		/* retur null if everything ok, otherwise a string error message */
 		String newUser = userData[0];
 		String pass = userData[1];
@@ -251,7 +242,13 @@ public class DB {
 			JSONObject json = new JSONObject();
 			json.put("pUserNameToUpdate", newUserToUpdate);
 			json.put("pNewUserName", newUser);
-			json.put("pNewPassword", pass);
+			if(pass.isEmpty()){
+				System.out.println(JSONObject.NULL);
+				json.put("pNewPassword", JSONObject.NULL);
+				System.out.print(json.isNull("pNewPassword"));
+			}else{
+				json.put("pNewPassword", pass);
+			}
 			json.put("pType", type);
 			
 			json.put("pCompleteName", name);
@@ -261,6 +258,8 @@ public class DB {
 		    json.put("pUserName", username);
 		    json.put("pPassword", password);
 		    
+		    System.out.println(json);
+		    
 		    JSONObject resultJson =   new JSONObject(this.postRequest("updateUser", json));
 	
 		    if (resultJson.has("code")){
@@ -268,10 +267,22 @@ public class DB {
 			    	return Strings.ERROR_USER_REPEATED;
 			    }
 			    else{
+			    	if(newUserToUpdate.equals(username)){
+			    		this.username = newUser;
+			    		if(!pass.isEmpty())
+			    			this.password = pass;
+			    		control.changeUser(this.username);
+			    	}
 			    	return null;
 			    }
 		    }
 		    else{
+		    	if(newUserToUpdate.equals(username)){
+		    		this.username = newUser;
+		    		if(!pass.isEmpty())
+		    			this.password = pass;
+		    		control.changeUser(this.username);
+		    	}
 		    	return null;
 		    }
 		}
@@ -462,6 +473,11 @@ public class DB {
 	
 	public String getType(){
 		return type;
+	}
+	
+	public void changeUserData(String username, String password){
+		this.username = username;
+		this.password = password;
 	}
 
 }

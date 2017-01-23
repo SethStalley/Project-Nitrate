@@ -61,13 +61,13 @@ public class CreateUser extends JFrame {
 		getContentPane().setBackground(new Color(Preferences.WINDOW_NORMAL_RGB));
 		initComponents();
 		updateFlag = update;
+		if(admin){
+			setAdminValues();
+		}
 		if(update){
 			userToUpdate = userNameToUpdate;
 			setUpdateValues();
 			setTitle("MOLABS Update User: "  + userNameToUpdate[0]);
-		}
-		if(admin){
-			setAdminValues();
 		}
 	}
 	
@@ -140,6 +140,7 @@ public class CreateUser extends JFrame {
 					String phone = txtPhone.getText();
 					String result = null;
 					String sucessMessage = "Not initialized.";
+					System.out.println(type);
 					if(!updateFlag){// create user
 						String[] data = {user, pass, type, name, email, phone};
 						result = DB.getInstance().createUser(data);
@@ -149,7 +150,7 @@ public class CreateUser extends JFrame {
 					}
 					else{ // update user
 						String[] data = {user, pass, type, name, email, phone, userToUpdate[0]};
-						result = DB.getInstance().updateUser(data);
+						result = DB.getInstance().updateUser(data, controller);
 						if(result == null){
 							sucessMessage = "User: " + userToUpdate[0] + " updated.";
 							
@@ -289,7 +290,7 @@ public class CreateUser extends JFrame {
 	private boolean inspectPassword(){
 		String pass = new String(txtPassword.getPassword());
 		String pass2 = new String(txtConfirmPassword.getPassword());
-		if(pass.equals(pass2)){
+		if(pass.equals(pass2) && !pass.isEmpty()){
 			if(pass.length() <=4){
 				JOptionPane.showMessageDialog(null, Strings.ERROR_PASSWORD_FORMAT,"Error",JOptionPane.INFORMATION_MESSAGE);
 			}
@@ -297,6 +298,8 @@ public class CreateUser extends JFrame {
 				return true;
 			}
 		}
+		else if(updateFlag && pass.isEmpty() && pass2.isEmpty())
+			return true;
 		else
 			JOptionPane.showMessageDialog(null, Strings.ERROR_PASSWORD_CONFIRMATION,"Error",JOptionPane.INFORMATION_MESSAGE);
 		return false;
@@ -313,6 +316,7 @@ public class CreateUser extends JFrame {
 	}
 	private void setUpdateValues(){
 		btnCreate.setText("Update");
+		btnCreate.setVisible(true);
 		txtUsername.setText(userToUpdate[0]);
 		txtName.setText(userToUpdate[1]);
 		txtEmail.setText(userToUpdate[2]);
@@ -327,6 +331,15 @@ public class CreateUser extends JFrame {
 				rdbtnAdmin.setSelected(true);
 			}
 		}
+		System.out.println(userToUpdate[4]);
+		if(userToUpdate[4].equals("admin")){
+			rdbtnAdmin.setSelected(true);
+		}else if(userToUpdate[4].equals("user")){
+			rdbtnUser.setSelected(true);
+		}else
+			rdbtnMaster.setSelected(true);
+		
+		
 	}
 	private void setAdminValues(){
 		rdbtnAdmin.setVisible(false);
@@ -353,13 +366,14 @@ public class CreateUser extends JFrame {
 			  public void changed() {
 				  String pass1 = new String(txtPassword.getPassword());
 				  String pass2 = new String(txtConfirmPassword.getPassword());
-			     if (txtUsername.getText().equals("") || pass1.equals("") || pass2.equals("")){
-			       btnCreate.setVisible(false);
-			     }
-			     else {
-			       btnCreate.setVisible(true);
-			    }
-
+				  if(!updateFlag){
+				     if (txtUsername.getText().equals("") || pass1.equals("") || pass2.equals("")){
+				       btnCreate.setVisible(false);
+				     }
+				     else {
+				       btnCreate.setVisible(true);
+				    }
+				  }
 			  }
 			};
 			return doc;

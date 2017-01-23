@@ -366,5 +366,9 @@ public class Controller {
 	public int getAbosrbanceIndex(){
 		return this.getAbsorbanceColumnIndex((graphicInterface.getWavelengthCalibration()));
 	}
+	
+	public void changeUser(String user){
+		graphicInterface.changeUser(user);
+	}
 
 }

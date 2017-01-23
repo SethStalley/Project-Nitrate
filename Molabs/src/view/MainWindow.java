@@ -1,6 +1,8 @@
 package view;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,7 +39,10 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.JLabel;
 import java.awt.Component;
 import java.awt.GridLayout;
@@ -46,6 +51,7 @@ import java.awt.GridLayout;
 import javax.swing.JTable;
 
 import controller.Controller;
+import controller.DB;
 import de.erichseifert.gral.data.DataTable;
 
 import model.Calibration;
@@ -167,9 +173,7 @@ public class MainWindow extends JFrame {
 		menuBar.setPreferredSize(new Dimension(0, 30));
 		menuBar.setMaximumSize(new Dimension(0, 20));
 		menuBar.setMinimumSize(new Dimension(0, 10));
-		if (!Preferences.isMac()) {
-			menuBar.setForeground(Color.WHITE);
-		}
+		menuBar.setForeground(Color.WHITE);
 		menuBar.setBackground(new Color(51, 51, 51));
 		setJMenuBar(menuBar);
 		
@@ -293,7 +297,7 @@ public class MainWindow extends JFrame {
 		
 		mainTable = new MainTable(new SortableJTableModel(
 				new String[] {
-						"File", "Date", "Time", "Type","STD CONC"},0), controller); 
+						"File", "Date", "Time", "Type","STD CONC"},0), controller);
 		mainTable.setRowHeight(24);
 		
 		mainTable.getTableHeader().setFont(new Font("Roboto Medium", Font.BOLD, 12));
@@ -741,6 +745,10 @@ public class MainWindow extends JFrame {
 		Calibration calibration = controller.getCalibrationData(key);
 		
 		return calibration.getWavelength();
+	}
+	
+	public void changeUser(String user){
+		mnUsernameIngresado.setText("Current user: " + user + " ("+DB.getInstance().getType() +")");
 	}
 	
 }
