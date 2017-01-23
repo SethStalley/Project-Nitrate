@@ -13,7 +13,6 @@ BEGIN
         RESIGNAL SET MESSAGE_TEXT = @error;
     END;
     
-    START TRANSACTION;
     
     SET @type = (SELECT type
 					FROM molabsdb.users
@@ -30,11 +29,20 @@ BEGIN
 		 SET MESSAGE_TEXT = 'Tipo de usuario ingresado incorrecto.';
 	 END IF;
      
+     START TRANSACTION;
+     
+     IF (pNewPassword IS NOT NULL) THEN
+		UPDATE molabsdb.users
+			SET password = CAST(SHA2(pNewPassword, 512) AS BINARY)
+				WHERE username = pUserNameToUpdate 
+					  AND (createdBy = pUserName OR pUserNameToUpdate = pUsername); -- only if you created this user you can modify it, or is it yourself :)
+        
+     END IF;
+     
     
     
 	UPDATE molabsdb.users
 		SET userName = IFNULL(pNewUserName, userName),
-			password = (CAST(SHA2(IFNULL(pNewPassword, password), 512) AS BINARY)),
             type = IFNULL(pType, type),
             completeName = IFNULL(pCompleteName, completeName),
             telephoneNumber = IFNULL(pTelephoneNumber, telephoneNumber),
