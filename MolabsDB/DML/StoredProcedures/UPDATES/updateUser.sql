@@ -31,7 +31,7 @@ BEGIN
      
      START TRANSACTION;
      
-     IF (pNewPassword IS NOT NULL) THEN
+     IF ((pNewPassword IS NOT NULL) AND (pNewPassword != 'null')) THEN
 		UPDATE molabsdb.users
 			SET password = CAST(SHA2(pNewPassword, 512) AS BINARY)
 				WHERE username = pUserNameToUpdate 

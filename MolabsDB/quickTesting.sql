@@ -20,11 +20,11 @@ ROLLBACK;*/
 
 
 SELECT * FROM molabsdb.users;
-CALL molabsdb.updateUser('adrian', null , null,  'admin','Userr User', '1111','userr@hotmail.com',
+CALL molabsdb.updateUser('adrian', null , 'null',  'admin','Userr User', '1111','userr@hotmail.com',
 	'root' , 'root');
 SELECT * FROM molabsdb.users; 
 
-CALL molabsdb.validateUser('adrian','caca');
+CALL molabsdb.validateUser('adrian','lopez');
  
 
 
