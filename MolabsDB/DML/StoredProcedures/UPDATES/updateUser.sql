@@ -29,12 +29,12 @@ BEGIN
 		 SIGNAL SQLSTATE '45000'
 		 SET MESSAGE_TEXT = 'Tipo de usuario ingresado incorrecto.';
 	 END IF;
-
+     
     
     
 	UPDATE molabsdb.users
 		SET userName = IFNULL(pNewUserName, userName),
-			password = IFNULL((CAST(SHA2(pNewPassword, 512) AS BINARY)), password),
+			password = (CAST(SHA2(IFNULL(pNewPassword, password), 512) AS BINARY)),
             type = IFNULL(pType, type),
             completeName = IFNULL(pCompleteName, completeName),
             telephoneNumber = IFNULL(pTelephoneNumber, telephoneNumber),
