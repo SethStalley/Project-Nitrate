@@ -37,7 +37,7 @@ public class About extends JFrame {
 	private JButton btnLogIn;
 	
 	public About() {
-		setMinimumSize(new Dimension(690, 530));
+		setMinimumSize(new Dimension(690, 540));
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(Preferences.IMG_ICON)));
 		setTitle("MOLABS");
 		setLocationRelativeTo(null);
@@ -84,23 +84,32 @@ public class About extends JFrame {
 		JLabel lblJosueArrietaSalas = new JLabel("Josu\u00E9 Arrieta Salas");
 		lblJosueArrietaSalas.setFont(new Font("Roboto Medium", Font.PLAIN, 13));
 		
-		JLabel lblAdrianLopezQuesada = new JLabel("Adrian Lopez Quesada");
-		lblAdrianLopezQuesada.setFont(new Font("Roboto Medium", Font.PLAIN, 13));
-		
 		JLabel lblSethStalley = new JLabel("Seth Stalley");
 		lblSethStalley.setFont(new Font("Roboto Medium", Font.PLAIN, 13));
 		
-		JLabel lblWithCollaborationOf = new JLabel("With collaboration of: ");
+		JLabel lblWithCollaborationOf = new JLabel("Contacts: ");
 		lblWithCollaborationOf.setFont(new Font("Roboto Medium", Font.PLAIN, 16));
 		
 		JLabel lblLauraHernandezAlpizar = new JLabel("Laura Hernandez Alpizar");
 		lblLauraHernandezAlpizar.setFont(new Font("Roboto Medium", Font.PLAIN, 13));
 		
-		JLabel lblContact = new JLabel("Contact: ");
+		JLabel lblContact = new JLabel("Client: ");
 		lblContact.setFont(new Font("Roboto Medium", Font.PLAIN, 16));
 		
 		JLabel lblLahernandezitcraccr = new JLabel("lahernandez@itcr.ac.cr");
 		lblLahernandezitcraccr.setFont(new Font("Roboto Medium", Font.PLAIN, 13));
+		
+		JLabel lblJosuearrietasalasgmailcom = new JLabel("josuearrietasalas@gmail.com");
+		lblJosuearrietasalasgmailcom.setFont(new Font("Roboto Medium", Font.PLAIN, 13));
+		
+		JLabel lblAdrianlqgmailcom = new JLabel("adrianlq8@gmail.com");
+		lblAdrianlqgmailcom.setFont(new Font("Roboto Medium", Font.PLAIN, 13));
+		
+		JLabel lblSethstalleygmailcom = new JLabel("sethstalley@gmail.com");
+		lblSethstalleygmailcom.setFont(new Font("Roboto Medium", Font.PLAIN, 13));
+		
+		JLabel label = new JLabel("Adrian Lopez Quesada");
+		label.setFont(new Font("Roboto Medium", Font.PLAIN, 13));
 		
 //----------------------Layout-----------------------------------------------------------------------
 		
@@ -108,66 +117,78 @@ public class About extends JFrame {
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap(301, Short.MAX_VALUE)
+					.addGap(145)
+					.addComponent(lblImageIcon, GroupLayout.PREFERRED_SIZE, 363, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
 					.addComponent(lblUsername)
-					.addGap(289))
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap(59, Short.MAX_VALUE)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblContact, GroupLayout.PREFERRED_SIZE, 117, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblLahernandezitcraccr, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE)
-							.addGap(220)
-							.addComponent(btnLogIn))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblPassword, GroupLayout.PREFERRED_SIZE, 117, GroupLayout.PREFERRED_SIZE)
-							.addGap(137)
-							.addComponent(lblWithCollaborationOf, GroupLayout.PREFERRED_SIZE, 181, GroupLayout.PREFERRED_SIZE))
-						.addComponent(txtrAdasd, GroupLayout.PREFERRED_SIZE, 543, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap())
 				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap(156, Short.MAX_VALUE)
-					.addComponent(lblImageIcon, GroupLayout.PREFERRED_SIZE, 370, GroupLayout.PREFERRED_SIZE)
-					.addGap(148))
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(120)
+					.addGap(84)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblLauraHernandezAlpizar, GroupLayout.PREFERRED_SIZE, 181, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblJosueArrietaSalas, GroupLayout.PREFERRED_SIZE, 132, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblAdrianLopezQuesada, GroupLayout.PREFERRED_SIZE, 132, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblSethStalley, GroupLayout.PREFERRED_SIZE, 132, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(373, Short.MAX_VALUE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblPassword, GroupLayout.PREFERRED_SIZE, 117, GroupLayout.PREFERRED_SIZE)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGap(27)
+									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addComponent(label, GroupLayout.PREFERRED_SIZE, 132, GroupLayout.PREFERRED_SIZE)
+										.addComponent(lblJosueArrietaSalas, GroupLayout.PREFERRED_SIZE, 132, GroupLayout.PREFERRED_SIZE)
+										.addComponent(lblSethStalley, GroupLayout.PREFERRED_SIZE, 132, GroupLayout.PREFERRED_SIZE))))
+							.addPreferredGap(ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblJosuearrietasalasgmailcom, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblWithCollaborationOf, GroupLayout.PREFERRED_SIZE, 181, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblAdrianlqgmailcom, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(lblLahernandezitcraccr, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE)
+									.addGap(41)
+									.addComponent(btnLogIn))
+								.addComponent(lblSethstalleygmailcom, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE)))
+						.addComponent(lblContact, GroupLayout.PREFERRED_SIZE, 117, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap())
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(109)
+					.addComponent(lblLauraHernandezAlpizar, GroupLayout.PREFERRED_SIZE, 181, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(384, Short.MAX_VALUE))
+				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+					.addContainerGap(74, Short.MAX_VALUE)
+					.addComponent(txtrAdasd, GroupLayout.PREFERRED_SIZE, 543, GroupLayout.PREFERRED_SIZE)
+					.addGap(57))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(lblImageIcon, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(lblUsername)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(txtrAdasd, GroupLayout.PREFERRED_SIZE, 134, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblImageIcon, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblUsername))
+					.addGap(11)
+					.addComponent(txtrAdasd, GroupLayout.PREFERRED_SIZE, 161, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblPassword, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblWithCollaborationOf, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE))
-							.addGap(18)
-							.addComponent(lblJosueArrietaSalas, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblWithCollaborationOf, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblPassword, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE))
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblLauraHernandezAlpizar, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblAdrianLopezQuesada, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblSethStalley, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblContact, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblJosuearrietasalasgmailcom, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblJosueArrietaSalas, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblAdrianlqgmailcom, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
+								.addComponent(label, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE))
+							.addGap(11)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblSethStalley, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblSethstalleygmailcom, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(lblContact, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblLauraHernandezAlpizar, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
 								.addComponent(lblLahernandezitcraccr, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE))
-							.addGap(36))
+							.addGap(46))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(btnLogIn, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
 							.addContainerGap())))

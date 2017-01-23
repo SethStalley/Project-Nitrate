@@ -88,7 +88,8 @@ public class Strings {
 	public static final String ABOUT_THE_SOFTWARE = "Molabs is a software dedicated to display different absorbances of different molecules. "
 			+ "It was mainly designed for Nitrate measurng, but can be used for different molecules. \r\n\r\nThe software can be used to calculate "
 			+ "concentrations depending on a correlation between two or more samples. Also, it can graph concentrations by time to represent the "
-			+ "changes throughout time.";
+			+ "changes throughout time.\r\n\r\nThis software was developed during the course \"Proyecto de Ingenieria de Software\" during the summer period between "
+			+ "2016 and 2017 by the profesor Maria Estrada Sánchez ";
 	
 	
 
