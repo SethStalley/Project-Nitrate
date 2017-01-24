@@ -184,7 +184,10 @@ public class MainTable extends CustomTable {
     }
 	
 	private void addRow(Object[] object) {
+		
 		model.addRow(object);
+		this.sorter.modelStructureChanged();
+		
 		//render date's using a custom format
 		this.getColumnModel().getColumn(DATE_INDEX).setCellRenderer(new CellRenderDateAsYYMMDD());
 		this.getColumnModel().getColumn(TIME_INDEX).setCellRenderer(new CellRenderDateAsTimeOfDay());
@@ -244,8 +247,9 @@ public class MainTable extends CustomTable {
 		this.model.fireTableStructureChanged();
 		resizeColumns();
 		addDropdowns();
-		this.setupRowSorter();
+		
 		this.sorter.setSortKeys(lasSortOrder);
+		this.sorter.modelStructureChanged();
 	}
 	
 	private void modifyVectorModel(int index){

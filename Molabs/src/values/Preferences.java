@@ -24,7 +24,7 @@ public class Preferences {
 	//main�table
 	
 	public static final int DATE_COLUMN_WIDTH = 200;
-	public static final int DEFAULT_COLUMN_WIDTH = 80;
+	public static final int DEFAULT_COLUMN_WIDTH = 95;
 	public static final int ADDED_COLUMN_WIDTH = 145;
 	
 	public static final boolean isMac() {
