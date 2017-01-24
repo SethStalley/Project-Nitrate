@@ -18,6 +18,7 @@ public class MainWindowUser extends MainWindow {
 	@Override
 	protected void setMiddleMenus() {
 		setMenuProperties(mnTools);
+		super.setMiddleMenus();
 	}
 	
 	protected void setSecondPanel(){
