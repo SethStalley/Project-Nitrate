@@ -158,11 +158,11 @@ public class MainTable extends CustomTable {
 	}
 	
 	private String formattedAbsorbanceHeader(String wavelength) {
-		return "Absorbance("+wavelength+")";
+		return "Absorbance ("+wavelength+")";
 	}
 	
 	private String formattedConcentrationHeader(String wavelength) {
-		return "Concentration("+wavelength+")";
+		return "Concentration ("+wavelength+")";
 	}
 	
 	/**
@@ -294,7 +294,7 @@ public class MainTable extends CustomTable {
 					}
 				}
 			
-				addColumn("Concentration("+wavelength+")",
+				addColumn("Concentration ("+wavelength+")",
 						concentrations.toArray());
 				
 				controller.addWorkingConcentration(absorbanceIndex,key);
@@ -343,7 +343,7 @@ public class MainTable extends CustomTable {
 				absorbances.add(absorbance);
 			}
 			
-			this.addColumn("Absorbance("+wavelength+")", absorbances.toArray());
+			this.addColumn("Absorbance ("+wavelength+")", absorbances.toArray());
 			
 			//save this as a working wavelength in model
 			controller.addWorkingWavelength(wavelength);
