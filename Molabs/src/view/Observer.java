@@ -214,10 +214,11 @@ public class Observer extends JFrame {
 		String path = txtActualFolder.getText();
 		
 		if(new File(path).isDirectory()) {
-			if(controller.startObserver(path)){
+			boolean success = controller.startObserver(path);
+			if(success){
 				this.running = true;
-				btnStartStop.setText("Stop");
 				btnStartStop.setBackground(new Color(Preferences.BTN_COLOR_RED));
+				btnStartStop.setText("Stop");
 				getContentPane().setBackground(new Color(Preferences.WINDOW_OBSERVER_RUNNING_RGB));
 			}
 		}else{
