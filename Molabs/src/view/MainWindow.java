@@ -173,7 +173,8 @@ public class MainWindow extends JFrame {
 		menuBar.setPreferredSize(new Dimension(0, 30));
 		menuBar.setMaximumSize(new Dimension(0, 20));
 		menuBar.setMinimumSize(new Dimension(0, 10));
-		menuBar.setForeground(Color.WHITE);
+		if(!Preferences.isMac())
+			menuBar.setForeground(Color.WHITE);
 		menuBar.setBackground(new Color(51, 51, 51));
 		setJMenuBar(menuBar);
 		
@@ -297,7 +298,7 @@ public class MainWindow extends JFrame {
 		
 		mainTable = new MainTable(new SortableJTableModel(
 				new String[] {
-						"File", "Date", "Time", "Type","STD CONC"},0), controller);
+						"File", "Date", "Time", "Type","STD CONC mg/L"},0), controller);
 		mainTable.setRowHeight(24);
 		
 		mainTable.getTableHeader().setFont(new Font("Roboto Medium", Font.BOLD, 12));

@@ -73,7 +73,9 @@ public class CalibrationTable extends CustomTable {
 	}
 	
 	
-
+	/**
+	 * Calculate concentration button
+	 */
 	@Override
 	public void actionButton() {
 	    Date key = getSelectedCalibration();
@@ -129,9 +131,6 @@ public class CalibrationTable extends CustomTable {
     	resizeColumns();
     	centerCells();
     	this.getColumnModel().getColumn(DATE_INDEX).setCellRenderer(new CellRenderDateAsYYMMDD_TIME());
-    	
-    	
-    	
 	}
 	
 	@Override
