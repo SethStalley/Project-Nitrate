@@ -76,6 +76,8 @@ public class MainWindowOwner extends MainWindow {
 		};
 		setMenuProperties(mnEdit);
 		
+		setMenuProperties(mnTools);
+		
 		//Users
 		
 		mnUsers = new JMenu("Users");

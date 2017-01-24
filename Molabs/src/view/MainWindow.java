@@ -190,7 +190,7 @@ public class MainWindow extends JFrame {
 		//Tools
 		
 		mnTools = new JMenu("Tools");
-		setMenuProperties(mnTools);
+		
 		
 	}
 	protected void setMiddleMenus(){

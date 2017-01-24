@@ -54,7 +54,7 @@ public class About extends JFrame {
 		lblImageIcon = new JLabel("");
 		lblImageIcon.setIcon(new ImageIcon(getClass().getResource(Preferences.IMG_LOGO)));
 		
-		lblUsername = new JLabel("Version: 1.0");
+		lblUsername = new JLabel("Version: 1.3.1");
 		lblUsername.setFont(new Font("Roboto Medium", Font.PLAIN, 16));
 		
 		lblPassword = new JLabel("Developed by:");
