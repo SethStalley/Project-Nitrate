@@ -175,6 +175,15 @@ public class MainWindowOwner extends MainWindow {
 			}
 		});
 		
+		mntmAlertValues = new JMenuItem("Alert Values");
+		setMenuItemProperties(mntmAlertValues, mnTools);
+		mntmAlertValues.addActionListener(new java.awt.event.ActionListener() {
+	        @Override
+	        public void actionPerformed(java.awt.event.ActionEvent evt) {
+	        	new AlertValues(controller).setVisible(true);
+	        }
+	    });
+		
 		mntmObserver = new JMenuItem("Observer");
 		setMenuItemProperties(mntmObserver, mnTools);
 		mntmObserver.addActionListener(new java.awt.event.ActionListener() {

@@ -44,6 +44,7 @@ public class DB {
 	private String url;
 	private String type;
 	private static String AesKey;
+	private Double[] alertValues;
 
 	private DB() {
 		url = "https://54.144.112.150/api/";
@@ -331,6 +332,9 @@ public class DB {
 		    
 		    //JOptionPane.showMessageDialog(null, resultJson);
 		    
+		    alertValues = new Double[2];
+		    alertValues[0] = minValue;
+		    alertValues[1] = maxValue;
 		    return null;
 	
 		}
@@ -345,31 +349,36 @@ public class DB {
 		/* return an empty list of string if it does not find something. This should not happen*/
 		// returns null if there is an exception, probably due to no internet connection
 		/* user type name email phone*/
-		Double[] values = new Double[2];
+		if(alertValues == null){
+			Double[] values = new Double[2];
 		
-		try{
-			/*molabsdb.selectAlertValues(
-					pUserName VARCHAR(45), pPassword VARCHAR(45)) */
-			JSONObject json = new JSONObject();
-		    json.put("pUserName", username);
-		    json.put("pPassword", password);
-		    
-		    //JSONObject resultJson =   new JSONObject(this.postRequest("selectAlertValues", json));
-		    JSONArray jsonA = new JSONArray(this.postRequest("selectAlertValues", json));
-		    JSONObject resultJson =   (JSONObject) (((JSONArray) jsonA.get(0)).get(0));
-	
-		    
-		    values[0] = Double.parseDouble(resultJson.getString("valueMin"));
-		    values[1] = Double.parseDouble(resultJson.getString("valueMax"));
-		   
-		    
+			try{
+				/*molabsdb.selectAlertValues(
+						pUserName VARCHAR(45), pPassword VARCHAR(45)) */
+				JSONObject json = new JSONObject();
+			    json.put("pUserName", username);
+			    json.put("pPassword", password);
+			    
+			    //JSONObject resultJson =   new JSONObject(this.postRequest("selectAlertValues", json));
+			    JSONArray jsonA = new JSONArray(this.postRequest("selectAlertValues", json));
+			    JSONObject resultJson =   (JSONObject) (((JSONArray) jsonA.get(0)).get(0));
+		
+			    
+			    values[0] = Double.parseDouble(resultJson.getString("valueMin"));
+			    values[1] = Double.parseDouble(resultJson.getString("valueMax"));
+			   
+			    
+			}
+			catch(Exception e){
+				// JOptionPane.showMessageDialog(null, e.getMessage());
+				return null; // probably internet
+			}
+			//JOptionPane.showMessageDialog(null, Arrays.toString(values));
+			alertValues = values;
+			return values;
 		}
-		catch(Exception e){
-			// JOptionPane.showMessageDialog(null, e.getMessage());
-			return null; // probably internet
-		}
-		//JOptionPane.showMessageDialog(null, Arrays.toString(values));
-		return values;
+		else
+			return alertValues;
 	}
 	
 	public String updateGraph(ArrayList<?> points, String graphType, String slope, String intercept, String pearson, String wavelength){

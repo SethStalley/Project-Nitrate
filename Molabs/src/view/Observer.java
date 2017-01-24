@@ -40,14 +40,12 @@ public class Observer extends JFrame {
 	private Controller controller;
 	private boolean running;
 	private static Observer instance = null;
-	private JFormattedTextField txtYellow;
-	private JFormattedTextField txtRed;
 	
 	public Observer( Controller controller) {
 		this.running = false;
 		instance = this;
 		this.controller = controller;
-		setMinimumSize(new Dimension(500, 300));
+		setMinimumSize(new Dimension(500, 150));
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(Preferences.IMG_ICON)));
 		setTitle("MOLABS Observer");
 		setLocationRelativeTo(null);
@@ -93,38 +91,11 @@ public class Observer extends JFrame {
 			}
 		});
 		
-		JLabel lblAlertValues = new JLabel("Alert Values: ");
-		
 		NumberFormat format = NumberFormat.getInstance();
 	    NumberFormatter formatter = new NumberFormatter(format);
 	    formatter.setValueClass(Double.class);
 	    formatter.setMaximum(Double.MAX_VALUE);
 		
-		txtYellow = new JFormattedTextField(formatter);
-		txtYellow.setColumns(10);
-		
-		JLabel lblYellowValues = new JLabel("Yellow Values: ");
-		
-		JLabel lblRedValues = new JLabel("Red Values:");
-		
-		txtRed = new JFormattedTextField(formatter);
-		txtRed.setColumns(10);
-		
-		setValues();
-		
-		GenericRoundedButton btnModifyValues = new GenericRoundedButton("Browse");
-		btnModifyValues.setOpaque(false);
-		setButtonProperties(btnModifyValues);
-		btnModifyValues.addMouseListener(setButtonsListeners(btnModifyValues));
-		btnModifyValues.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				sendValues();
-			}
-		});
-		btnModifyValues.setText("Modify");
-		btnModifyValues.setFont(new Font("Roboto Medium", Font.BOLD, 12));
-		btnModifyValues.setBackground(new Color(15, 101, 131));
 	
 		
 //------------------------------Layout-----------------------------------------------------------------------
@@ -132,37 +103,18 @@ public class Observer extends JFrame {
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblAlertValues, GroupLayout.PREFERRED_SIZE, 93, GroupLayout.PREFERRED_SIZE)
-					.addGap(381))
-				.addGroup(groupLayout.createSequentialGroup()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addContainerGap()
 							.addComponent(lblActualFolder, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(txtActualFolder, GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
+							.addComponent(txtActualFolder, GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
 							.addGap(18))
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(205)
-									.addComponent(btnStartStop, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(92)
-									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-										.addGroup(groupLayout.createSequentialGroup()
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(lblYellowValues))
-										.addComponent(lblRedValues))
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-										.addComponent(txtRed, GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
-										.addComponent(txtYellow, GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE))))
+							.addGap(205)
+							.addComponent(btnStartStop, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addGap(92)))
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnModifyValues, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnBrowse, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addComponent(btnBrowse, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addGap(28))
 		);
 		groupLayout.setVerticalGroup(
@@ -173,25 +125,8 @@ public class Observer extends JFrame {
 						.addComponent(lblActualFolder)
 						.addComponent(txtActualFolder, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnBrowse, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(18)
-							.addComponent(btnStartStop, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addGap(31)
-							.addComponent(lblAlertValues)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblRedValues)
-								.addComponent(txtRed, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
-							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblYellowValues)
-								.addComponent(txtYellow, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addGap(61))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnModifyValues, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap())))
+					.addGap(18)
+					.addComponent(btnStartStop, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 		);
 		
 //---------------------------------------Ends Layout ------------------------------------------------------------
@@ -277,38 +212,5 @@ public class Observer extends JFrame {
 			}
 		};
 		
-	}
-	
-	private void setValues(){
-		Double[] alertValues = DB.getInstance().getAlertValues();
-		if(alertValues != null){
-			txtYellow.setValue(alertValues[0]);
-			txtRed.setValue(alertValues[1]);
-		}else
-			JOptionPane.showMessageDialog(null, Strings.ERROR_INTERNET,"Error",JOptionPane.INFORMATION_MESSAGE);
-	}
-	
-	private void sendValues(){
-		try {
-			txtRed.commitEdit();
-			txtYellow.commitEdit();
-			Double min = (Double)txtYellow.getValue();
-			Double max = (Double)txtRed.getValue();
-			System.out.println(min);
-			if(min < max){
-				String validate = DB.getInstance().updateAlertValues(min, max);
-				if(validate != null){
-					JOptionPane.showMessageDialog(null, Strings.ERROR_INTERNET_ALERT_VALUES,"Error",JOptionPane.INFORMATION_MESSAGE);
-				}else{
-					JOptionPane.showMessageDialog(null, Strings.SUCESS_ALERT_VALUES,"Info",JOptionPane.INFORMATION_MESSAGE);
-					controller.graphRealTime();
-				}
-			}else{
-				JOptionPane.showMessageDialog(null, Strings.ERROR_ALERT_VALUES,"Error",JOptionPane.INFORMATION_MESSAGE);
-			}
-		} catch (ParseException e) {
-			txtRed.setValue(txtRed.getValue());
-			txtYellow.setValue(txtYellow.getValue());
-		}
 	}
 }

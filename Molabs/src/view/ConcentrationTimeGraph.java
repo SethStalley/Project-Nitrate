@@ -28,6 +28,7 @@ import de.erichseifert.gral.data.DataTable;
 import de.erichseifert.gral.graphics.Drawable;
 import de.erichseifert.gral.graphics.DrawableContainer;
 import de.erichseifert.gral.graphics.Insets2D;
+import de.erichseifert.gral.graphics.Location;
 import de.erichseifert.gral.graphics.layout.TableLayout;
 import de.erichseifert.gral.io.plots.DrawableWriter;
 import de.erichseifert.gral.io.plots.DrawableWriterFactory;
@@ -111,6 +112,10 @@ public class ConcentrationTimeGraph extends JPanel {
 		plot.getAxisRenderer(XYPlot.AXIS_Y).getLabel().setText("Concentration (mg/L)");
 		DateFormat dateFormat = DateFormat.getTimeInstance(DateFormat.MEDIUM);
 		plot.getAxisRenderer(XYPlot.AXIS_X).setTickLabelFormat(dateFormat);
+		/*plot.setLegendVisible(true);
+		plot.getLegend().setAlignmentX(1.0);
+		plot.getLegend().setAlignmentY(0);
+		plot.setLegendDistance(0.5);  Intento del legend para futuro aspirante*/
 		
 		DrawableContainer plots = new DrawableContainer(new TableLayout(1));
 		plot.setBackground(Color.WHITE);
