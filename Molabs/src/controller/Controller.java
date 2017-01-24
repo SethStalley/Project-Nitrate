@@ -371,4 +371,9 @@ public class Controller {
 		graphicInterface.changeUser(user);
 	}
 
+	public int getConcentrationColumnIndex(Date key) {
+		Calibration cal = calibrationTable.getCalibration(key);
+		return mainTable.getWavelengthWithWavelength(cal.getWavelength()).getIndexConcentration(key.toString());
+	}
+
 }

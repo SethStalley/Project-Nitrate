@@ -490,7 +490,7 @@ public class MainTable extends CustomTable {
 	}
 	
 	
-	public void highlightLightRowsRelatedToConcentration(String wavelength, ArrayList<Date> keys) {
+	public void highlightLightRowsRelatedToConcentration(String wavelength, ArrayList<Date> keys, int concentrationColumn) {
 		clearSelection();
 		int absorbanceIndex = -1;
 		for (int i=0; i< getRowCount();i++) {
@@ -501,19 +501,27 @@ public class MainTable extends CustomTable {
     			this.addColumnSelectionInterval(0, Strings.CONCENTRATION_COLUMN_INDEX);
     			absorbanceIndex = controller.getAbsorbanceColumnIndex(wavelength);
     			this.addColumnSelectionInterval(absorbanceIndex, absorbanceIndex);
+    			
+    			if (concentrationColumn > absorbanceIndex) {
+    				this.addColumnSelectionInterval(concentrationColumn, concentrationColumn);
+    			}
 			}
 		}
 		
 		//paint of column header and selection
 		if(selectedColumn != -1 && this.selectedColumn < this.getColumnModel().getColumnCount()){
 			TableCellRenderer oldHeader = this.getColumnModel().getColumn(0).getHeaderRenderer();
-			
 			this.getColumnModel().getColumn(this.selectedColumn).setHeaderRenderer(oldHeader);
 		}
 		selectedColumn = absorbanceIndex;
-		
-		this.getColumnModel().getColumn(this.selectedColumn).setHeaderRenderer(getSelectedHeaderRenderer());
+		highlightHeader(this.selectedColumn);
 	}
+	
+	public void highlightHeader(int index) {
+		this.getColumnModel().getColumn(index).setHeaderRenderer(getSelectedHeaderRenderer());
+	}
+	
+	
 
 
 	@Override
@@ -718,6 +726,14 @@ public class MainTable extends CustomTable {
 	
 	public DataTable getGraphPointsRealTime(){
 		return graphPointsRealTime;
+	}
+	
+	public void clearSelection() {
+		super.clearSelection();
+		for(int i=DATE_INDEX; i< getColumnCount(); i++) {
+			TableCellRenderer oldHeader = this.getColumnModel().getColumn(0).getHeaderRenderer();
+			this.getColumnModel().getColumn(i).setHeaderRenderer(oldHeader);
+		}
 	}
 	
 }

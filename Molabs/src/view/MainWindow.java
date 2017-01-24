@@ -639,7 +639,7 @@ public class MainWindow extends JFrame {
 	private void setlblValues(){
 		int row = calibrationTable.getSelectedRow();
 		Date key = (Date) calibrationTable.getValueAt(row, Strings.CALIBRATIONTABLE_COLUMN_DATE);
-		
+		int concentrationIndex = controller.getConcentrationColumnIndex(key) + controller.getAbosrbanceIndex();
 		Calibration calibration = controller.getCalibrationData(key);
 
 
@@ -654,7 +654,13 @@ public class MainWindow extends JFrame {
 	
 		
 		//highlight rows
-		((MainTable) mainTable).highlightLightRowsRelatedToConcentration(calibration.getWavelength(),calibration.getFileKeys());
+		((MainTable) mainTable).clearSelection();
+		((MainTable) mainTable).highlightLightRowsRelatedToConcentration(calibration.getWavelength(),calibration.getFileKeys(),concentrationIndex);
+		
+		if (concentrationIndex > controller.getAbosrbanceIndex()) {
+			((MainTable)mainTable).highlightHeader(concentrationIndex);
+		}
+		
 		mainTablePane.repaint();
 	}
 
